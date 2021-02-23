@@ -79,11 +79,9 @@ void	ft_cat_new_env_to_key_value(t_data_env *data_env, char *buf)
 
 void	ft_add_change_env(t_tokens *token_begin, t_tokens *token_finish, t_list_env *list_env)
 {
-	int i;
-	t_data_env data_env;
-	t_tokens *tmp;
+	t_data_env	data_env;
+	t_tokens	*tmp;
 
-	
 	token_begin = token_begin->next;
 	while (token_begin)
 	{
@@ -93,5 +91,4 @@ void	ft_add_change_env(t_tokens *token_begin, t_tokens *token_finish, t_list_env
 		ft_add_to_env(data_env, &list_env);
 		token_begin = token_begin->next;
 	}
-	
 }

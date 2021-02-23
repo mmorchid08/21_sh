@@ -12,10 +12,9 @@
 
 #include "ft_execution.h"
 
-
 t_list_path	*get_malloc_value_path(char *value)
 {
-	t_list_path *nev;
+	t_list_path	*nev;
 
 	nev = (t_list_path *)malloc(sizeof(t_list_path));
 	nev->name_path = value;
@@ -45,11 +44,11 @@ char	*ft_read_from_dir(t_list_path *tmp2, t_tokens *token_begin)
 	return (NULL);
 }
 
-void		ft_path_list(char *path_str,t_list_path **path_list)
+void		ft_path_list(char *path_str, t_list_path **path_list)
 {
 	t_list_path	*tmp;
 	int			i;
-    char **tab_path;
+    char		**tab_path;
 
 	i = 0;
 	tmp = NULL;
@@ -117,11 +116,11 @@ void ft_exece(t_tokens *begin, t_tokens *finish, t_list_env *list_env)
 	char	**arr_env;
 	
     bin_path = NULL;
-    if (ft_strchr(begin->data, '/') || (bin_path = open_paths(begin,list_env)))
+    if (ft_strchr(begin->data, '/') || (bin_path = open_paths(begin, list_env)))
 	{
 		if (bin_path == NULL)
 			bin_path = ft_strdup(begin->data);
-		argv = ft_convert_list_array(begin,finish);
+		argv = ft_convert_list_array(begin, finish);
 		arr_env = ft_convert_list_env_array(list_env);
 		exection(bin_path, argv, arr_env);
 		ft_free_table(&arr_env);
@@ -129,7 +128,5 @@ void ft_exece(t_tokens *begin, t_tokens *finish, t_list_env *list_env)
 		free(bin_path);
 	}
 	else
-    {
 		ft_check_error(begin->data);
-    }
 }

@@ -103,9 +103,11 @@ void append_list_tokens(t_tokens **tokens, char *data, int type)
 }
 int check_red(int type)
 {
-    if (type == 1 || type == 2 ||type == 3||type == 4||type == 5||type == 6||type == 7) 
-        return(1);
-    return(0);
+    if (type == 1 || type == 2 ||type == 3 
+        ||type == 4 ||type == 5 
+        || type == 6 ||type == 7) 
+        return (1);
+    return (0);
 }
 t_tokens *handling(char *line)
 {
@@ -120,7 +122,6 @@ t_tokens *handling(char *line)
 
     i = 0;
     tokens = NULL;
-    // ls -la;pwd | toto & pwd > put.txt
     while (line[i])
     {
         token = ft_strdup("");
@@ -197,12 +198,6 @@ int main(int argc, char **argv, char **env)
         if (ft_chek_espace(buffer) == 0)
 			continue ;
         tokens = handling(ft_strdup(buffer));
-        // while (tokens)
-        // {
-        //     printf("data = %s | type = %d\n ", tokens->data, tokens->type);
-        //     tokens = tokens->next;
-        // }
-        
         tmp = tokens;
         tmp2 = tokens;
         tmp3 = tokens;
