@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 17:49:07 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/23 17:08:03 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/02/24 17:53:00 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	free_list_env(t_list_env **env)
 
 void	ft_env_function(t_list_env *env)
 {
-	char	*name;
-
 	while (env)
 	{
 		ft_putstr(env->key);

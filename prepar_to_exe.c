@@ -12,7 +12,7 @@
 
 #include "ft_execution.h"
 
-int		ft_count_tokens(t_tokens *token_begin, t_tokens *token_finish)
+int		ft_count_tokens(t_tokens *token_begin , t_tokens *token_finish)
 {
 	t_tokens	*tmp;
 	int			count;

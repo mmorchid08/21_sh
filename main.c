@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 10:30:30 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/23 16:10:05 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/02/24 18:28:57 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,11 @@ void append_list_tokens(t_tokens **tokens, char *data, int type)
 }
 int check_red(int type)
 {
-    if (type == 1 || type == 2 ||type == 3 
-        ||type == 4 ||type == 5 
-        || type == 6 ||type == 7) 
-        return (1);
-    return (0);
+    if (type == 1 || type == 2 ||type == 3||type == 4||type == 5||type == 6||type == 7) 
+        return(1);
+    return(0);
 }
+//pwd|  cat -e ;ls -la | cat -e| cat -e >ppppppp
 t_tokens *handling(char *line)
 {
     int i;
@@ -118,10 +117,10 @@ t_tokens *handling(char *line)
     t_tokens *tmp;
     char *toto = NULL;
     t_content content;
-    int m;
 
     i = 0;
     tokens = NULL;
+    pt = NULL;
     while (line[i])
     {
         token = ft_strdup("");
@@ -131,27 +130,36 @@ t_tokens *handling(char *line)
             if(line[i] != ' ' && line[i] != '\t')
             {
                 toto = ft_strsub(line, i , 2);
+                pt = token;
                 token = ft_strjoin(token,toto);
+                ft_strdel(&pt);
+                ft_strdel(&toto);
                 append_list_tokens(&tokens, token,content.type);
                 ft_bzero(token,ft_strlen(token));
             }
+            ft_strdel(&token);
             i = i + 2;
         }
         else if(content.index == 1)
         {
             if(line[i] != ' ' && line[i] != '\t')
             {
+                pt = token;
                 token = ft_strjoin_one_charatcter(token,line[i]);
+                ft_strdel(&pt);
                 append_list_tokens(&tokens, token,content.type);
                 ft_bzero(token,ft_strlen(token));
             }
+             ft_strdel(&token);
             i++;
         }
         else if(content.index == 0)
         {
             while(ft_isprint(line[i]) && content.index == 0) 
             {
+                pt = token;
                 token = ft_strjoin_one_charatcter(token,line[i]);
+                ft_strdel(&pt);
                 i++;
                 content = chek_character_for_split(&line[i]);
                 if (content.index != 0)
@@ -160,8 +168,14 @@ t_tokens *handling(char *line)
                     break;
                 }
             }
-            append_list_tokens(&tokens, token,content.type);
-         }
+            append_list_tokens(&tokens, token, content.type);
+            ft_bzero(token,ft_strlen(token));
+            ft_strdel(&token);
+        }
+        else 
+            ft_strdel(&token);
+        // ft_strdel(&pt);
+        
     }
     tmp = tokens;
     while (tmp)
@@ -178,15 +192,13 @@ int main(int argc, char **argv, char **env)
     argc = 0;
     argv = NULL;
     char buffer[1024];
+    char *buf;
     t_tokens *tokens;
     t_tokens *tmp;
     t_tokens *tmp2;
     t_tokens *tmp3;
-    t_pipe *pipe;
-    t_semi *semi;
     t_list_env *list_env;
     int r;
-    int count = 0;
 
     ft_env_list(env, &list_env);
     while(1)
@@ -197,7 +209,9 @@ int main(int argc, char **argv, char **env)
         ft_cut_buf(buffer);
         if (ft_chek_espace(buffer) == 0)
 			continue ;
-        tokens = handling(ft_strdup(buffer));
+        buf = ft_strdup(buffer); 
+        tokens = handling(buf);
+        free(buf);
         tmp = tokens;
         tmp2 = tokens;
         tmp3 = tokens;
@@ -207,7 +221,9 @@ int main(int argc, char **argv, char **env)
             continue ;
         if (ft_check_bad_fd(tmp) == 1)
             continue ;
-        handling_semi(tokens, env,list_env);
+        handling_semi(tokens,list_env);
+        free_list_token(&tokens);
     }
     return(0);
 }
+//pwd|  cat -e ;ls -la | cat -e| cat -e >ppppppp

@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 10:31:01 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/23 16:43:43 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/02/24 18:11:29 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ typedef struct s_fd
 
 
 t_tokens *handling(char *line);
-void handling_semi(t_tokens *tokens, char **env, t_list_env *list_env);
-void handling_pipe(t_tokens *start,t_tokens *list, char **env, t_list_env *list_env);
-pid_t handling_command(t_tokens *begin,t_tokens *finish, char **env, t_fd fd, int pos, int count_pipe, t_list_env *list_env);
+void handling_semi(t_tokens *tokens, t_list_env *list_env);
+void handling_pipe(t_tokens *start,t_tokens *list, t_list_env *list_env);
+pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe, t_list_env *list_env);
 t_semi *new_node_semi(char *data, int type);
 t_tokens *new_node(char *data, int type);
 
@@ -110,8 +110,6 @@ t_tokens *new_node(char *data, int type);
 int		ft_chek_builtins(char *tab);
 void	ft_verify_builtins(t_tokens * token_begin, t_tokens *token_finish, t_list_env *list_env);
 void	ft_operation_echo(t_tokens *token_begin, t_tokens * token_finish);
-
-
 
 /*  redection function and prepare argv     */
 void redirection_out(char *file_name);
@@ -125,16 +123,15 @@ void redirection(t_tokens *begin, t_tokens *finish);
 /* echo function  */
 int		ft_chek_espace(char *buf);
 
-
 /*    this for envirement */
 void		ft_env_list(char **env, t_list_env **list_env);
-        // printenv 
+// printenv 
 void	ft_env_function(t_list_env *env);
 void	free_list_env(t_list_env **env);
 //setenv 
 void	ft_add_to_env(t_data_env data_env, t_list_env **list_env);
 void	ft_cat_new_env_to_key_value(t_data_env *data_env, char *buf);
-void	ft_add_change_env(t_tokens *token_begin, t_tokens *token_finish, t_list_env *list_env);
+void	ft_add_change_env(t_tokens *token_begin, t_list_env *list_env);
 t_list_env	*get_malloc_key_value(char *key, char *value);
 void	ft_delete_one_env(t_list_env **env_list, t_tokens *token_begin, t_tokens *token_finish);
 
@@ -166,6 +163,8 @@ int		ft_count_tokens(t_tokens *token_begin , t_tokens *token_finish);
 
 // free
 void	ft_free_table(char ***tab);
+void	free_list_token(t_tokens **token);
+void	free_list_path(t_list_path **path);
 
 //error
 void	ft_check_error(char *name);

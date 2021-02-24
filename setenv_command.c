@@ -6,13 +6,14 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 17:59:30 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/09 17:56:29 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/02/24 17:53:34 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_execution.h"
 
-void	ft_delete_one_env(t_list_env **env_list, t_tokens *token_begin, t_tokens *token_finish)
+void	ft_delete_one_env(t_list_env **env_list,
+		t_tokens *token_begin, t_tokens *token_finish)
 {
 	t_list_env	**tmp;
 	t_list_env	*to_free;
@@ -36,7 +37,7 @@ void	ft_delete_one_env(t_list_env **env_list, t_tokens *token_begin, t_tokens *t
 			}
 			tmp = &(*tmp)->next;
 		}
-		token_begin =token_begin->next;
+		token_begin = token_begin->next;
 	}
 }
 
@@ -68,19 +69,17 @@ void	ft_add_to_env(t_data_env data_env, t_list_env **list_env)
 void	ft_cat_new_env_to_key_value(t_data_env *data_env, char *buf)
 {
 	int	i;
-	
+
 	i = 0;
 	while (buf[i] != '=')
 		i++;
 	data_env->key = ft_strsub(buf, 0, i);
-	data_env->value = ft_strdup(buf + 1 + i);
-	
+	data_env->value = ft_strdup(buf + 1 + i);	
 }
 
-void	ft_add_change_env(t_tokens *token_begin, t_tokens *token_finish, t_list_env *list_env)
+void	ft_add_change_env(t_tokens *token_begin, t_list_env *list_env)
 {
 	t_data_env	data_env;
-	t_tokens	*tmp;
 
 	token_begin = token_begin->next;
 	while (token_begin)

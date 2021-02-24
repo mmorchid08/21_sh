@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 16:24:55 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/23 16:50:40 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/02/24 17:54:27 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_tokens *token_finish, t_list_env *list_env)
 		ft_operation_cd(token_begin, token_finish, list_env);
 	else if (ft_strcmp(token_begin->data, "setenv") == 0)
 		token_begin->next == NULL ? ft_env_function(list_env)
-			: ft_add_change_env(token_begin, token_finish, list_env);
+			: ft_add_change_env(token_begin, list_env);
 	else if (ft_strcmp(token_begin->data, "unsetenv") == 0)
 	{
 		if (token_begin->next == NULL)
