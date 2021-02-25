@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:29:55 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/15 16:28:10 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/02/25 17:35:53 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ void		ft_path_list(char *path_str,t_list_path **path_list)
 	free(tab_path);
 }
 
-char	*open_paths(t_tokens *begin, t_list_env *list_env)
+char	*open_paths(t_tokens *begin, t_list_env *list_env, t_list_path **path_list)
 {
 	t_list_env	*tmp;
 	t_list_path	*tmp2;
-	t_list_path	*path_list;
+	// t_list_path	*path_list;
 	char		*path;
 
 	tmp = list_env;
@@ -86,8 +86,8 @@ char	*open_paths(t_tokens *begin, t_list_env *list_env)
 	{
 		if (ft_strcmp(tmp->key, "PATH") == 0)
 		{
-			ft_path_list(tmp->value, &path_list); 
-			tmp2 = path_list;
+			ft_path_list(tmp->value, path_list); 
+			tmp2 = *path_list;
 			while (tmp2 != NULL)
 			{
 				path = ft_read_from_dir(tmp2, begin);
@@ -112,12 +112,14 @@ void	exection(char *binary, char **argv, char **env)
 
 void ft_exece(t_tokens *begin, t_tokens *finish, t_list_env *list_env)
 {
-    char	*bin_path;
-	char	**argv;
-	char	**arr_env;
+    char		*bin_path;
+	char		**argv;
+	char		**arr_env;
+	t_list_path	*path_list;
+
 	
     bin_path = NULL;
-    if (ft_strchr(begin->data, '/') || (bin_path = open_paths(begin,list_env)))
+    if (ft_strchr(begin->data, '/') || (bin_path = open_paths(begin,list_env,&path_list)))
 	{
 		if (bin_path == NULL)
 			bin_path = ft_strdup(begin->data);
@@ -132,4 +134,6 @@ void ft_exece(t_tokens *begin, t_tokens *finish, t_list_env *list_env)
     {
 		ft_check_error(begin->data);
     }
+	if (bin_path != NULL)
+		free_list_path(&path_list);
 }

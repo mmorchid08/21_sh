@@ -160,8 +160,6 @@ t_tokens *handling(char *line)
         }
         else 
             ft_strdel(&token);
-        // ft_strdel(&pt);
-        
     }
     tmp = tokens;
     while (tmp)
@@ -193,8 +191,9 @@ void	main_c1(t_list_env *list_env)
         if (!ft_check_multi_semi(tmp1) && !ft_error_parse(tmp2) && !ft_check_bad_fd(tmp1))
 		{
 			handling_semi(tokens,list_env);
-        	free_list_token(&tokens);
 		}
+        free_list_token(&tokens);
+        
 	}
 	(line) ? free(line) : 1;
 	(tmp) ? free(tmp) : 1;

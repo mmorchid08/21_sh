@@ -141,7 +141,7 @@ t_list_path	*get_malloc_value_path(char *value);
 
 char	*ft_read_from_dir(t_list_path *tmp2, t_tokens *token_begin);
 void	ft_path_list(char *path_str,t_list_path **path_list);
-char	*open_paths(t_tokens *begin,  t_list_env *list_env);
+char	*open_paths(t_tokens *begin,  t_list_env *list_env,t_list_path	**path_list);
 void ft_exece(t_tokens *begin, t_tokens *finish, t_list_env *list_env); 
 // prepare 
 char	**ft_convert_list_env_array(t_list_env *env);
