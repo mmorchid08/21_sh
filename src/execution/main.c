@@ -106,6 +106,7 @@ t_tokens *handling(char *line)
     i = 0;
     tokens = NULL;
     pt = NULL;
+    // printf("line from readline =%s\n", line);
     while (line[i])
     {
         token = ft_strdup("");
@@ -186,7 +187,6 @@ void	main_c1(t_list_env *list_env)
 	if (g_env.inside_prompt != -1 && !g_env.auto_step && tmp && *line)
 	{
         ft_parse(&line);
-
 		tokens = handling(line);
         tmp1 = tokens;
         tmp2 = tokens;
@@ -218,8 +218,8 @@ int		main(int argc, char **argv, char **envp)
 	if (tgetent(NULL, (getenv("TERM")) ? getenv("TERM") : TERM) > 0)
 	{
 		ft_signal_handle();
-		ft_init(envp);
     	ft_env_list(envp, &list_env);
+		ft_init(envp);
 		while (1)
 		{
 			ft_get_prompt();
