@@ -27,7 +27,7 @@
 # include <sys/wait.h>
 # include <sys/stat.h>
 # include <dirent.h>
-# include "../libft/libft.h"
+# include "../libft/includes/libft.h"
 
 # define ABS(value) ((value < 0) ? (value * - 1) : value)
 # define TERM "xterm-256color"
