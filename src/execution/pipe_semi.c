@@ -43,6 +43,7 @@ void handling_pipe(t_tokens *start,t_tokens *list)
     
     pos = 0;
     count_pipe = 0;
+    g_env.running_proc = 1;
     begin = start;
     ft_bzero(&fd,sizeof(fd));
     while (start != list)
@@ -62,12 +63,11 @@ void handling_pipe(t_tokens *start,t_tokens *list)
     pos = 3;
     pid = handling_command(begin,start, fd, pos, count_pipe);
     waitpid(pid, 0, 0);
-    
+    g_env.running_proc = 0;
 }
 
 pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe)
 {
-    pid_t pid;
     t_tokens *tmp;
     
     tmp  = begin;
@@ -80,13 +80,12 @@ pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int c
         close(copy);
         return(0);
     }
-    pid = fork();
-    if (pid == -1)
+    if ((g_env.current_pid = fork()) < 0)
 	{
 		perror("fork failed");
 		exit(EXIT_FAILURE);
 	}
-    if (pid == 0)
+    if (g_env.current_pid == 0)
     {
         if(pos == 0 || pos == 1)
         {
@@ -117,5 +116,5 @@ pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int c
             close(fd.fd_old[WRITE_END]);
         }
     }
-    return(pid);
+    return(g_env.current_pid);
 }

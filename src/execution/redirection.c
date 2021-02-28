@@ -33,8 +33,6 @@ void redirection_in(char *file_name) /*    <   */
     close(in);
 }
 
-
-
 void ft_heredoc(char *line)
 {
     char *str;
