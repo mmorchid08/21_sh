@@ -12,12 +12,12 @@
 
 #include "ft_execution.h"
 
-char	*ft_get_home(t_list_env *env_list)
+char	*ft_get_home(void)
 {
 	char		*home;
-	t_list_env	*tmp;
+	t_var		*tmp;
 
-	tmp = env_list;
+	tmp = g_env.var;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, "HOME") == 0)
@@ -27,12 +27,12 @@ char	*ft_get_home(t_list_env *env_list)
 	return (home);
 }
 
-char	*ft_get_pwd(t_list_env *list_env)
+char	*ft_get_pwd(void)
 {
 	char		*pwd;
-	t_list_env	*tmp;
+	t_var		*tmp;
 
-	tmp = list_env;
+	tmp = g_env.var;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, "PWD") == 0)
@@ -42,12 +42,12 @@ char	*ft_get_pwd(t_list_env *list_env)
 	return (pwd);
 }
 
-char	*ft_get_old_pwd(t_list_env *list_env)
+char	*ft_get_old_pwd(void)
 {
 	char		*old_pwd;
-	t_list_env	*tmp;
+	t_var		*tmp;
 
-	tmp = list_env;
+	tmp = g_env.var;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, "OLDPWD") == 0)
@@ -57,11 +57,11 @@ char	*ft_get_old_pwd(t_list_env *list_env)
 	return (old_pwd);
 }
 
-void	ft_tack_pwd(t_list_env *env_list)
+void	ft_tack_pwd(void)
 {
-	t_list_env	*tmp;
+	t_var	*tmp;
 
-	tmp = env_list;
+	tmp = g_env.var;
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, "OLDPWD") == 0)

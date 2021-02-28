@@ -28,10 +28,12 @@ void	ft_cut_buf(char *buf)
 	buf[ft_strlen(buf) - 1] = '\0';
 }
 
-t_content chek_character_for_split(char *c)
+t_content check_character_for_split(char *c)
 {
     if(ft_strncmp(c, ">>", 2) == 0)
         return((t_content){2,REDIRECTION_RIGHT_RIGHT});
+    if(ft_strncmp(c, "<<<", 3) == 0)
+        return((t_content){3,REDIRECTION_LEFT_LEFT_LEFT});
     if(ft_strncmp(c, "<<", 2) == 0)
         return((t_content){2,REDIRECTION_LEFT_LEFT});
     if(ft_strncmp(c, ">&", 2) == 0)
@@ -64,6 +66,7 @@ t_tokens *new_node(char *data, int type)
     node = (t_tokens *)malloc(sizeof(t_tokens));
     node->data = ft_strdup(data);
     node->type = type;
+    node->here = NULL;
     node->next = NULL;
     return(node);
 }
@@ -110,12 +113,12 @@ t_tokens *handling(char *line)
     while (line[i])
     {
         token = ft_strdup("");
-        content = chek_character_for_split(&line[i]);
-        if(content.index == 2)
+        content = check_character_for_split(&line[i]);
+        if(content.index)
         {
             if(line[i] != ' ' && line[i] != '\t')
             {
-                toto = ft_strsub(line, i , 2);
+                toto = ft_strsub(line, i , content.index);
                 pt = token;
                 token = ft_strjoin(token,toto);
                 ft_strdel(&pt);
@@ -124,30 +127,19 @@ t_tokens *handling(char *line)
                 ft_bzero(token,ft_strlen(token));
             }
             ft_strdel(&token);
-            i = i + 2;
-        }
-        else if(content.index == 1)
-        {
-            if(line[i] != ' ' && line[i] != '\t')
-            {
-                pt = token;
-                token = ft_strjoin_one_charatcter(token,line[i]);
-                ft_strdel(&pt);
-                append_list_tokens(&tokens, token,content.type);
-                ft_bzero(token,ft_strlen(token));
-            }
-             ft_strdel(&token);
-            i++;
+            i = i + content.index;
         }
         else if(content.index == 0)
         {
-            while(ft_isprint(line[i]) && content.index == 0) 
+            if (!(ft_isprint(line[i]) || (line[i] < 0 && line[i] >= -5) || line[i] == '\n'))
+                i++;
+            while((ft_isprint(line[i]) || (line[i] < 0 && line[i] >= -5) || line[i] == '\n') && content.index == 0) 
             {
                 pt = token;
                 token = ft_strjoin_one_charatcter(token,line[i]);
                 ft_strdel(&pt);
                 i++;
-                content = chek_character_for_split(&line[i]);
+                content = check_character_for_split(&line[i]);
                 if (content.index != 0)
                 {
                     content.type =0;              
@@ -159,19 +151,24 @@ t_tokens *handling(char *line)
             ft_strdel(&token);
         }
         else 
+        {
+            i++;
             ft_strdel(&token);
+        }
     }
     tmp = tokens;
     while (tmp)
     {
-        if (check_red(tmp->type) == 1 &&  tmp->next != NULL &&tmp->next->type == 0)
+        if (check_red(tmp->type) == 1 &&  tmp->next != NULL && tmp->next->type == 0)
             tmp->next->type = REDIRECTION_WORD;
+        if (tmp->type == 0)
+            tmp->data = ft_strmap(tmp->data, &ft_decode_char);
         tmp = tmp->next;
     }
     return(tokens);
 }
 
-void	main_c1(t_list_env *list_env)
+void	main_c1()
 {
 	char	*line;
 	char	*tmp;
@@ -189,11 +186,8 @@ void	main_c1(t_list_env *list_env)
         tmp1 = tokens;
         tmp2 = tokens;
         if (!ft_check_multi_semi(tmp1) && !ft_error_parse(tmp2) && !ft_check_bad_fd(tmp1))
-		{
-			handling_semi(tokens,list_env);
-		}
+			handling_semi(tokens);
         free_list_token(&tokens);
-        
 	}
 	(line) ? free(line) : 1;
 	(tmp) ? free(tmp) : 1;
@@ -209,15 +203,12 @@ void	main_c1(t_list_env *list_env)
 
 int		main(int argc, char **argv, char **envp)
 {
-	t_list_env *list_env;
-
 	argc = argc;
 	argv = argv;
 	ft_set_input_mode();
 	if (tgetent(NULL, (getenv("TERM")) ? getenv("TERM") : TERM) > 0)
 	{
 		ft_signal_handle();
-    	ft_env_list(envp, &list_env);
 		ft_init(envp);
 		while (1)
 		{
@@ -229,7 +220,7 @@ int		main(int argc, char **argv, char **envp)
 			g_env.inside_prompt = 0;
 			g_env.cur_all_col = 0;
 			g_env.cur_all_row = 0;
-			main_c1(list_env);
+			main_c1();
 		}
 		ft_free_env();
 	}

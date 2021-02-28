@@ -33,12 +33,56 @@ void redirection_in(char *file_name) /*    <   */
     close(in);
 }
 
-void redirection_in_in(char *file_name) /*    <<   */
+
+
+void ft_heredoc(char *line)
 {
-    int in_in = open(file_name, O_WRONLY | O_APPEND);
-    dup2(in_in,READ_END);
-    close(in_in);
+    char *str;
+    char *tmp;
+
+    g_env.prompt_len = ft_strlen("heredoc> ");
+    str = NULL;
+    while(1)
+    {
+        ft_putstr("heredoc> ");
+        tmp = ft_readline();
+        if (ft_strequ(tmp, line))
+            break;
+        if (tmp)
+        {
+            str = (str)? ft_free_strjoin(str, ft_strdup("\n")) : ft_strnew(0);
+            str = ft_free_strjoin(str, tmp);
+        }
+        
+    }
+    g_env.current_pid = fork();
+    if (g_env.current_pid > 0)
+    {
+        waitpid(g_env.current_pid, 0, 0);
+        exit(0);
+    }
+    else if (g_env.current_pid == 0)
+    {
+        ft_putendl_fd(str, 0);
+        exit(0);
+    }
 }
+
+void ft_herestr(char *line)
+{
+    g_env.current_pid = fork();
+    if (g_env.current_pid > 0)
+    {
+        waitpid(g_env.current_pid, 0, 0);
+        exit(0);
+    }
+    else if (g_env.current_pid == 0)
+    {
+        ft_putendl_fd(line, 0);
+        exit(0);
+    }
+}
+
 
 int ft_count(t_tokens *begin, t_tokens *finish)
 {
@@ -111,7 +155,9 @@ void redirection(t_tokens *begin, t_tokens *finish)
         else if (begin->type == REDIRECTION_RIGHT_RIGHT)
             redirection_out_out(begin->next->data);
         else if (begin->type == REDIRECTION_LEFT_LEFT)
-            redirection_in_in(begin->next->data);
+            ft_heredoc(begin->next->data);
+        else if (begin->type == REDIRECTION_LEFT_LEFT_LEFT)
+            ft_herestr(begin->next->data);
         else if (begin->type == REDIRECTION_RIGHT_AGGREGATION)
         {
             if (begin->next != NULL && authorization_re(begin->next) == 1)

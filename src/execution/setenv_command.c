@@ -12,42 +12,41 @@
 
 #include "ft_execution.h"
 
-void	ft_delete_one_env(t_list_env **env_list,
-		t_tokens *token_begin, t_tokens *token_finish)
+void	ft_delete_one_env(t_tokens *token_begin, t_tokens *token_finish)
 {
-	t_list_env	**tmp;
-	t_list_env	*to_free;
+	t_var	*tmp;
+	t_var	*to_free;
 
 	token_begin = token_begin->next;
 	while (token_begin != token_finish)
 	{
-		tmp = env_list;
-		while (*tmp)
+		tmp = g_env.var;
+		while (tmp)
 		{
-			if (ft_strequ((*tmp)->key, token_begin->data))
+			if (ft_strequ((tmp)->key, token_begin->data))
 			{
-				to_free = *tmp;
-				*tmp = to_free->next;
+				to_free = tmp;
+				tmp = to_free->next;
 				free(to_free->key);
 				free(to_free->value);
 				free(to_free);
 				break ;
 			}
-			tmp = &(*tmp)->next;
+			tmp = tmp->next;
 		}
 		token_begin = token_begin->next;
 	}
 }
 
-void	ft_add_to_env(t_data_env data_env, t_list_env **list_env)
+void	ft_add_to_env(t_data_env data_env)
 {
-	t_list_env	*go_to_end;
-	t_list_env	*tmp;
-	t_list_env	*new_node;
+	t_var	*go_to_end;
+	t_var	*tmp;
+	t_var	*new_node;
 	int			i;
 
-	go_to_end = *list_env;
-	tmp = *list_env;
+	go_to_end = g_env.var;
+	tmp = g_env.var;
 	i = 0;
 	while (go_to_end)
 	{
@@ -75,7 +74,7 @@ void	ft_cat_new_env_to_key_value(t_data_env *data_env, char *buf)
 	data_env->value = ft_strdup(buf + 1 + i);	
 }
 
-void	ft_add_change_env(t_tokens *token_begin, t_list_env *list_env)
+void	ft_add_change_env(t_tokens *token_begin)
 {
 	t_data_env	data_env;
 
@@ -85,7 +84,7 @@ void	ft_add_change_env(t_tokens *token_begin, t_list_env *list_env)
 		if (ft_strchr(token_begin->data, '=') == NULL)
 			break ;
 		ft_cat_new_env_to_key_value(&data_env, token_begin->data);
-		ft_add_to_env(data_env, &list_env);
+		ft_add_to_env(data_env);
 		token_begin = token_begin->next;
 	}
 }

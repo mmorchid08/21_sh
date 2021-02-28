@@ -73,14 +73,14 @@ void		ft_path_list(char *path_str,t_list_path **path_list)
 	free(tab_path);
 }
 
-char	*open_paths(t_tokens *begin, t_list_env *list_env, t_list_path **path_list)
+char	*open_paths(t_tokens *begin, t_list_path **path_list)
 {
-	t_list_env	*tmp;
+	t_var		*tmp;
 	t_list_path	*tmp2;
 	// t_list_path	*path_list;
 	char		*path;
 
-	tmp = list_env;
+	tmp = g_env.var;
 	path = NULL;
 	while (tmp)
 	{
@@ -110,7 +110,7 @@ void	exection(char *binary, char **argv, char **env)
 	}
 }
 
-void ft_exece(t_tokens *begin, t_tokens *finish, t_list_env *list_env)
+void ft_exece(t_tokens *begin, t_tokens *finish)
 {
     char		*bin_path;
 	char		**argv;
@@ -119,12 +119,12 @@ void ft_exece(t_tokens *begin, t_tokens *finish, t_list_env *list_env)
 
 	
     bin_path = NULL;
-    if (ft_strchr(begin->data, '/') || (bin_path = open_paths(begin,list_env,&path_list)))
+    if (ft_strchr(begin->data, '/') || (bin_path = open_paths(begin, &path_list)))
 	{
 		if (bin_path == NULL)
 			bin_path = ft_strdup(begin->data);
 		argv = ft_convert_list_array(begin,finish);
-		arr_env = ft_convert_list_env_array(list_env);
+		arr_env = ft_convert_list_env_array();
 		exection(bin_path, argv, arr_env);
 		ft_free_table(&arr_env);
 		ft_free_table(&argv);

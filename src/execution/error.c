@@ -14,7 +14,7 @@
 
 void	ft_check_error(char *name)
 {
-	ft_putstr_fd("X0bit : command not fount : ", 2);
+	ft_putstr_fd("21sh : command not fount : ", 2);
 	ft_putendl_fd(name, 2);
 }
 
@@ -37,12 +37,12 @@ int	ft_error_parse(t_tokens *tmp)
 			if (tmp->type == REDIRECTION_LEFT_AGGREGATION
 				&& authorization_re(tmp) == 0)
 			{
-				ft_putendl_fd("XObit: file number expected", 2);
+				ft_putendl_fd("21sh: file number expected", 2);
 				return (1);
 			}
 			else if (tmp->next != NULL && ft_know_type(tmp->next) == 1)
 			{
-				ft_putstr_fd("X0bit: parse error near `", 2);
+				ft_putstr_fd("21sh: parse error near `", 2);
 				ft_putstr_fd(tmp->next->data, 2);
 				ft_putendl_fd("'", 2);
 				return (1);
@@ -61,7 +61,7 @@ int	ft_check_multi_semi(t_tokens *tmp)
 		{
 			if (tmp->next != NULL && tmp->next->type == SEMICOLON)
 			{
-				ft_putendl_fd("X0bit: parse error near `;;'", 2);
+				ft_putendl_fd("21sh: parse error near `;;'", 2);
 				return (1);
 			}
 		}
@@ -81,7 +81,7 @@ int	ft_check_bad_fd(t_tokens *tmp)
 		{
 			if (tmp->next == NULL)
 			{
-				ft_putendl_fd("X0bit: parse error near `\\n'", 2);
+				ft_putendl_fd("21sh: parse error near `\\n'", 2);
 				return (1);
 			}
 			if (tmp->next != NULL && tmp->next->type == REDIRECTION_WORD)
@@ -89,7 +89,7 @@ int	ft_check_bad_fd(t_tokens *tmp)
 				data = ft_atoi(tmp->next->data);
 				if (data > 2)
 				{
-					ft_putstr_fd("X0bit: ", 2);
+					ft_putstr_fd("21sh: ", 2);
 					ft_putnbr_fd(data, 2);
 					ft_putendl_fd(": bad file descriptor", 2);
 					return (1);

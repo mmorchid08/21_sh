@@ -12,7 +12,7 @@
 
 #include "ft_execution.h"
 
-void handling_semi(t_tokens *tokens, t_list_env *list_env)
+void handling_semi(t_tokens *tokens)
 {
     t_tokens *list;
     t_tokens *start;
@@ -23,17 +23,17 @@ void handling_semi(t_tokens *tokens, t_list_env *list_env)
     {
         if (list->type == SEMICOLON)
         {   
-            handling_pipe(start,list,list_env);
+            handling_pipe(start,list);
             start = list->next;
         }
         list = list->next;
     }
     if(start != NULL)
-        handling_pipe(start,list,list_env); 
+        handling_pipe(start,list); 
 }
 
 
-void handling_pipe(t_tokens *start,t_tokens *list, t_list_env *list_env)
+void handling_pipe(t_tokens *start,t_tokens *list)
 {
     t_tokens *begin;
     t_fd fd;
@@ -51,7 +51,7 @@ void handling_pipe(t_tokens *start,t_tokens *list, t_list_env *list_env)
         {
             pipe(fd.fd_new);
             count_pipe++;
-            pid = handling_command(begin,start,fd,pos,count_pipe,list_env);
+            pid = handling_command(begin,start,fd,pos,count_pipe);
             fd.fd_old[1] = fd.fd_new[1];
             fd.fd_old[0] = fd.fd_new[0];
             pos = 1;
@@ -60,22 +60,22 @@ void handling_pipe(t_tokens *start,t_tokens *list, t_list_env *list_env)
         start = start->next;
     }
     pos = 3;
-    pid = handling_command(begin,start, fd, pos, count_pipe,list_env);
+    pid = handling_command(begin,start, fd, pos, count_pipe);
     waitpid(pid, 0, 0);
     
 }
 
-pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe, t_list_env *list_env)
+pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe)
 {
     pid_t pid;
     t_tokens *tmp;
     
     tmp  = begin;
-    if (count_pipe == 0 && ft_chek_builtins(begin->data) == 1)
+    if (count_pipe == 0 && ft_check_builtins(begin->data) == 1)
     {
         int copy = dup(WRITE_END);
         redirection(begin, finish);
-        ft_verify_builtins(begin, finish, list_env);
+        ft_verify_builtins(begin, finish);
         dup2(copy,1);
         close(copy);
         return(0);
@@ -101,12 +101,12 @@ pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int c
             close(fd.fd_old[READ_END]);
         }
         redirection(begin, finish);
-        if (ft_chek_builtins(tmp->data) == 1)
+        if (ft_check_builtins(tmp->data) == 1)
         {  
-            ft_verify_builtins(tmp,finish,list_env);
+            ft_verify_builtins(tmp,finish);
             exit(0);
         }
-        ft_exece(begin,finish, list_env);
+        ft_exece(begin,finish);
         exit(0);
     }
     else

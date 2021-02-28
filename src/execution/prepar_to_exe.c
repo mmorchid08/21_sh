@@ -27,13 +27,13 @@ int		ft_count_tokens(t_tokens *token_begin , t_tokens *token_finish)
 	return (count);
 }
 
-int		ft_count_env(t_list_env *env)
+int		ft_count_env(void)
 {
-	t_list_env	*tmp;
+	t_var		*tmp;
 	int			count;
 
 	count = 0;
-	tmp = env;
+	tmp = g_env.var;
 	while (tmp)
 	{
 		count++;
@@ -62,17 +62,17 @@ char	**ft_convert_list_array(t_tokens *token_begin, t_tokens *token_finish)
 	return (arr);
 }
 
-char	**ft_convert_list_env_array(t_list_env *env)
+char	**ft_convert_list_env_array(void)
 {
 	char		**arr;
-	t_list_env	*tmp;
+	t_var		*tmp;
 	int			j;
 	char		*join;
 	char		*join2;
 
 	j = 0;
-	tmp = env;
-	if (!(arr = (char **)malloc(sizeof(char *) * (ft_count_env(env) + 1))))
+	tmp = g_env.var;
+	if (!(arr = (char **)malloc(sizeof(char *) * (ft_count_env() + 1))))
 		return (NULL);
 	while (tmp)
 	{

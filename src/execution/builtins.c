@@ -12,7 +12,7 @@
 
 #include "ft_execution.h"
 
-int	ft_chek_builtins(char *table)
+int	ft_check_builtins(char *table)
 {
 	if (table)
 	{
@@ -33,27 +33,24 @@ int	ft_chek_builtins(char *table)
 }
 
 void	ft_verify_builtins(t_tokens *token_begin,
-t_tokens *token_finish, t_list_env *list_env)
+t_tokens *token_finish)
 {
 	if (ft_strcmp(token_begin->data, "echo") == 0)
 		ft_operation_echo(token_begin, token_finish);
 	else if (ft_strcmp(token_begin->data, "cd") == 0)
-		ft_operation_cd(token_begin, token_finish, list_env);
+		ft_operation_cd(token_begin, token_finish);
 	else if (ft_strcmp(token_begin->data, "setenv") == 0)
-		token_begin->next == NULL ? ft_env_function(list_env)
-			: ft_add_change_env(token_begin, list_env);
+		token_begin->next == NULL ? ft_env_function()
+			: ft_add_change_env(token_begin);
 	else if (ft_strcmp(token_begin->data, "unsetenv") == 0)
 	{
 		if (token_begin->next == NULL)
 			ft_putendl("unsetenv: not enough arguments");
 		else
-			ft_delete_one_env(&list_env, token_begin, token_finish);
+			ft_delete_one_env(token_begin, token_finish);
 	}
 	else if (ft_strcmp(token_begin->data, "env") == 0)
-		ft_env_function(list_env);
+		ft_env_function();
 	else if (ft_strcmp(token_begin->data, "exit") == 0)
-	{
-		free_list_env(&list_env);
 		exit(0);
-	}
 }
