@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 16:25:07 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/23 16:59:03 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/02/28 17:51:50 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,8 @@ void	ft_operation_cd(t_tokens *token_begin, t_tokens *token_finish)
 			ft_the_current(token_begin->next->data);
 		else
 		{
-			ft_putstr("cd : not directory : ");
-			ft_putendl(token_begin->next->data);
+			ft_putstr_fd("cd : not directory : ", 2);
+			ft_putendl_fd(token_begin->next->data, 2);
 		}
 	}
 }

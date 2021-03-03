@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 15:52:46 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/24 17:52:13 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/03 18:09:24 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,13 @@ int authorization_re(t_tokens *token)
     s_data = NULL;
     i_data = ft_atoi(token->data);
     s_data = ft_itoa(i_data);
+   
+   
+    // if (ft_strcmp(token->data, "-") == 0)
+    //     dprintf(2,"tokens->data = %s\n", token->data);
     if (ft_strcmp(token->data, s_data) == 0)
     {
-         if(i_data >= 0 && i_data <= 2)
+        if(i_data >= 0 && i_data <= 2)
         {
             if (ft_strcmp(token->data, "0") == 0)
                 return(1);
@@ -144,9 +148,15 @@ int authorization_re(t_tokens *token)
 
 void redirection(t_tokens *begin, t_tokens *finish)
 {
-    while(begin!= finish)
+    while(begin != finish)
     {
-        if(begin->type == REDIRECTION_RIGHT)
+        if (authorization_re(begin) == 1 && begin->next != NULL 
+        && begin->next->type == REDIRECTION_RIGHT_AGGREGATION)
+        {
+            if (begin->next->next->data != NULL)
+                redirection_out(begin->next->next->data);
+        }
+        else if(begin->type == REDIRECTION_RIGHT)
             redirection_out(begin->next->data);
         else if(begin->type == REDIRECTION_LEFT)
             redirection_in(begin->next->data);
