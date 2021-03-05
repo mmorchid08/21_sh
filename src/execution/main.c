@@ -23,27 +23,61 @@ char	*ft_strjoin_one_charatcter(char const *s1, char const s2)
 	return (0);
 }
 
-void	ft_cut_buf(char *buf)
+void	ft_cut_buf(char *buf) // 2 >&-  | 2>&-
 {
 	buf[ft_strlen(buf) - 1] = '\0';
 }
 
+int ft_isaggr(char *s1, char *s2, int n) 
+{
+    int offset = 0;
+    
+    while (*s1 && *s1 != ' ') 
+    {
+        if (ft_strncmp(s1, s2, n) == 0)
+            return offset;
+        offset++;
+        s1++;
+    }
+    return 0;
+}
+
 t_content check_character_for_split(char *c)
 {
+    int offset;
+
+    if ((offset = ft_isaggr(c, ">>", 2)) != 0)
+        return((t_content){offset, PRE_AGGREGATION_NUMBER});
     if(ft_strncmp(c, ">>", 2) == 0)
         return((t_content){2,REDIRECTION_RIGHT_RIGHT});
-    if(ft_strncmp(c, "<<<", 3) == 0)
-        return((t_content){3,REDIRECTION_LEFT_LEFT_LEFT});
+    
+    // if(ft_strncmp(c, "<<<", 3) == 0)
+    //     return((t_content){3,REDIRECTION_LEFT_LEFT_LEFT});
+    if ((offset = ft_isaggr(c, "<<", 2)) != 0)
+        return((t_content){offset, PRE_AGGREGATION_NUMBER});
     if(ft_strncmp(c, "<<", 2) == 0)
         return((t_content){2,REDIRECTION_LEFT_LEFT});
+    //----------------------------
+    if ((offset = ft_isaggr(c, ">&", 2)) != 0)
+        return((t_content){offset, PRE_AGGREGATION_NUMBER});
     if(ft_strncmp(c, ">&", 2) == 0)
         return((t_content){2,REDIRECTION_RIGHT_AGGREGATION});
+    //-------------------------
+    if ((offset = ft_isaggr(c, "<&", 2)) != 0)
+        return((t_content){offset, PRE_AGGREGATION_NUMBER});
     if(ft_strncmp(c, "<&", 2) == 0)
         return((t_content){2,REDIRECTION_LEFT_AGGREGATION});
+    //----------------------------
+    if ((offset = ft_isaggr(c, "<", 1)) != 0)
+        return((t_content){offset, PRE_AGGREGATION_NUMBER});
     if(ft_strncmp(c, "<", 1) == 0)
         return((t_content){1,REDIRECTION_LEFT});
+    //----------------------------
+    if ((offset = ft_isaggr(c, ">", 1)) != 0)
+        return((t_content){offset, PRE_AGGREGATION_NUMBER});
     if(ft_strncmp(c, ">", 1) == 0)
         return((t_content){1,REDIRECTION_RIGHT});
+    //-----------------------------------
     if(ft_strncmp(c, "&&", 2) == 0)
         return((t_content){2,AND});
     if(ft_strncmp(c, "||", 2) == 0)
@@ -55,7 +89,7 @@ t_content check_character_for_split(char *c)
     if(ft_strncmp(c, "&", 1) == 0)
         return((t_content){1,AMP});
     if((ft_strncmp(c, " ", 1) == 0) || (ft_strncmp(c, "\t", 1) == 0))
-        return((t_content){1,0});
+        return((t_content){1,SPACE});
     return((t_content){0,0});
 }
 
@@ -95,7 +129,7 @@ int check_red(int type)
         return(1);
     return(0);
 }
-//pwd|  cat -e ;ls -la | cat -e| cat -e >ppppppp
+
 t_tokens *handling(char *line)
 {
     int i;
@@ -103,17 +137,17 @@ t_tokens *handling(char *line)
     char *pt;
     t_tokens *tokens;
     t_tokens *tmp;
+    t_tokens *tmp2;
     char *toto = NULL;
     t_content content;
 
     i = 0;
     tokens = NULL;
     pt = NULL;
-    // printf("line from readline =%s\n", line);
     while (line[i])
     {
         token = ft_strdup("");
-        content = check_character_for_split(&line[i]);
+        content = check_character_for_split( &line[i]);
         if(content.index)
         {
             if(line[i] != ' ' && line[i] != '\t')
@@ -157,6 +191,7 @@ t_tokens *handling(char *line)
         }
     }
     tmp = tokens;
+    tmp2 = tokens;
     while (tmp)
     {
         if (check_red(tmp->type) == 1 &&  tmp->next != NULL && tmp->next->type == 0)
@@ -164,6 +199,16 @@ t_tokens *handling(char *line)
         if (tmp->type == 0)
             tmp->data = ft_strmap(tmp->data, &ft_decode_char);
         tmp = tmp->next;
+    }
+    while (tmp2)
+    {
+        if (tmp2->next != NULL && tmp2->next->type == 5) // 2>&
+        {
+            if (ft_strcmp(tmp2->data, "0") == 0 ||ft_strcmp(tmp2->data, "1") == 0 || 
+            ft_strcmp(tmp2->data, "2") == 0)
+               tmp2->type = WORD_REDIRECTION;
+        }
+        tmp2 = tmp2->next;
     }
     return(tokens);
 }

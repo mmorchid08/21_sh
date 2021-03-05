@@ -16,25 +16,34 @@
 #define REDIRECTION_LEFT_LEFT_LEFT 7 // <<<
 #define REDIRECTION_RIGHT_RIGHT 4 // >>
 #define REDIRECTION_RIGHT_AGGREGATION 5  // >& 
+#define ESPACE_REDIRECTION_RIGHT_AGGREGATION 55  // >& 
 #define REDIRECTION_LEFT_AGGREGATION 6  // <& 
 // #define REDIRECTION_AGGREGATION_RIGHT 7  // &>
+#define PRE_AGGREGATION_NUMBER 17
 #define AND 8  // &&
 #define OR 9  // ||
 #define PIPE 10 // |
 #define SEMICOLON 11 // ;
 #define AMP 12 // &
 #define REDIRECTION_WORD 13  // redirection + word
+#define WORD_REDIRECTION 14  //  word + redirection 
+#define WORD_REDIRECTION_ESPACE 16  //  word + redirection espace is like word
 #define WORD 0 // &
 #define READ_END 0
 #define WRITE_END 1
+#define ERROR_END 2
 #define NUMBER_OF_STRING 7
 #define MAX_STRING_SIZE 15
+
+#define SPACE 15
+// #define TABULATION  16
 
 typedef struct  s_tokens
 {
     char    *data;
     int     type;
     char    *here;
+    int      space_b;
     struct  s_tokens *next;
 }               t_tokens;
 

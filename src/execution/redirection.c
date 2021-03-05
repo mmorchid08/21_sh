@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 15:52:46 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/03 18:09:24 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/05 17:47:07 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,7 @@ int authorization_re(t_tokens *token)
     s_data = ft_itoa(i_data);
    
    
-    // if (ft_strcmp(token->data, "-") == 0)
-    //     dprintf(2,"tokens->data = %s\n", token->data);
+    
     if (ft_strcmp(token->data, s_data) == 0)
     {
         if(i_data >= 0 && i_data <= 2)
@@ -145,18 +144,30 @@ int authorization_re(t_tokens *token)
     }
     return(0);
 }
+void redirection_right_agg(t_tokens *begin, char *file_name)   /*  >   */
+{
+    //dprintf(2,"data =%s | type = %d\n , file_name = %s\n",begin->data,begin->type, file_name);
+    if (ft_strcmp(file_name, "-") == 0)
+    {
+        if (ft_strcmp(begin->data, "0") == 0)
+            close(READ_END);
+        else if (ft_strcmp(begin->data, "1") == 0 && ft_strcmp(begin->data, "1"))
+            close(WRITE_END);
+        else if (ft_strcmp(begin->data, "2") == 0)
+            close(ERROR_END);
+    }
+    else if (begin->type == 0)
+        close(WRITE_END);
+    else 
+        redirection_out(file_name);
+}
 
 void redirection(t_tokens *begin, t_tokens *finish)
 {
     while(begin != finish)
     {
-        if (authorization_re(begin) == 1 && begin->next != NULL 
-        && begin->next->type == REDIRECTION_RIGHT_AGGREGATION)
-        {
-            if (begin->next->next->data != NULL)
-                redirection_out(begin->next->next->data);
-        }
-        else if(begin->type == REDIRECTION_RIGHT)
+        // dprintf(2,"data = %s  | type =  %d\n", begin->data, begin->type);
+        if(begin->type == REDIRECTION_RIGHT)
             redirection_out(begin->next->data);
         else if(begin->type == REDIRECTION_LEFT)
             redirection_in(begin->next->data);
@@ -168,14 +179,21 @@ void redirection(t_tokens *begin, t_tokens *finish)
             ft_herestr(begin->next->data);
         else if (begin->type == REDIRECTION_RIGHT_AGGREGATION)
         {
-            if (begin->next != NULL && authorization_re(begin->next) == 1)
-                dup(WRITE_END);
-            else 
-                redirection_out(begin->next->data);
+           if(begin->next != NULL && begin->next->type == REDIRECTION_RIGHT_AGGREGATION && begin->next->next != NULL)
+                redirection_right_agg(begin,begin->next->next->data);
+           //begin = begin->next->next;
         }
-        else if (begin->type == REDIRECTION_LEFT_AGGREGATION)
+        else if (begin->type == REDIRECTION_LEFT_AGGREGATION) // <&
 			if (begin->next != NULL && authorization_re(begin->next) == 1)
 				dup(WRITE_END);
 		begin = begin->next;
 	}
 }
+
+
+// || begin->type == 0))
+
+// if (begin->next != NULL && authorization_re(begin->next) == 1)
+//         dup(WRITE_END);
+// else 
+//         redirection_out(begin->next->data);
