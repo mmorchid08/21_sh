@@ -93,7 +93,7 @@ typedef struct s_fd
 t_tokens *handling(char *line);
 void handling_semi(t_tokens *tokens);
 void handling_pipe(t_tokens *start,t_tokens *list);
-pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe);
+void handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe);
 t_semi *new_node_semi(char *data, int type);
 t_tokens *new_node(char *data, int type);
 

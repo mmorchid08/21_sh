@@ -329,7 +329,6 @@ int						ft_echo_char(int c);
 void					ft_exec_env_arg(t_line *line);
 t_his					*ft_new_his(char *line, int type);
 int						ft_count_pipe(t_line *node);
-int						ft_exe_ret_err(char *path);
 void					ft_encode_char(char *pos, int type);
 void					ft_manage_quots(char **line, char **copy);
 void					ft_check_users(char **val, char *user, int *i);

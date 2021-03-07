@@ -37,7 +37,6 @@ void handling_pipe(t_tokens *start,t_tokens *list)
 {
     t_tokens *begin;
     t_fd fd;
-    pid_t pid;
     int pos;
     int count_pipe;
     
@@ -52,7 +51,7 @@ void handling_pipe(t_tokens *start,t_tokens *list)
         {
             pipe(fd.fd_new);
             count_pipe++;
-            pid = handling_command(begin,start,fd,pos,count_pipe);
+            handling_command(begin,start,fd,pos,count_pipe);
             fd.fd_old[1] = fd.fd_new[1];
             fd.fd_old[0] = fd.fd_new[0];
             pos = 1;
@@ -61,12 +60,12 @@ void handling_pipe(t_tokens *start,t_tokens *list)
         start = start->next;
     }
     pos = 3;
-    pid = handling_command(begin,start, fd, pos, count_pipe);
-    waitpid(pid, 0, 0);
+    handling_command(begin,start, fd, pos, count_pipe);
+    waitpid(g_env.current_pid, 0, 0);
     g_env.running_proc = 0;
 }
 
-pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe)
+void handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe)
 {
     t_tokens *tmp;
     
@@ -78,7 +77,7 @@ pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int c
         ft_verify_builtins(begin, finish);
         dup2(copy,1);
         close(copy);
-        return(0);
+        return ;
     }
     if ((g_env.current_pid = fork()) < 0)
 	{
@@ -116,5 +115,4 @@ pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int c
             close(fd.fd_old[WRITE_END]);
         }
     }
-    return(g_env.current_pid);
 }

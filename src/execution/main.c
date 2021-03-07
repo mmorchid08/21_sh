@@ -217,11 +217,8 @@ void	main_c1()
 {
 	char	*line;
 	char	*tmp;
-
     t_tokens *tokens;
-    t_tokens *tmp1;
-    t_tokens *tmp2;
-    t_tokens *tmp3;
+
 
 	tmp = ft_readline();
 	line = (tmp) ? ft_strtrim(tmp) : NULL;
@@ -229,10 +226,7 @@ void	main_c1()
 	{
         ft_parse(&line);
 		tokens = handling(line);
-        tmp1 = tokens;
-        tmp2 = tokens;
-        tmp3 = tokens;
-        if (!ft_check_multi_semi(tmp1) && !ft_error_parse(tmp2) && !ft_check_bad_fd(tmp3))
+        if (!ft_check_multi_semi(tokens) && !ft_error_parse(tokens) && !ft_check_bad_fd(tokens))
 			handling_semi(tokens);
         free_list_token(&tokens);
 	}

@@ -166,7 +166,6 @@ void redirection(t_tokens *begin, t_tokens *finish)
 {
     while(begin != finish)
     {
-        // dprintf(2,"data = %s  | type =  %d\n", begin->data, begin->type);
         if(begin->type == REDIRECTION_RIGHT)
             redirection_out(begin->next->data);
         else if(begin->type == REDIRECTION_LEFT)

@@ -70,12 +70,46 @@ int	ft_check_multi_semi(t_tokens *tmp)
 	return (0);
 }
 
+int     ft_exe_ret_err(char *path, int type)
+{
+    struct stat path_stat;
+    if (type == REDIRECTION_LEFT && stat(path, &path_stat) != 0)
+    {
+		ft_putstr_fd("21sh: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putendl_fd(": File not found", 2);
+		return (1);
+	}
+	if (access(path, R_OK) || access(path, X_OK))
+    {
+		ft_putstr_fd("21sh: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putendl_fd(": Permission denied", 2);
+		return (1);
+	}
+    if (!S_ISREG(path_stat.st_mode))
+    {
+		ft_putstr_fd("21sh: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putendl_fd(": File is not a directory", 2);
+		return (1);
+	}
+    return (0);
+}
+
 int	ft_check_bad_fd(t_tokens *tmp)
 {
 	int	data;
 
 	while (tmp)
 	{
+		if (tmp->type == REDIRECTION_RIGHT ||
+		tmp->type == REDIRECTION_LEFT ||
+		tmp->type == REDIRECTION_RIGHT_RIGHT)
+		{
+			if (!tmp->next || !tmp->next->data || ft_exe_ret_err(tmp->next->data, tmp->type))
+				return (1);
+		}
 		if (tmp->type == REDIRECTION_RIGHT_AGGREGATION
 			|| tmp->type == REDIRECTION_LEFT_AGGREGATION)
 		{

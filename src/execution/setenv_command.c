@@ -15,23 +15,25 @@
 void	ft_delete_one_env(t_tokens *token_begin, t_tokens *token_finish)
 {
 	t_var	*tmp;
-	t_var	*to_free;
+	t_var	*prev;
 
 	token_begin = token_begin->next;
 	while (token_begin != token_finish)
 	{
 		tmp = g_env.var;
-		while (tmp)
+		if (tmp && ft_strequ(tmp->key, token_begin->data))
 		{
-			if (ft_strequ((tmp)->key, token_begin->data))
+			free(tmp);
+			g_env.var = tmp->next;
+		}
+		while(tmp)
+		{
+			if (ft_strequ(tmp->key, token_begin->data))
 			{
-				to_free = tmp;
-				tmp = to_free->next;
-				free(to_free->key);
-				free(to_free->value);
-				free(to_free);
-				break ;
+				prev->next = tmp->next;
+				free(tmp);
 			}
+			prev = tmp;
 			tmp = tmp->next;
 		}
 		token_begin = token_begin->next;
