@@ -103,9 +103,9 @@ void	ft_verify_builtins(t_tokens * token_begin, t_tokens *token_finish);
 void	ft_operation_echo(t_tokens *token_begin, t_tokens * token_finish);
 
 /*  redection function and prepare argv     */
-void redirection_out(char *file_name);
-void redirection_out_out(char *file_name);
-void redirection_in(char *file_name);
+void redirection_out(char *file_name, int fd);
+void redirection_out_out(char *file_name, int fd);
+void redirection_in(char *file_name, int fd);
 char **prepere_argv(t_tokens *begin,t_tokens *finish);
 int ft_count(t_tokens *begin, t_tokens *finish);
 void redirection(t_tokens *begin, t_tokens *finish);
@@ -168,5 +168,6 @@ t_var	*get_malloc_key_value(char *key, char *value);
 
 void ft_heredoc(char *line);
 void ft_herestr(char *line);
+int ft_get_type(char *c, int offset);
 
 #endif

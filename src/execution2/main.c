@@ -146,7 +146,7 @@ int check_red(int type)
         return(1);
     return(0);
 }
-
+//ls -la|cat -e;ls;
 t_tokens *handling(char *line)
 {
     int i;
@@ -154,6 +154,7 @@ t_tokens *handling(char *line)
     char *pt;
     t_tokens *tokens;
     t_tokens *tmp;
+    t_tokens *tmp2;
     char *toto = NULL;
     t_content content;
 
@@ -207,6 +208,7 @@ t_tokens *handling(char *line)
         }
     }
     tmp = tokens;
+    tmp2 = tokens;
     while (tmp)
     {
         if (check_red(tmp->type) == 1 &&  tmp->next != NULL && tmp->next->type == 0)
@@ -222,8 +224,11 @@ void	main_c1()
 {
 	char	*line;
 	char	*tmp;
-    t_tokens *tokens;
 
+    t_tokens *tokens;
+    t_tokens *tmp1;
+    t_tokens *tmp2;
+    t_tokens *tmp3;
 
 	tmp = ft_readline();
 	line = (tmp) ? ft_strtrim(tmp) : NULL;
@@ -231,7 +236,10 @@ void	main_c1()
 	{
         ft_parse(&line);
 		tokens = handling(line);
-        if (!ft_check_multi_semi(tokens) && !ft_error_parse(tokens) && !ft_check_bad_fd(tokens))
+        tmp1 = tokens;
+        tmp2 = tokens;
+        tmp3 = tokens;
+        if (!ft_check_multi_semi(tmp1) && !ft_error_parse(tmp2) && !ft_check_bad_fd(tmp3))
 			handling_semi(tokens);
         free_list_token(&tokens);
 	}

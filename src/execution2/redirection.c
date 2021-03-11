@@ -6,28 +6,11 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 15:52:46 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/05 17:47:07 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/10 15:25:34 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_execution.h"
-
-
-void ft_herestr(char *line)
-{
-    g_env.current_pid = fork();
-    if (g_env.current_pid > 0)
-    {
-        waitpid(g_env.current_pid, 0, 0);
-        exit(0);
-    }
-    else if (g_env.current_pid == 0)
-    {
-        ft_putendl_fd(line, 0);
-        exit(0);
-    }
-}
-
 
 void ft_heredoc(char *line)
 {
@@ -61,6 +44,22 @@ void ft_heredoc(char *line)
         exit(0);
     }
 }
+
+void ft_herestr(char *line)
+{
+    g_env.current_pid = fork();
+    if (g_env.current_pid > 0)
+    {
+        waitpid(g_env.current_pid, 0, 0);
+        exit(0);
+    }
+    else if (g_env.current_pid == 0)
+    {
+        ft_putendl_fd(line, 0);
+        exit(0);
+    }
+}
+
 
 int ft_count(t_tokens *begin, t_tokens *finish)
 {
@@ -172,6 +171,7 @@ void redirection_out_out(char *file_name, int fd)   /*  >>  */
     dup2(out_out,fd);
     close(out_out);
 }
+
 void redirection(t_tokens *begin, t_tokens *finish)
 {
     t_tokens *prev;

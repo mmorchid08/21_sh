@@ -115,7 +115,7 @@ void	ft_operation_cd(t_tokens *token_begin, t_tokens *token_finish)
 	}
 	if (count >= 3)
 	{
-		ft_putstr("cd: String not in pwd: ");
+		ft_putstr("cd: string not in pwd: ");
 		ft_putendl(token_begin->next->data);
 	}
 	if (count == 1)
@@ -130,7 +130,7 @@ void	ft_operation_cd(t_tokens *token_begin, t_tokens *token_finish)
 			ft_the_current(token_begin->next->data);
 		else
 		{
-			ft_putstr_fd("cd : Not directory : ", 2);
+			ft_putstr_fd("cd : not directory : ", 2);
 			ft_putendl_fd(token_begin->next->data, 2);
 		}
 	}
