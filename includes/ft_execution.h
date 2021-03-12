@@ -16,7 +16,7 @@
 #define REDIRECTION_LEFT_LEFT_LEFT 7 // <<<
 #define REDIRECTION_RIGHT_RIGHT 4 // >>
 #define REDIRECTION_RIGHT_AGGREGATION 5  // >& 
-#define ESPACE_REDIRECTION_RIGHT_AGGREGATION 55  // >& 
+#define ESPACE_REDIRECTION_RIGHT_AGGREGATION 55  // espace + >& 
 #define REDIRECTION_LEFT_AGGREGATION 6  // <& 
 // #define REDIRECTION_AGGREGATION_RIGHT 7  // &>
 #define PRE_AGGREGATION_NUMBER 17
@@ -160,7 +160,8 @@ int ft_check_multi_semi(t_tokens *tmp);
 int ft_check_multi_pipe(t_tokens *tmp);
 int  ft_check_bad_fd(t_tokens *tmp);
 int  ft_error_parse(t_tokens *tmp);
-int ft_know_type(t_tokens *tmp);
+// int ft_know_type(t_tokens *tmp);
+int ft_know_type(int type);
 
 //authorization for file discriptor 
   int authorization_re(t_tokens *token); 
@@ -169,5 +170,5 @@ t_var	*get_malloc_key_value(char *key, char *value);
 void ft_heredoc(char *line);
 void ft_herestr(char *line);
 int ft_get_type(char *c, int offset);
-
+int check_red(int type);
 #endif

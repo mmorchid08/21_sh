@@ -140,6 +140,7 @@ void append_list_tokens(t_tokens **tokens, char *data, int type)
     }
 
 }
+
 int check_red(int type)
 {
     if (type == 1 || type == 2 ||type == 3||type == 4||type == 5||type == 6||type == 7) 
@@ -246,7 +247,9 @@ void	main_c1()
 		g_env.auto_len = -1;
 	}
 }
-
+// crea fichier whit vim 
+//sgnale
+// quotse """" exmple echo maine "$HOME""$HOME"
 int		main(int argc, char **argv, char **envp)
 {
 	argc = argc;
