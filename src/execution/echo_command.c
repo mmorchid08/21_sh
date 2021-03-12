@@ -26,21 +26,15 @@ int	ft_chek_espace(char *buf)
 	return (0);
 }
 
-void	ft_operation_echo(t_tokens *token_begin, t_tokens *token_finish)
+void	ft_operation_echo(t_tokens *token_begin)
 {
 	token_begin = token_begin->next;
-	if (token_begin == NULL)
-		write(1, "\n", 1);
-	else
+	while (token_begin != NULL && token_begin->type == 0)
 	{
-		while (token_begin != NULL
-			&&token_begin != token_finish && token_begin->type == 0)
-		{
-			ft_putstr(token_begin->data);
-			if (token_begin->next != NULL && token_begin->next->type == 0)
-				write(1, " ", 1);
-			token_begin = token_begin->next;
-		}
-		write(1, "\n", 1);
+		ft_putstr(token_begin->data);
+		if (token_begin->next != NULL && token_begin->next->type == 0)
+			write(1, " ", 1);
+		token_begin = token_begin->next;
 	}
+	write(1, "\n", 1);
 }

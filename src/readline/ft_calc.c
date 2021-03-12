@@ -59,22 +59,3 @@ char	*ft_decode_line(char *str)
 			str[i] = '&';
 	return (str);
 }
-
-int		ft_count_pipe(t_line *node)
-{
-	int i;
-
-	i = 0;
-	while (node && node->op_main & O_PIPE)
-	{
-		i++;
-		node = node->next;
-	}
-	return ((i == 0) ? 1 : i);
-}
-
-void	ft_close_pipe(int pipecount)
-{
-	while (pipecount-- > 0)
-		close(g_env.fd_pipe[pipecount]);
-}

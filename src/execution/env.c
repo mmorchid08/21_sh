@@ -12,12 +12,12 @@
 
 #include "ft_execution.h"
 
-void	free_list_env(t_list_env **env)
+void	free_list_env()
 {
-	t_list_env	*current;
-	t_list_env	*next;
+	t_var	*current;
+	t_var	*next;
 
-	current = *env;
+	current = g_env.var;
 	while (current != NULL)
 	{
 		next = current->next;
@@ -26,11 +26,14 @@ void	free_list_env(t_list_env **env)
 		free(current);
 		current = next;
 	}
-	*env = NULL;
+	g_env.var = NULL;
 }
 
-void	ft_env_function(t_list_env *env)
+void	ft_env_function()
 {
+	t_var *env;
+	
+	env = g_env.var;
 	while (env)
 	{
 		ft_putstr(env->key);

@@ -12,14 +12,14 @@
 
 #include "ft_execution.h"
 
-int		ft_count_tokens(t_tokens *token_begin , t_tokens *token_finish)
+int		ft_count_tokens(t_tokens *token_begin)
 {
 	t_tokens	*tmp;
 	int			count;
 
 	count = 0;
 	tmp = token_begin;
-	while (tmp != token_finish && tmp->type == 0)
+	while (tmp && tmp->type == 0)
 	{
 		count++;
 		tmp = tmp->next;
@@ -27,13 +27,13 @@ int		ft_count_tokens(t_tokens *token_begin , t_tokens *token_finish)
 	return (count);
 }
 
-int		ft_count_env(t_list_env *env)
+int		ft_count_env()
 {
-	t_list_env	*tmp;
+	t_var	*tmp;
 	int			count;
 
 	count = 0;
-	tmp = env;
+	tmp = g_env.var;
 	while (tmp)
 	{
 		count++;
@@ -42,7 +42,7 @@ int		ft_count_env(t_list_env *env)
 	return (count);
 }
 
-char	**ft_convert_list_array(t_tokens *token_begin, t_tokens *token_finish)
+char	**ft_convert_list_array(t_tokens *token_begin)
 {
 	char		**arr;
 	t_tokens	*tmp;
@@ -50,9 +50,9 @@ char	**ft_convert_list_array(t_tokens *token_begin, t_tokens *token_finish)
 
 	j = 0;
 	tmp = token_begin;
-	if (!(arr = (char **)malloc(sizeof(char *) * (ft_count_tokens(token_begin, token_finish) + 1))))
+	if (!(arr = (char **)malloc(sizeof(char *) * (ft_count_tokens(token_begin) + 1))))
 		return (NULL);
-	while (tmp != token_finish && tmp->type == 0)
+	while (tmp && tmp->type == 0)
 	{
 		arr[j] = ft_strdup(tmp->data);
 		j++;
@@ -62,17 +62,17 @@ char	**ft_convert_list_array(t_tokens *token_begin, t_tokens *token_finish)
 	return (arr);
 }
 
-char	**ft_convert_list_env_array(t_list_env *env)
+char	**ft_convert_var_array()
 {
 	char		**arr;
-	t_list_env	*tmp;
+	t_var	*tmp;
 	int			j;
 	char		*join;
 	char		*join2;
 
 	j = 0;
-	tmp = env;
-	if (!(arr = (char **)malloc(sizeof(char *) * (ft_count_env(env) + 1))))
+	tmp = g_env.var;
+	if (!(arr = (char **)malloc(sizeof(char *) * (ft_count_env() + 1))))
 		return (NULL);
 	while (tmp)
 	{

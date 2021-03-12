@@ -36,14 +36,6 @@ typedef struct  s_tokens
     struct  s_tokens *next;
 }               t_tokens;
 
-typedef struct			s_list_env
-{
-	char				*key;
-	char				*value;
-	struct s_list_env	*next;
-    
-}						t_list_env;
-
 typedef	struct			s_list_path
 {
 	char				*name_path;
@@ -88,16 +80,16 @@ typedef struct s_fd
 
 
 t_tokens *handling(char *line);
-void handling_semi(t_tokens *tokens, t_list_env *list_env);
-void handling_pipe(t_tokens *start,t_tokens *list, t_list_env *list_env);
-pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe, t_list_env *list_env);
+void handling_semi(t_tokens *tokens);
+void handling_pipe(t_tokens *start,t_tokens *list);
+pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe);
 t_semi *new_node_semi(char *data, int type);
 t_tokens *new_node(char *data, int type);
 
 /* the execatble function */
 int		ft_chek_builtins(char *table);
-void	ft_verify_builtins(t_tokens * token_begin, t_tokens *token_finish, t_list_env *list_env);
-void	ft_operation_echo(t_tokens *token_begin, t_tokens * token_finish);
+void	ft_verify_builtins(t_tokens * token_begin);
+void	ft_operation_echo(t_tokens *token_begin);
 
 /*  redection function and prepare argv     */
 void redirection_out(char *file_name);
@@ -112,27 +104,27 @@ void redirection(t_tokens *begin, t_tokens *finish);
 int		ft_chek_espace(char *buf);
 
 /*    this for envirement */
-void		ft_env_list(char **env, t_list_env **list_env);
+void		ft_env_list(char **env);
 // printenv 
-void	ft_env_function(t_list_env *env);
-void	free_list_env(t_list_env **env);
+void	ft_env_function();
+void	free_list_env();
 //setenv 
-void	ft_add_to_env(t_data_env data_env, t_list_env **list_env);
+void	ft_add_to_env(t_data_env data_env);
 void	ft_cat_new_env_to_key_value(t_data_env *data_env, char *buf);
-void	ft_add_change_env(t_tokens *token_begin, t_list_env *list_env);
-t_list_env	*get_malloc_key_value(char *key, char *value);
-void	ft_delete_one_env(t_list_env **env_list, t_tokens *token_begin, t_tokens *token_finish);
+void	ft_add_change_env(t_tokens *token_begin);
+t_var	*get_malloc_key_value(char *key, char *value);
+void	ft_delete_one_env(t_tokens *token_begin);
 
 /* cd and what he want  */
-void	ft_operation_cd(t_tokens *token_begin,t_tokens *token_finish,t_list_env *list_env);
-char	*ft_get_home(t_list_env *env_list);
-char	*ft_get_pwd(t_list_env *list_env);
-char	*ft_get_old_pwd(t_list_env *list_env);
-void	ft_tack_pwd(t_list_env *env_list);
-void	ft_the_current(t_list_env *env_list, char *path);
-void	ft_tilda(t_list_env *list_env, char *value, int len);
-void	ft_write_path(t_list_env *list_env, char *value);
-void	ft_work_hyphen(t_list_env *list_env, char *token);
+void	ft_operation_cd(t_tokens *token_begin);
+char	*ft_get_home(void);
+char	*ft_get_pwd();
+char	*ft_get_old_pwd();
+void	ft_tack_pwd();
+void	ft_the_current(char *path);
+void	ft_tilda(char *value, int len);
+void	ft_write_path(char *value);
+void	ft_work_hyphen(char *token);
 
 /*  function for exection anad open path aml the things */
 void	exection(char *binary, char **argv, char **env);
@@ -141,13 +133,13 @@ t_list_path	*get_malloc_value_path(char *value);
 
 char	*ft_read_from_dir(t_list_path *tmp2, t_tokens *token_begin);
 void	ft_path_list(char *path_str,t_list_path **path_list);
-char	*open_paths(t_tokens *begin,  t_list_env *list_env,t_list_path	**path_list);
-void ft_exece(t_tokens *begin, t_tokens *finish, t_list_env *list_env); 
+char	*open_paths(t_tokens *begin,t_list_path	**path_list);
+void ft_exece(t_tokens *begin); 
 // prepare 
-char	**ft_convert_list_env_array(t_list_env *env);
-char	**ft_convert_list_array(t_tokens *token_begin, t_tokens *token_finish);
-int		ft_count_env(t_list_env *env);
-int		ft_count_tokens(t_tokens *token_begin , t_tokens *token_finish);
+char	**ft_convert_var_array();
+char	**ft_convert_list_array(t_tokens *token_begin);
+int		ft_count_env();
+int		ft_count_tokens(t_tokens *token_begin);
 
 // free
 void	free_list_token(t_tokens **token);

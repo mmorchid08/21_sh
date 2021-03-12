@@ -12,21 +12,21 @@
 
 #include "ft_execution.h"
 
-t_list_env	*get_malloc_key_value(char *key, char *value)
+t_var	*get_malloc_key_value(char *key, char *value)
 {
-	t_list_env	*nev;
+	t_var	*nev;
 
-	nev = (t_list_env *)malloc(sizeof(t_list_env));
+	nev = (t_var *)malloc(sizeof(t_var));
 	nev->key = key;
 	nev->value = value;
 	nev->next = NULL;
 	return (nev);
 }
 
-void	ft_env_list(char **env, t_list_env **list_env)
+void	ft_env_list(char **env)
 {
 	int			i;
-	t_list_env	*tmp;
+	t_var	*tmp;
 	char		**tab_env;
 
 	tmp = NULL;
@@ -37,7 +37,7 @@ void	ft_env_list(char **env, t_list_env **list_env)
 		if (tmp == NULL)
 		{
 			tmp = get_malloc_key_value(tab_env[0], tab_env[1]);
-			*list_env = tmp;
+			g_env.var = tmp;
 		}
 		else
 		{

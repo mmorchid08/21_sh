@@ -14,7 +14,7 @@
 
 void	ft_check_error(char *name)
 {
-	ft_putstr_fd("X0bit : command not fount : ", 2);
+	ft_putstr_fd("21sh : command not fount : ", 2);
 	ft_putendl_fd(name, 2);
 }
 
@@ -42,7 +42,7 @@ int	ft_error_parse(t_tokens *tmp)
 			}
 			else if (tmp->next != NULL && ft_know_type(tmp->next) == 1)
 			{
-				ft_putstr_fd("X0bit: parse error near `", 2);
+				ft_putstr_fd("21sh: parse error near `", 2);
 				ft_putstr_fd(tmp->next->data, 2);
 				ft_putendl_fd("'", 2);
 				return (1);
@@ -61,7 +61,7 @@ int	ft_check_multi_semi(t_tokens *tmp)
 		{
 			if (tmp->next != NULL && tmp->next->type == SEMICOLON)
 			{
-				ft_putendl_fd("X0bit: parse error near `;;'", 2);
+				ft_putendl_fd("21sh: parse error near `;;'", 2);
 				return (1);
 			}
 		}
