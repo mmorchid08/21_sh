@@ -15,15 +15,22 @@
 
 void ft_herestr(char *line)
 {
-    g_env.current_pid = fork();
-    if (g_env.current_pid > 0)
+    pid_t current_pid;
+    int fd[2];
+
+    pipe(fd);
+    current_pid = fork();
+    if (current_pid > 0)
     {
-        waitpid(g_env.current_pid, 0, 0);
-        exit(0);
+        waitpid(current_pid, 0, 0);
+        dup2(fd[0], STDIN_FILENO);
+		close(fd[1]);
     }
-    else if (g_env.current_pid == 0)
+    else if (current_pid == 0)
     {
-        ft_putendl_fd(line, 0);
+        dup2(fd[1], STDOUT_FILENO);
+        close(fd[0]);
+        ft_putendl_fd(line, STDOUT_FILENO);
         exit(0);
     }
 }
@@ -33,7 +40,10 @@ void ft_heredoc(char *line)
 {
     char *str;
     char *tmp;
+    pid_t current_pid;
+    int fd[2];
 
+    pipe(fd);
     g_env.prompt_len = ft_strlen("heredoc> ");
     str = NULL;
     while(1)
@@ -49,15 +59,18 @@ void ft_heredoc(char *line)
         }
         
     }
-    g_env.current_pid = fork();
-    if (g_env.current_pid > 0)
+    current_pid = fork();
+    if (current_pid > 0)
     {
-        waitpid(g_env.current_pid, 0, 0);
-        exit(0);
+        waitpid(current_pid, 0, 0);
+        dup2(fd[0], STDIN_FILENO);
+		close(fd[1]);
     }
-    else if (g_env.current_pid == 0)
+    else if (current_pid == 0)
     {
-        ft_putendl_fd(str, 0);
+        dup2(fd[1], STDOUT_FILENO);
+        close(fd[0]);
+        ft_putendl_fd(str, STDOUT_FILENO);
         exit(0);
     }
 }
@@ -76,28 +89,28 @@ int ft_count(t_tokens *begin, t_tokens *finish)
     return(count);
 }
 
-char **prepere_argv(t_tokens *begin,t_tokens *finish)
-{
-    char **argv;
-    int count;
-    int i ;
+// char **prepere_argv(t_tokens *begin,t_tokens *finish)
+// {
+//     char **argv;
+//     int count;
+//     int i ;
     
-    i=0;
-    count = ft_count(begin,finish);
-    if(!(argv = (char **)malloc(sizeof(char*) * (count + 1))))
-        return(0);
-    while (begin != finish)
-    {
-        if(begin->type == 0)
-        {
-            argv[i] = ft_strdup(begin->data);
-            i++;
-        }
-        begin = begin->next;
-    }
-    argv[i] = NULL;
-    return(argv);
-}
+//     i=0;
+//     count = ft_count(begin,finish);
+//     if(!(argv = (char **)malloc(sizeof(char*) * (count + 1))))
+//         return(0);
+//     while (begin != finish)
+//     {
+//         if(begin->type == 0)
+//         {
+//             argv[i] = ft_strdup(begin->data);
+//             i++;
+//         }
+//         begin = begin->next;
+//     }
+//     argv[i] = NULL;
+//     return(argv);
+// }
 
 int authorization_re(t_tokens *token)
 {
@@ -172,13 +185,13 @@ void redirection_out_out(char *file_name, int fd)   /*  >>  */
     dup2(out_out,fd);
     close(out_out);
 }
-void redirection(t_tokens *begin, t_tokens *finish)
+void redirection(t_tokens *begin)
 {
     t_tokens *prev;
     int def_fd;
     
     prev = NULL;
-    while(begin != finish) // > < >>  >& <& we have just to fix herdoc
+    while(begin) // > < >>  >& <& we have just to fix herdoc
     {
         if(begin->type == REDIRECTION_RIGHT) //>
         {
@@ -201,13 +214,10 @@ void redirection(t_tokens *begin, t_tokens *finish)
                 def_fd = atoi(prev->data);
             redirection_out_out(begin->next->data, def_fd);
         }    
-        // else if (begin->type == REDIRECTION_LEFT_LEFT) //<<
-        // {
-        //     def_fd = 0;
-        //     if(prev->type == 17)
-        //         def_fd = atoi(prev->data);
-        //     ft_heredoc(begin->next->data, def_fd);
-        // }
+        else if (begin->type == REDIRECTION_LEFT_LEFT) //<<
+            ft_heredoc(begin->next->data);
+        else if (begin->type == REDIRECTION_LEFT_LEFT_LEFT) //<<<
+            ft_herestr(begin->next->data);
         else if (begin->type == REDIRECTION_RIGHT_AGGREGATION) 
         {
             def_fd = 1;

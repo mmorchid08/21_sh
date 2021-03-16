@@ -111,7 +111,7 @@ void redirection_out_out(char *file_name, int fd);
 void redirection_in(char *file_name, int fd);
 char **prepere_argv(t_tokens *begin,t_tokens *finish);
 int ft_count(t_tokens *begin, t_tokens *finish);
-void redirection(t_tokens *begin, t_tokens *finish);
+void redirection(t_tokens *begin);
 
 /* echo function  */
 int		ft_chek_espace(char *buf);

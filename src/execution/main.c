@@ -69,6 +69,11 @@ t_content check_character_for_split(char *c)
     }
     if(ft_strncmp(c, ">>", 2) == 0)
         return((t_content){2,REDIRECTION_RIGHT_RIGHT});
+    //----------------------------
+    if ((offset = ft_isaggr(c, "<<<", 3)) != 0)
+        return((t_content){offset, ft_get_type(c, offset)});
+    if(ft_strncmp(c, "<<<", 3) == 0)
+        return((t_content){3,REDIRECTION_LEFT_LEFT_LEFT});
     //---------------------------------------
     if ((offset = ft_isaggr(c, "<<", 2)) != 0)
         return((t_content){offset, ft_get_type(c, offset)});

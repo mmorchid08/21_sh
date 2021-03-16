@@ -22,7 +22,7 @@ void	ft_check_error(char *name)
 int	ft_know_type(int type)
 {
 	if (type == 1 || type == 2 || type == 3
-		|| type == 4 || type == 5 || type == 6
+		|| type == 4 || type == 5 || type == 6 || type == 7
 		|| type == 8 || type == 9 || type == 10
 		 || type == 12)
 		return (1);
@@ -37,7 +37,7 @@ int	ft_error_parse(t_tokens *tmp)
 		{
 			if (tmp->next != NULL && ft_know_type(tmp->next->type) == 1)
 			{
-				// printf("sumbol = %s..........................\n", tmp->next->data);
+				printf("sumbol = %s..........................\n", tmp->next->data);
 				ft_putstr_fd("21sh: parse error near `", 2);
 				ft_putstr_fd(tmp->next->data, 2);
 				ft_putendl_fd("'", 2);

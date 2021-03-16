@@ -117,8 +117,6 @@ void ft_exece(t_tokens *begin)
 	char		**arr_env;
 	t_list_path	*path_list;
 
-	
-	ft_unset_input_mode();
     if (ft_strchr(begin->data, '/') || (bin_path = open_paths(begin,&path_list)))
 	{
 		if (bin_path == NULL)
