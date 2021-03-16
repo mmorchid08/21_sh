@@ -29,10 +29,10 @@ int	ft_chek_espace(char *buf)
 void	ft_operation_echo(t_tokens *token_begin)
 {
 	token_begin = token_begin->next;
-	while (token_begin != NULL && token_begin->type == 0)
+	while (token_begin != NULL)
 	{
 		ft_putstr(token_begin->data);
-		if (token_begin->next != NULL && token_begin->next->type == 0)
+		if (token_begin->next != NULL)
 			write(1, " ", 1);
 		token_begin = token_begin->next;
 	}

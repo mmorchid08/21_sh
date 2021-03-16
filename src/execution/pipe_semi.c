@@ -60,7 +60,7 @@ void	ft_exec(t_tokens *line)
 	}
 	else if (g_env.current_pid == 0)
 	{
-        if (ft_chek_builtins(line->data) == 1)
+        if (ft_check_builtins(line->data) == 1)
         {
             ft_verify_builtins(line);
             exit(0);
@@ -81,7 +81,7 @@ void	ft_exec_pipe(t_tokens *line, t_tokens *prev, int pipecount)
 			dup2(g_env.fd_pipe[(g_env.com_pipe - 1) * 2], STDIN_FILENO);
 		ft_unset_input_mode();
 		ft_close_pipe(pipecount);
-        if (ft_chek_builtins(line->data) == 1)
+        if (ft_check_builtins(line->data) == 1)
         {
             ft_verify_builtins(line);
             exit(0);
@@ -122,20 +122,19 @@ void	ft_exec_line_pipe(t_tokens **node, int pipecount)
     prev = NULL;
 	while ((*node))
 	{
-		printf("[%d]\n", (*node)->type);
-		// ft_exec_pipe(*node, prev, pipecount * 2);
-		// if ((*node)->next && (*node)->next->type == PIPE)
-		// {
-        //     prev = (*node);
-        //     g_env.com_pipe++;
-        //     (*node) = (*node)->next;
-        // }
-		// else
-		// 	break ;
-        // if ((*node))
+		ft_exec_pipe(*node, prev, pipecount * 2);
+		if ((*node)->next && (*node)->next->type == PIPE)
+		{
+            prev = (*node);
+            g_env.com_pipe++;
+            (*node) = (*node)->next;
+        }
+		else
+			break ;
+        if ((*node))
 		    (*node) = (*node)->next;
 	}
-	// ft_exec_line_pipe_c1(pipecount * 2);
+	ft_exec_line_pipe_c1(pipecount * 2);
 }
 
 void	handling_semi(t_tokens *node)

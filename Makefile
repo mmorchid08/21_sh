@@ -48,8 +48,6 @@ $(OBJ_DIR):
 	@printf "21SH:  %-25s$(C_GREEN)[done]$(C_NONE)\n" $@
 
 $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJ_EXECUTION) $(OBJ_READLINE)
-	@make -C $(LIBFT_DIR)
-	@printf "21SH:  %-25s$(C_GREEN)[done]$(C_NONE)\n" "libft.a"
 	@$(CC) $(OBJ_READLINE) $(OBJ_EXECUTION) $(LIBFT) $(LFLAG) -o $(NAME)
 	@printf "21SH:  %-25s$(C_GREEN)[done]$(C_NONE)\n" $@
 

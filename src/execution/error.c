@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:33:00 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/23 17:22:35 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/12 12:52:11 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ void	ft_check_error(char *name)
 	ft_putendl_fd(name, 2);
 }
 
-int	ft_know_type(t_tokens *tmp)
+// int	ft_know_type(t_tokens *tmp)
+int	ft_know_type(int type)
 {
-	if (tmp->type == 1 || tmp->type == 2 || tmp->type == 3
-		|| tmp->type == 4 || tmp->type == 5 || tmp->type == 6
-		|| tmp->type == 8 || tmp->type == 9 || tmp->type == 10
-		||tmp->type == 11 || tmp->type == 12)
+	if (type == 1 || type == 2 || type == 3
+		|| type == 4 || type == 5 || type == 6
+		|| type == 8 || type == 9 || type == 10
+		 || type == 12)
 		return (1);
 	return (0);
 }
@@ -32,21 +33,20 @@ int	ft_error_parse(t_tokens *tmp)
 {
 	while (tmp)
 	{
-		if (ft_know_type(tmp) == 1)
+		if (ft_know_type(tmp->type) == 1)
 		{
-			if (tmp->type == REDIRECTION_LEFT_AGGREGATION
-				&& authorization_re(tmp) == 0)
+			if (tmp->next != NULL && ft_know_type(tmp->next->type) == 1)
 			{
-				ft_putendl_fd("XObit: file number expected", 2);
-				return (1);
-			}
-			else if (tmp->next != NULL && ft_know_type(tmp->next) == 1)
-			{
+				// printf("sumbol = %s..........................\n", tmp->next->data);
 				ft_putstr_fd("21sh: parse error near `", 2);
 				ft_putstr_fd(tmp->next->data, 2);
 				ft_putendl_fd("'", 2);
 				return (1);
 			}
+			// else if (tmp->next == NULL)
+			// {
+			// 	printf("wa*****************\n");
+			// }
 		}
 		tmp = tmp->next;
 	}
@@ -124,6 +124,9 @@ int     ft_write_red_err(char *path, int type)
 int	ft_check_bad_fd(t_tokens *tmp)
 {
 	int	data;
+	int count;
+
+	count  = 0;
 
 	while (tmp)
 	{
@@ -134,12 +137,13 @@ int	ft_check_bad_fd(t_tokens *tmp)
 		if (tmp->type == REDIRECTION_RIGHT_AGGREGATION
 			|| tmp->type == REDIRECTION_LEFT_AGGREGATION)
 		{
-			if (tmp->next == NULL)
+			printf("*********\n");
+			if (tmp->next == NULL && count != 0)
 			{
 				ft_putendl_fd("21sh: Parse error near `\\n'", 2);
 				return (1);
 			}
-			if (tmp->next != NULL && tmp->next->type == REDIRECTION_WORD)
+			if (tmp->next == NULL && count == 0)
 			{
 				data = ft_atoi(tmp->next->data);
 				if (data > 2)
@@ -150,7 +154,20 @@ int	ft_check_bad_fd(t_tokens *tmp)
 					return (1);
 				}
 			}
+			// if (tmp->next != NULL && tmp->next->type == REDIRECTION_WORD)
+			// {
+			// 	printf("///////////////////////\n");
+			// 	data = ft_atoi(tmp->next->data);
+			// 	if (data > 2)
+			// 	{
+			// 		ft_putstr_fd("21sh: ", 2);
+			// 		ft_putnbr_fd(data, 2);
+			// 		ft_putendl_fd(": bad file descriptor", 2);
+			// 		return (1);
+			// 	}
+			// }
 		}
+		count ++;
 		tmp = tmp->next;
 	}
 	return (0);

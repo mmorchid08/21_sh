@@ -14,26 +14,39 @@
 #define REDIRECTION_RIGHT 1 // >
 #define REDIRECTION_LEFT 2// <
 #define REDIRECTION_LEFT_LEFT 3 // <<
+#define REDIRECTION_LEFT_LEFT_LEFT 7 // <<<
 #define REDIRECTION_RIGHT_RIGHT 4 // >>
 #define REDIRECTION_RIGHT_AGGREGATION 5  // >& 
+#define ESPACE_REDIRECTION_RIGHT_AGGREGATION 55  // espace + >& 
 #define REDIRECTION_LEFT_AGGREGATION 6  // <& 
 // #define REDIRECTION_AGGREGATION_RIGHT 7  // &>
+#define PRE_AGGREGATION_NUMBER 17
 #define AND 8  // &&
 #define OR 9  // ||
 #define PIPE 10 // |
 #define SEMICOLON 11 // ;
 #define AMP 12 // &
 #define REDIRECTION_WORD 13  // redirection + word
+#define WORD_REDIRECTION 14  //  word + redirection 
+#define WORD_REDIRECTION_ESPACE 16  //  word + redirection espace is like word
+#define WORD_ARG 17  //  word + redirection espace is like word
 #define WORD 0 // &
 #define READ_END 0
 #define WRITE_END 1
+#define ERROR_END 2
 #define NUMBER_OF_STRING 7
 #define MAX_STRING_SIZE 15
+
+#define SPACE 15
+// #define TABULATION  16
 
 typedef struct  s_tokens
 {
     char    *data;
     int     type;
+    char    *here;
+    int      space_b;
+    struct  s_tokens *args;
     struct  s_tokens *next;
 }               t_tokens;
 
@@ -83,20 +96,19 @@ typedef struct s_fd
 t_tokens *handling(char *line);
 void handling_semi(t_tokens *tokens);
 void handling_pipe(t_tokens *start,t_tokens *list);
-pid_t handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe);
+void handling_command(t_tokens *begin,t_tokens *finish, t_fd fd, int pos, int count_pipe);
 t_semi *new_node_semi(char *data, int type);
 t_tokens *new_node(char *data, int type);
 
 /* the execatble function */
-int		ft_chek_builtins(char *table);
+int		ft_check_builtins(char *table);
 void	ft_verify_builtins(t_tokens * token_begin);
 void	ft_operation_echo(t_tokens *token_begin);
 
 /*  redection function and prepare argv     */
-void redirection_out(char *file_name);
-void redirection_out_out(char *file_name);
-void redirection_in(char *file_name);
-void redirection_in_in(char *file_name);
+void redirection_out(char *file_name, int fd);
+void redirection_out_out(char *file_name, int fd);
+void redirection_in(char *file_name, int fd);
 char **prepere_argv(t_tokens *begin,t_tokens *finish);
 int ft_count(t_tokens *begin, t_tokens *finish);
 void redirection(t_tokens *begin, t_tokens *finish);
@@ -107,8 +119,8 @@ int		ft_chek_espace(char *buf);
 /*    this for envirement */
 void		ft_env_list(char **env);
 // printenv 
-void	ft_env_function();
-void	free_list_env();
+void	ft_env_function(void);
+void	free_list_env(void);
 //setenv 
 void	ft_add_to_env(t_data_env data_env);
 void	ft_cat_new_env_to_key_value(t_data_env *data_env, char *buf);
@@ -137,7 +149,7 @@ void	ft_path_list(char *path_str,t_list_path **path_list);
 char	*open_paths(t_tokens *begin,t_list_path	**path_list);
 void ft_exece(t_tokens *begin); 
 // prepare 
-char	**ft_convert_var_array();
+char	**ft_convert_list_env_array(void);
 char	**ft_convert_list_array(t_tokens *token_begin);
 int		ft_count_env();
 int		ft_count_tokens(t_tokens *token_begin);
@@ -152,11 +164,18 @@ int ft_check_multi_semi(t_tokens *tmp);
 int ft_check_multi_pipe(t_tokens *tmp);
 int  ft_check_bad_fd(t_tokens *tmp);
 int  ft_error_parse(t_tokens *tmp);
-int ft_know_type(t_tokens *tmp);
+// int ft_know_type(t_tokens *tmp);
+int ft_know_type(int type);
 
 //authorization for file discriptor 
   int authorization_re(t_tokens *token); 
 void	ft_save_fds(void);
 void	ft_restore_fds(void);
 
+t_var	*get_malloc_key_value(char *key, char *value);
+
+void ft_heredoc(char *line);
+void ft_herestr(char *line);
+int ft_get_type(char *c, int offset);
+int check_red(int type);
 #endif

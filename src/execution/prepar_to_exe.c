@@ -19,7 +19,7 @@ int		ft_count_tokens(t_tokens *token_begin)
 
 	count = 0;
 	tmp = token_begin;
-	while (tmp && tmp->type == 0)
+	while (tmp)
 	{
 		count++;
 		tmp = tmp->next;
@@ -27,9 +27,9 @@ int		ft_count_tokens(t_tokens *token_begin)
 	return (count);
 }
 
-int		ft_count_env()
+int		ft_count_env(void)
 {
-	t_var	*tmp;
+	t_var		*tmp;
 	int			count;
 
 	count = 0;
@@ -52,7 +52,7 @@ char	**ft_convert_list_array(t_tokens *token_begin)
 	tmp = token_begin;
 	if (!(arr = (char **)malloc(sizeof(char *) * (ft_count_tokens(token_begin) + 1))))
 		return (NULL);
-	while (tmp && tmp->type == 0)
+	while (tmp)
 	{
 		arr[j] = ft_strdup(tmp->data);
 		j++;
@@ -62,10 +62,10 @@ char	**ft_convert_list_array(t_tokens *token_begin)
 	return (arr);
 }
 
-char	**ft_convert_var_array()
+char	**ft_convert_list_env_array(void)
 {
 	char		**arr;
-	t_var	*tmp;
+	t_var		*tmp;
 	int			j;
 	char		*join;
 	char		*join2;

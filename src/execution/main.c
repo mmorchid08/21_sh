@@ -23,25 +23,78 @@ char	*ft_strjoin_one_charatcter(char const *s1, char const s2)
 	return (0);
 }
 
-void	ft_cut_buf(char *buf)
+void	ft_cut_buf(char *buf) // 2 >&-  | 2>&-
 {
 	buf[ft_strlen(buf) - 1] = '\0';
 }
 
-t_content chek_character_for_split(char *c)
+int ft_isaggr(char *s1, char *s2, int n) 
 {
+    int offset = 0;
+    
+    while (*s1 && *s1 != ' ') 
+    {
+        if (ft_strncmp(s1, s2, n) == 0)
+            return offset;
+        offset++;
+        s1++;
+    }
+    return 0;
+}
+
+int ft_get_type(char *c, int offset)
+{
+    int i;
+
+    i = 0;
+    while(i < offset)
+    {
+        if (ft_isdigit(c[i]))
+            i++;
+        else
+            return(WORD);
+    }
+    return(PRE_AGGREGATION_NUMBER);
+}
+
+
+t_content check_character_for_split(char *c)
+{
+    int offset;
+
+    if ((offset = ft_isaggr(c, ">>", 2)) != 0)
+    {
+
+        return((t_content){offset, ft_get_type(c, offset)});
+    }
     if(ft_strncmp(c, ">>", 2) == 0)
         return((t_content){2,REDIRECTION_RIGHT_RIGHT});
+    //---------------------------------------
+    if ((offset = ft_isaggr(c, "<<", 2)) != 0)
+        return((t_content){offset, ft_get_type(c, offset)});
     if(ft_strncmp(c, "<<", 2) == 0)
         return((t_content){2,REDIRECTION_LEFT_LEFT});
+    //----------------------------
+    if ((offset = ft_isaggr(c, ">&", 2)) != 0)
+        return((t_content){offset, ft_get_type(c, offset)});
     if(ft_strncmp(c, ">&", 2) == 0)
         return((t_content){2,REDIRECTION_RIGHT_AGGREGATION});
+    //-------------------------
+    if ((offset = ft_isaggr(c, "<&", 2)) != 0)
+        return((t_content){offset, ft_get_type(c, offset)});
     if(ft_strncmp(c, "<&", 2) == 0)
         return((t_content){2,REDIRECTION_LEFT_AGGREGATION});
+    //----------------------------
+    if ((offset = ft_isaggr(c, "<", 1)) != 0)
+        return((t_content){offset, ft_get_type(c, offset)});
     if(ft_strncmp(c, "<", 1) == 0)
         return((t_content){1,REDIRECTION_LEFT});
+    //----------------------------
+    if ((offset = ft_isaggr(c, ">", 1)) != 0)
+        return((t_content){offset, ft_get_type(c, offset)});
     if(ft_strncmp(c, ">", 1) == 0)
         return((t_content){1,REDIRECTION_RIGHT});
+    //-----------------------------------
     if(ft_strncmp(c, "&&", 2) == 0)
         return((t_content){2,AND});
     if(ft_strncmp(c, "||", 2) == 0)
@@ -53,7 +106,7 @@ t_content chek_character_for_split(char *c)
     if(ft_strncmp(c, "&", 1) == 0)
         return((t_content){1,AMP});
     if((ft_strncmp(c, " ", 1) == 0) || (ft_strncmp(c, "\t", 1) == 0))
-        return((t_content){1,0});
+        return((t_content){1,SPACE});
     return((t_content){0,0});
 }
 
@@ -64,6 +117,8 @@ t_tokens *new_node(char *data, int type)
     node = (t_tokens *)malloc(sizeof(t_tokens));
     node->data = ft_strdup(data);
     node->type = type;
+    node->here = NULL;
+    node->args = NULL;
     node->next = NULL;
     return(node);
 }
@@ -76,23 +131,33 @@ void append_list_tokens(t_tokens **tokens, char *data, int type)
     if (tmp == NULL)
     {
         tmp = new_node(data,type);
+        if (type == WORD)
+                tmp->args = new_node(tmp->data, WORD_ARG);
         *tokens = tmp;  
     }
     else
     {
         while (tmp->next != NULL)
             tmp = tmp->next;        
-        tmp->next = new_node(data,type);
+        if (type == WORD && tmp->type == WORD)
+            append_list_tokens(&(tmp->args), data, WORD_ARG);
+        else
+        {
+            tmp->next = new_node(data,type);
+            if (type == WORD)
+                tmp->next->args = new_node(tmp->next->data, WORD_ARG);
+        }
     }
 
 }
+
 int check_red(int type)
 {
-    if (type == 1 || type == 2 ||type == 3||type == 4||type == 5||type == 6||type == 7) 
+    if (type == 1 || type == 2 || type == 3||type == 4||type == 5||type == 6||type == 7) 
         return(1);
     return(0);
 }
-//pwd|  cat -e ;ls -la | cat -e| cat -e >ppppppp
+
 t_tokens *handling(char *line)
 {
     int i;
@@ -106,16 +171,15 @@ t_tokens *handling(char *line)
     i = 0;
     tokens = NULL;
     pt = NULL;
-    // printf("line from readline =%s\n", line);
     while (line[i])
     {
         token = ft_strdup("");
-        content = chek_character_for_split(&line[i]);
-        if(content.index == 2)
+        content = check_character_for_split( &line[i]);
+        if(content.index)
         {
             if(line[i] != ' ' && line[i] != '\t')
             {
-                toto = ft_strsub(line, i , 2);
+                toto = ft_strsub(line, i , content.index);
                 pt = token;
                 token = ft_strjoin(token,toto);
                 ft_strdel(&pt);
@@ -124,30 +188,19 @@ t_tokens *handling(char *line)
                 ft_bzero(token,ft_strlen(token));
             }
             ft_strdel(&token);
-            i = i + 2;
+            i = i + content.index;
         }
-        else if(content.index == 1)
+        else
         {
-            if(line[i] != ' ' && line[i] != '\t')
-            {
-                pt = token;
-                token = ft_strjoin_one_charatcter(token,line[i]);
-                ft_strdel(&pt);
-                append_list_tokens(&tokens, token,content.type);
-                ft_bzero(token,ft_strlen(token));
-            }
-             ft_strdel(&token);
-            i++;
-        }
-        else if(content.index == 0)
-        {
-            while(ft_isprint(line[i]) && content.index == 0) 
+            if (!(ft_isprint(line[i]) || (line[i] < 0 && line[i] >= -5) || line[i] == '\n'))
+                i++;
+            while((ft_isprint(line[i]) || (line[i] < 0 && line[i] >= -5) || line[i] == '\n') && content.index == 0) 
             {
                 pt = token;
                 token = ft_strjoin_one_charatcter(token,line[i]);
                 ft_strdel(&pt);
                 i++;
-                content = chek_character_for_split(&line[i]);
+                content = check_character_for_split(&line[i]);
                 if (content.index != 0)
                 {
                     content.type =0;              
@@ -158,24 +211,23 @@ t_tokens *handling(char *line)
             ft_bzero(token,ft_strlen(token));
             ft_strdel(&token);
         }
-        else 
-            ft_strdel(&token);
     }
     tmp = tokens;
     while (tmp)
     {
-        if (check_red(tmp->type) == 1 &&  tmp->next != NULL &&tmp->next->type == 0)
+        if (check_red(tmp->type) &&  tmp->next != NULL && tmp->next->type == 0)
             tmp->next->type = REDIRECTION_WORD;
+        if (tmp->type == 0)
+            tmp->data = ft_strmap(tmp->data, &ft_decode_char);
         tmp = tmp->next;
     }
     return(tokens);
 }
 
-void	main_c1(t_var *list_env)
+void	main_c1()
 {
 	char	*line;
 	char	*tmp;
-
     t_tokens *tokens;
 
 	tmp = ft_readline();
@@ -186,9 +238,7 @@ void	main_c1(t_var *list_env)
         ft_parse(&line);
 		tokens = handling(line);
         if (!ft_check_multi_semi(tokens) && !ft_error_parse(tokens) && !ft_check_bad_fd(tokens))
-		{
 			handling_semi(tokens);
-		}
         free_list_token(&tokens);
 	}
 	(line) ? free(line) : 1;
@@ -202,18 +252,17 @@ void	main_c1(t_var *list_env)
 		g_env.auto_len = -1;
 	}
 }
-
+// crea fichier whit vim 
+//sgnale
+// quotse """" exmple echo maine "$HOME""$HOME"
 int		main(int argc, char **argv, char **envp)
 {
-	t_var *list_env;
-
 	argc = argc;
 	argv = argv;
 	ft_set_input_mode();
 	if (tgetent(NULL, (getenv("TERM")) ? getenv("TERM") : TERM) > 0)
 	{
 		ft_signal_handle();
-    	ft_env_list(envp);
 		ft_init(envp);
 		while (1)
 		{
@@ -225,7 +274,7 @@ int		main(int argc, char **argv, char **envp)
 			g_env.inside_prompt = 0;
 			g_env.cur_all_col = 0;
 			g_env.cur_all_row = 0;
-			main_c1(list_env);
+			main_c1();
 		}
 		ft_free_env();
 	}

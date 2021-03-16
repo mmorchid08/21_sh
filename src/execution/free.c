@@ -22,6 +22,7 @@ void	free_list_token(t_tokens **token)
 	{
 		next = current->next;
 		free(current->data);
+		free_list_token(&(current->args));
 		free(current);
 		current = next;
 	}

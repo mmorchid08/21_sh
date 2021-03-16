@@ -269,6 +269,7 @@ char					*ft_auto_get_path(char *name);
 void					ft_autocompletion(char **line);
 char					*ft_decode_line(char *str);
 char					*ft_encode_line(char *str);
+char					ft_decode_char(char c);
 void					ft_store_his();
 void					ft_store_alias();
 void					ft_load_his();

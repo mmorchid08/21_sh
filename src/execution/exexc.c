@@ -75,7 +75,7 @@ void		ft_path_list(char *path_str,t_list_path **path_list)
 
 char	*open_paths(t_tokens *begin, t_list_path **path_list)
 {
-	t_var	*tmp;
+	t_var		*tmp;
 	t_list_path	*tmp2;
 	// t_list_path	*path_list;
 	char		*path;
@@ -123,8 +123,8 @@ void ft_exece(t_tokens *begin)
 	{
 		if (bin_path == NULL)
 			bin_path = ft_strdup(begin->data);
-		argv = ft_convert_list_array(begin);
-		arr_env = ft_convert_var_array();
+		argv = ft_convert_list_array(begin->args);
+		arr_env = ft_convert_list_env_array();
 		exection(bin_path, argv, arr_env);
 		ft_free_table(&arr_env);
 		ft_free_table(&argv);

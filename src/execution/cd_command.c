@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 16:25:07 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/23 16:59:03 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/02/28 17:51:50 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_tilda(char *value, int len)
 {
 	char		*old_pwd;
-	t_var	*tmp;
+	t_var		*tmp;
 	char		*poit;
 	int			i;
 
@@ -57,7 +57,7 @@ void	ft_work_hyphen(char *token)
 	// char		*home;
 	char		*pwd;
 	char		*old_pwd;
-	t_var	*tmp;
+	t_var		*tmp;
 
 	tmp = g_env.var;
 	// home = ft_get_home(list_env);
@@ -108,14 +108,14 @@ void	ft_operation_cd(t_tokens *token_begin)
 
 	count = 0;
 	cp = token_begin;
-	while (cp->type == 0)
+	while (cp)
 	{
 		count++;
 		cp = cp->next;
 	}
 	if (count >= 3)
 	{
-		ft_putstr("cd: string not in pwd: ");
+		ft_putstr("cd: String not in pwd: ");
 		ft_putendl(token_begin->next->data);
 	}
 	if (count == 1)
@@ -130,8 +130,8 @@ void	ft_operation_cd(t_tokens *token_begin)
 			ft_the_current(token_begin->next->data);
 		else
 		{
-			ft_putstr("cd : not directory : ");
-			ft_putendl(token_begin->next->data);
+			ft_putstr_fd("cd : Not directory : ", 2);
+			ft_putendl_fd(token_begin->next->data, 2);
 		}
 	}
 }

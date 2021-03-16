@@ -18,20 +18,27 @@ void	ft_encode_char(char *pos, int type)
 		*pos = -1;
 	else if (type == 39 && (*pos == '$'))
 		*pos = -2;
-	else if (*pos == '|' && *(pos + 1) == '|')
-	{
-		*pos = -8;
-		*(pos + 1) = -8;
-	}
 	else if (*pos == '|')
 		*pos = -3;
 	else if (*pos == ';')
 		*pos = -4;
-	else if (*pos == '&' && *(pos + 1) == '&')
-	{
-		*pos = -7;
-		*(pos + 1) = -7;
-	}
+	else if (*pos == '&')
+		*pos = -5;
+}
+
+char	ft_decode_char(char c)
+{
+	if (c == -1)
+		c = ' ';
+	else if (c == -2)
+		c = '$';
+	else if (c == -3)
+		c = '|';
+	else if (c == -4)
+		c = ';';
+	else if (c == -5)
+		c = '&';
+	return (c);
 }
 
 void	ft_manage_newline_c1(char **copy, int *flag, char **str)
