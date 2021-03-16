@@ -25,7 +25,7 @@ OBJ_READLINE = $(addprefix $(OBJ_DIR)/, $(READLINE_FILES:%.c=%.o))
 OBJ_EXECUTION = $(addprefix $(OBJ_DIR)/, $(EXECUTION_FILES:%.c=%.o))
 
 CC = gcc
-CFLAGS = #-Wall -Werror -Wextra 
+CFLAGS = -g #-Wall -Werror -Wextra 
 INC = -I $(INC_DIR) -I $(LIBFT_INC)
 
 C_RED = \033[31m

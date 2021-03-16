@@ -14,7 +14,7 @@
 
 void	ft_check_error(char *name)
 {
-	ft_putstr_fd("21sh : command not fount : ", 2);
+	ft_putstr_fd("21sh : Command not fount : ", 2);
 	ft_putendl_fd(name, 2);
 }
 

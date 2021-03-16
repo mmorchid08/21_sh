@@ -118,7 +118,7 @@ void ft_exece(t_tokens *begin)
 	t_list_path	*path_list;
 
 	
-    bin_path = NULL;
+	ft_unset_input_mode();
     if (ft_strchr(begin->data, '/') || (bin_path = open_paths(begin,&path_list)))
 	{
 		if (bin_path == NULL)
@@ -133,6 +133,7 @@ void ft_exece(t_tokens *begin)
 	else
     {
 		ft_check_error(begin->data);
+		exit(1);
     }
 	if (bin_path != NULL)
 		free_list_path(&path_list);

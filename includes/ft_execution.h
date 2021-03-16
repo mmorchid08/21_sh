@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+
 #define REDIRECTION_RIGHT 1 // >
 #define REDIRECTION_LEFT 2// <
 #define REDIRECTION_LEFT_LEFT 3 // <<
@@ -155,4 +156,7 @@ int ft_know_type(t_tokens *tmp);
 
 //authorization for file discriptor 
   int authorization_re(t_tokens *token); 
+void	ft_save_fds(void);
+void	ft_restore_fds(void);
+
 #endif

@@ -179,6 +179,7 @@ void	main_c1(t_var *list_env)
     t_tokens *tokens;
 
 	tmp = ft_readline();
+    ft_save_fds();
 	line = (tmp) ? ft_strtrim(tmp) : NULL;
 	if (g_env.inside_prompt != -1 && !g_env.auto_step && tmp && *line)
 	{
@@ -189,7 +190,6 @@ void	main_c1(t_var *list_env)
 			handling_semi(tokens);
 		}
         free_list_token(&tokens);
-        
 	}
 	(line) ? free(line) : 1;
 	(tmp) ? free(tmp) : 1;
