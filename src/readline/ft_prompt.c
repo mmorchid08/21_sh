@@ -43,15 +43,18 @@ char	*ft_get_hostname(void)
 char	*ft_get_wd(void)
 {
 	char	*res;
+	char	*home;
+	char	*working_dir;
 	int		len;
 
-	len = ft_strlen(g_env.home);
-	if (g_env.working_dir && g_env.home
-	&& ft_strnequ(g_env.home, g_env.working_dir, len))
+	home = ft_get_var_value(g_env.var, "HOME");
+	working_dir = getcwd(NULL, 1024);
+	if (home && (len = ft_strlen(home))
+	&& ft_strnequ(home, working_dir, len))
 		res = ft_free_strjoin(ft_strdup("~"),
-		ft_strdup(g_env.working_dir + len));
+		ft_strdup(working_dir + len));
 	else
-		res = ft_strdup(g_env.working_dir);
+		res = ft_strdup(working_dir);
 	return (res);
 }
 
@@ -64,13 +67,11 @@ void	ft_get_prompt(void)
 	g_env.username = ft_get_username();
 	g_env.hostname = ft_get_hostname();
 	pwd = ft_get_wd();
-	ft_get_git_branch(g_env.working_dir);
 	line = ft_free_strjoin(line, g_env.username);
 	line = ft_free_strjoin(line, ft_strdup(C_RESET":"C_RED));
 	line = ft_free_strjoin(line, g_env.hostname);
 	line = ft_free_strjoin(line, ft_strdup(C_RESET" "C_GRN));
-	line = ft_free_strjoin(line, ft_free_strjoin(pwd,
-	(g_env.branch) ? ft_strdup(g_env.branch) : ft_strdup("")));
+	line = ft_free_strjoin(line, pwd);
 	line = ft_free_strjoin(line, ft_strdup(C_RESET"\n"));
 	line = ft_free_strjoin(line, ft_strdup((!getuid()) ?
 	C_RESET"╰─# " : C_RESET"╰─$ "));

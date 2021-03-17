@@ -99,9 +99,40 @@ void	ft_the_current(char *path)
 	}
 }
 
-void	ft_operation_cd(t_tokens *token_begin)
+void	ft_operation_non_fork_cd(t_tokens *token_begin)
 {
 	// int			lst;
+	struct stat	buf;
+	t_tokens	*cp;
+	int			count;
+
+	count = 0;
+	cp = token_begin;
+	while (cp)
+	{
+		count++;
+		cp = cp->next;
+	}
+	if (count >= 3)
+		token_begin->next->status = 0;
+	if (count == 1)
+		ft_the_current(ft_get_home());
+	if (count == 2)
+	{
+		//HERE/////////////////////////////////////////////////////////////
+		lstat(token_begin->next->data, &buf);
+		if (ft_strcmp(token_begin->next->data, "-") == 0)
+			ft_work_hyphen(token_begin->next->data);
+		else if (S_ISDIR(buf.st_mode))
+			ft_the_current(token_begin->next->data);
+		else
+			token_begin->next->status = 0;
+	}
+}
+
+
+void	ft_operation_cd(t_tokens *token_begin)
+{
 	struct stat	buf;
 	t_tokens	*cp;
 	int			count;
@@ -118,17 +149,9 @@ void	ft_operation_cd(t_tokens *token_begin)
 		ft_putstr("cd: String not in pwd: ");
 		ft_putendl(token_begin->next->data);
 	}
-	if (count == 1)
-		ft_the_current(ft_get_home());
 	if (count == 2)
 	{
-		// lst = 
-		lstat(token_begin->next->data, &buf);
-		if (ft_strcmp(token_begin->next->data, "-") == 0)
-			ft_work_hyphen(token_begin->next->data);
-		else if (S_ISDIR(buf.st_mode))
-			ft_the_current(token_begin->next->data);
-		else
+		if (token_begin->next->status == 0)
 		{
 			ft_putstr_fd("cd : Not directory : ", 2);
 			ft_putendl_fd(token_begin->next->data, 2);

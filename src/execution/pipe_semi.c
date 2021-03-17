@@ -50,6 +50,7 @@ void	ft_close_pipe(int pipecount)
 
 void	ft_exec(t_tokens *line)
 {
+	ft_verify_non_fork_builtins(line);
 	g_env.current_pid = fork();
 	if (g_env.current_pid > 0)
 	{
@@ -74,6 +75,7 @@ void	ft_exec(t_tokens *line)
 
 void	ft_exec_pipe(t_tokens *line, t_tokens *prev, int pipecount)
 {
+	ft_verify_non_fork_builtins(line);
 	g_env.current_pid = fork();
 	if (g_env.current_pid == 0)
 	{

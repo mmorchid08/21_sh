@@ -46,6 +46,7 @@ typedef struct  s_tokens
     int     type;
     char    *here;
     int      space_b;
+    int     status;
     struct  s_tokens *args;
     struct  s_tokens *next;
 }               t_tokens;
@@ -178,4 +179,7 @@ void ft_heredoc(char *line);
 void ft_herestr(char *line);
 int ft_get_type(char *c, int offset);
 int check_red(int type);
+void	ft_operation_non_fork_cd(t_tokens *token_begin);
+void	ft_verify_non_fork_builtins(t_tokens *token_begin);
+
 #endif

@@ -32,24 +32,29 @@ int	ft_check_builtins(char *table)
 	return (0);
 }
 
+void	ft_verify_non_fork_builtins(t_tokens *token_begin)
+{
+	if (ft_strcmp(token_begin->data, "cd") == 0)
+		ft_operation_non_fork_cd(token_begin->args);
+	else if (ft_strcmp(token_begin->data, "setenv") == 0 && token_begin->args->next != NULL)
+		ft_add_change_env(token_begin->args);
+	else if (ft_strcmp(token_begin->data, "unsetenv") == 0 && token_begin->args->next != NULL)
+		ft_delete_one_env(token_begin->args);
+	else if (ft_strcmp(token_begin->data, "exit") == 0)
+		ft_exec_exit();
+}
+
+
 void	ft_verify_builtins(t_tokens *token_begin)
 {
 	if (ft_strcmp(token_begin->data, "echo") == 0)
 		ft_operation_echo(token_begin->args);
 	else if (ft_strcmp(token_begin->data, "cd") == 0)
 		ft_operation_cd(token_begin->args);
-	else if (ft_strcmp(token_begin->data, "setenv") == 0)
-		token_begin->args->next == NULL ? ft_env_function()
-			: ft_add_change_env(token_begin->args);
-	else if (ft_strcmp(token_begin->data, "unsetenv") == 0)
-	{
-		if (token_begin->args->next == NULL)
-			ft_putendl("unsetenv: not enough arguments");
-		else
-			ft_delete_one_env(token_begin->args);
-	}
+	else if (ft_strcmp(token_begin->data, "setenv") == 0 && token_begin->args->next == NULL)
+		ft_env_function();
+	else if (ft_strcmp(token_begin->data, "unsetenv") == 0 && token_begin->args->next == NULL)
+		ft_putendl("unsetenv: not enough arguments");
 	else if (ft_strcmp(token_begin->data, "env") == 0)
 		ft_env_function();
-	else if (ft_strcmp(token_begin->data, "exit") == 0)
-		exit(0);
 }
