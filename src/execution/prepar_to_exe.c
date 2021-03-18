@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_semi.c                                        :+:      :+:    :+:   */
+/*   prepar_to_exe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mmorchid <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/26 11:33:00 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/12 18:54:33 by mmorchid         ###   ########.fr       */
+/*   Created: 2021/03/18 12:04:28 by mmorchid          #+#    #+#             */
+/*   Updated: 2021/03/18 12:06:04 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ char	**ft_convert_list_array(t_tokens *token_begin)
 
 	j = 0;
 	tmp = token_begin;
-	if (!(arr = (char **)malloc(sizeof(char *) * (ft_count_tokens(token_begin) + 1))))
+	if (!(arr = (char **)malloc(sizeof(char *) *
+					(ft_count_tokens(token_begin) + 1))))
 		return (NULL);
 	while (tmp)
 	{

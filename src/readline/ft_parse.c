@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: youarzaz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 15:00:13 by youarzaz          #+#    #+#             */
-/*   Updated: 2020/03/09 15:00:14 by youarzaz         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:09:04 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,20 +106,4 @@ void	ft_check_users(char **val, char *user, int *i)
 	}
 	free(user);
 	*val = NULL;
-}
-
-int		ft_parse(char **line)
-{
-	char *copy;
-
-	ft_manage_quots(line, &copy);
-	ft_manage_newline(line, &copy);
-	if (g_env.inside_prompt == -1)
-	{
-		g_env.inside_prompt = 0;
-		return (0);
-	}
-	ft_manage_symbol(line);
-	ft_save_his(copy, 0);
-	return (1);
 }

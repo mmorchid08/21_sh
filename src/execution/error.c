@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:33:00 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/12 12:52:11 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/18 13:01:34 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	ft_check_error(char *name)
 	ft_putendl_fd(name, 2);
 }
 
-// int	ft_know_type(t_tokens *tmp)
 int	ft_know_type(int type)
 {
 	if (type == 1 || type == 2 || type == 3
@@ -37,16 +36,12 @@ int	ft_error_parse(t_tokens *tmp)
 		{
 			if (tmp->next != NULL && ft_know_type(tmp->next->type) == 1)
 			{
-				printf("sumbol = %s..........................\n", tmp->next->data);
 				ft_putstr_fd("21sh: parse error near `", 2);
 				ft_putstr_fd(tmp->next->data, 2);
 				ft_putendl_fd("'", 2);
 				return (1);
 			}
-			// else if (tmp->next == NULL)
-			// {
-			// 	printf("wa*****************\n");
-			// }
+		
 		}
 		tmp = tmp->next;
 	}

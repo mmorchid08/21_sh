@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 17:59:30 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/24 17:53:34 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/18 11:17:00 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_delete_one_env(t_tokens *token_begin)
 			free(tmp);
 			g_env.var = tmp->next;
 		}
-		while(tmp)
+		while (tmp)
 		{
 			if (ft_strequ(tmp->key, token_begin->data))
 			{
@@ -45,7 +45,7 @@ void	ft_add_to_env(t_data_env data_env)
 	t_var	*go_to_end;
 	t_var	*tmp;
 	t_var	*new_node;
-	int			i;
+	int		i;
 
 	go_to_end = g_env.var;
 	tmp = g_env.var;
@@ -73,7 +73,7 @@ void	ft_cat_new_env_to_key_value(t_data_env *data_env, char *buf)
 	while (buf[i] != '=')
 		i++;
 	data_env->key = ft_strsub(buf, 0, i);
-	data_env->value = ft_strdup(buf + 1 + i);	
+	data_env->value = ft_strdup(buf + 1 + i);
 }
 
 void	ft_add_change_env(t_tokens *token_begin)

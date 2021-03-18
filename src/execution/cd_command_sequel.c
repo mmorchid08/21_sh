@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 17:12:03 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/23 16:59:40 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/18 14:51:32 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_get_home(void)
 {
 	char		*home;
-	t_var	*tmp;
+	t_var		*tmp;
 
 	tmp = g_env.var;
 	while (tmp)

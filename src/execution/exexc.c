@@ -6,14 +6,13 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 11:29:55 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/25 17:35:53 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/18 12:56:57 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_execution.h"
 
-
-t_list_path	*get_malloc_value_path(char *value)
+t_list_path		*get_malloc_value_path(char *value)
 {
 	t_list_path *nev;
 
@@ -23,7 +22,7 @@ t_list_path	*get_malloc_value_path(char *value)
 	return (nev);
 }
 
-char	*ft_read_from_dir(t_list_path *tmp2, t_tokens *token_begin)
+char			*ft_read_from_dir(t_list_path *tmp2, t_tokens *token_begin)
 {
 	DIR				*dir;
 	struct dirent	*sd;
@@ -45,15 +44,15 @@ char	*ft_read_from_dir(t_list_path *tmp2, t_tokens *token_begin)
 	return (NULL);
 }
 
-void		ft_path_list(char *path_str,t_list_path **path_list)
+void			ft_path_list(char *path_str, t_list_path **path_list)
 {
 	t_list_path	*tmp;
 	int			i;
-    char **tab_path;
+	char		**tab_path;
 
 	i = 0;
 	tmp = NULL;
-    tab_path = NULL;
+	tab_path = NULL;
 	*path_list = NULL;
 	tab_path = ft_strsplit(path_str, ':');
 	while (tab_path[i])
@@ -69,15 +68,14 @@ void		ft_path_list(char *path_str,t_list_path **path_list)
 			tmp = tmp->next;
 		}
 		i++;
-	}    
+	}
 	free(tab_path);
 }
 
-char	*open_paths(t_tokens *begin, t_list_path **path_list)
+char			*open_paths(t_tokens *begin, t_list_path **path_list)
 {
 	t_var		*tmp;
 	t_list_path	*tmp2;
-	// t_list_path	*path_list;
 	char		*path;
 
 	tmp = g_env.var;
@@ -86,7 +84,7 @@ char	*open_paths(t_tokens *begin, t_list_path **path_list)
 	{
 		if (ft_strcmp(tmp->key, "PATH") == 0)
 		{
-			ft_path_list(tmp->value, path_list); 
+			ft_path_list(tmp->value, path_list);
 			tmp2 = *path_list;
 			while (tmp2 != NULL)
 			{
@@ -101,7 +99,7 @@ char	*open_paths(t_tokens *begin, t_list_path **path_list)
 	return (NULL);
 }
 
-void	exection(char *binary, char **argv, char **env)
+void			exection(char *binary, char **argv, char **env)
 {
 	if (execve(binary, argv, env) < 1)
 	{
@@ -110,14 +108,15 @@ void	exection(char *binary, char **argv, char **env)
 	}
 }
 
-void ft_exece(t_tokens *begin)
+void			ft_exece(t_tokens *begin)
 {
-    char		*bin_path;
+	char		*bin_path;
 	char		**argv;
 	char		**arr_env;
 	t_list_path	*path_list;
 
-    if (ft_strchr(begin->data, '/') || (bin_path = open_paths(begin,&path_list)))
+	if (ft_strchr(begin->data, '/') ||
+		(bin_path = open_paths(begin, &path_list)))
 	{
 		if (bin_path == NULL)
 			bin_path = ft_strdup(begin->data);
@@ -129,10 +128,10 @@ void ft_exece(t_tokens *begin)
 		free(bin_path);
 	}
 	else
-    {
+	{
 		ft_check_error(begin->data);
 		exit(1);
-    }
+	}
 	if (bin_path != NULL)
 		free_list_path(&path_list);
 }

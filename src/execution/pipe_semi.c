@@ -6,12 +6,11 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:33:00 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/24 18:09:59 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/18 12:14:18 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_execution.h"
-
 
 void	ft_save_fds(void)
 {
@@ -47,7 +46,6 @@ void	ft_close_pipe(int pipecount)
 		close(g_env.fd_pipe[pipecount]);
 }
 
-
 void	ft_exec(t_tokens *line)
 {
 	ft_verify_non_fork_builtins(line);
@@ -63,13 +61,13 @@ void	ft_exec(t_tokens *line)
 	{
 		ft_unset_input_mode();
 		redirection(line);
-        if (ft_check_builtins(line->data) == 1)
-        {
-            ft_verify_builtins(line);
-            exit(0);
-        }
-        else
-            ft_exece(line);
+		if (ft_check_builtins(line->data) == 1)
+		{
+			ft_verify_builtins(line);
+			exit(0);
+		}
+		else
+			ft_exece(line);
 	}
 }
 
@@ -86,13 +84,13 @@ void	ft_exec_pipe(t_tokens *line, t_tokens *prev, int pipecount)
 			dup2(g_env.fd_pipe[(g_env.com_pipe - 1) * 2], STDIN_FILENO);
 		redirection(line);
 		ft_close_pipe(pipecount);
-        if (ft_check_builtins(line->data) == 1)
-        {
-            ft_verify_builtins(line);
-            exit(0);
-        }
-        else
-            ft_exece(line);
+		if (ft_check_builtins(line->data) == 1)
+		{
+			ft_verify_builtins(line);
+			exit(0);
+		}
+		else
+			ft_exece(line);
 	}
 }
 
@@ -112,10 +110,9 @@ void	ft_exec_line_pipe_c1(int pipecount)
 
 void	ft_exec_line_pipe(t_tokens **node, int pipecount)
 {
-    t_tokens *prev;
-	int pipefd_static[pipecount * 2];
-	int mult;
-
+	t_tokens	*prev;
+	int			pipefd_static[pipecount * 2];
+	int			mult;
 
 	mult = -2;
 	g_env.fd_pipe = (int *)pipefd_static;
@@ -124,20 +121,20 @@ void	ft_exec_line_pipe(t_tokens **node, int pipecount)
 			exit(1);
 	g_env.com_pipe = 0;
 	ft_save_fds();
-    prev = NULL;
+	prev = NULL;
 	while ((*node))
 	{
 		ft_exec_pipe(*node, prev, pipecount * 2);
 		if ((*node)->next && (*node)->next->type == PIPE)
 		{
-            prev = (*node);
-            g_env.com_pipe++;
-            (*node) = (*node)->next;
-        }
+			prev = (*node);
+			g_env.com_pipe++;
+			(*node) = (*node)->next;
+		}
 		else
 			break ;
-        if ((*node))
-		    (*node) = (*node)->next;
+		if ((*node))
+			(*node) = (*node)->next;
 	}
 	ft_exec_line_pipe_c1(pipecount * 2);
 }
@@ -157,15 +154,14 @@ void	handling_semi(t_tokens *node)
 		// 	while (node && node->prev && node->prev->op_main & O_OR)
 		// 		node = node->next;
 		// if (!node)
-		// 	break ;
+		// // 	break ;
 		g_env.fd_pipe = NULL;
 		if (node->next && node->next->type == PIPE)
 			ft_exec_line_pipe(&node, ft_count_pipe(node->next));
-		else 
-        if (node->type == 0)
+		else if (node->type == 0)
 			ft_exec(node);
-        while(node && node->type == 0)
-            node = node->next;
+		while (node && node->type == 0)
+			node = node->next;
 		if (!node)
 			break ;
 		node = node->next;

@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 16:25:07 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/28 17:51:50 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:02:09 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,11 @@ void	ft_write_path(char *value)
 
 void	ft_work_hyphen(char *token)
 {
-	// char		*home;
 	char		*pwd;
 	char		*old_pwd;
 	t_var		*tmp;
 
 	tmp = g_env.var;
-	// home = ft_get_home(list_env);
 	pwd = ft_get_pwd();
 	old_pwd = ft_get_old_pwd();
 	if (ft_strcmp(token, "-") == 0)
@@ -87,6 +85,7 @@ void	ft_the_current(char *path)
 	tmp = g_env.var;
 	ft_tack_pwd();
 	chdir(path);
+	dprintf(2, "path = %s\n", path);
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, "PWD") == 0)
@@ -101,7 +100,6 @@ void	ft_the_current(char *path)
 
 void	ft_operation_non_fork_cd(t_tokens *token_begin)
 {
-	// int			lst;
 	struct stat	buf;
 	t_tokens	*cp;
 	int			count;
@@ -119,21 +117,27 @@ void	ft_operation_non_fork_cd(t_tokens *token_begin)
 		ft_the_current(ft_get_home());
 	if (count == 2)
 	{
-		//HERE/////////////////////////////////////////////////////////////
-		lstat(token_begin->next->data, &buf);
+		if (lstat(token_begin->next->data, &buf) == -1)
+		{
+			perror("lstat");
+			exit(EXIT_FAILURE);
+		}
 		if (ft_strcmp(token_begin->next->data, "-") == 0)
 			ft_work_hyphen(token_begin->next->data);
 		else if (S_ISDIR(buf.st_mode))
 			ft_the_current(token_begin->next->data);
+		else if (S_ISLNK(buf.st_mode))
+		{
+			//is linkhre 
+		}
 		else
 			token_begin->next->status = 0;
 	}
 }
 
-
 void	ft_operation_cd(t_tokens *token_begin)
 {
-	struct stat	buf;
+	struct		stat	buf;
 	t_tokens	*cp;
 	int			count;
 

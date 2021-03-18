@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 17:16:40 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/23 17:02:01 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/18 14:50:54 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,3 @@ t_var	*get_malloc_key_value(char *key, char *value)
 	nev->next = NULL;
 	return (nev);
 }
-

@@ -6,13 +6,13 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 16:25:19 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/02/23 17:06:33 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/18 14:50:30 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_execution.h"
 
-int	ft_chek_espace(char *buf)
+int		ft_chek_espace(char *buf)
 {
 	int	i;
 
