@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:33:00 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/18 12:14:18 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/18 17:17:20 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,15 @@ void	ft_exec(t_tokens *line)
 	}
 	else if (g_env.current_pid == 0)
 	{
-		ft_unset_input_mode();
 		redirection(line);
-		if (ft_check_builtins(line->data) == 1)
-		{
-			ft_verify_builtins(line);
-			exit(0);
-		}
-		else
-			ft_exece(line);
+		ft_unset_input_mode();
+        if (ft_check_builtins(line->data) == 1)
+        {
+            ft_verify_builtins(line);
+            exit(0);
+        }
+        else
+            ft_exece(line);
 	}
 }
 
@@ -77,12 +77,12 @@ void	ft_exec_pipe(t_tokens *line, t_tokens *prev, int pipecount)
 	g_env.current_pid = fork();
 	if (g_env.current_pid == 0)
 	{
-		ft_unset_input_mode();
 		if (g_env.fd_pipe && line->next && line->next->type == PIPE)
 			dup2(g_env.fd_pipe[g_env.com_pipe * 2 + 1], STDOUT_FILENO);
 		if (g_env.fd_pipe && prev && prev->next && prev->next->type == PIPE)
 			dup2(g_env.fd_pipe[(g_env.com_pipe - 1) * 2], STDIN_FILENO);
 		redirection(line);
+		ft_unset_input_mode();
 		ft_close_pipe(pipecount);
 		if (ft_check_builtins(line->data) == 1)
 		{
