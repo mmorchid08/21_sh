@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmorchid <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 12:14:26 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/18 12:52:23 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/19 16:33:08 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,16 +102,10 @@ t_content	check_character_for_split(char *c)
 		return ((t_content){offset, ft_get_type(c, offset)});
 	if (ft_strncmp(c, ">", 1) == 0)
 		return ((t_content){1, REDIRECTION_RIGHT});
-	if (ft_strncmp(c, "&&", 2) == 0)
-		return ((t_content){2, AND});
-	if (ft_strncmp(c, "||", 2) == 0)
-		return ((t_content){2, OR});
 	if (ft_strncmp(c, "|", 1) == 0)
 		return ((t_content){1, PIPE});
 	if (ft_strncmp(c, ";", 1) == 0)
 		return ((t_content){1, SEMICOLON});
-	if (ft_strncmp(c, "&", 1) == 0)
-		return ((t_content){1, AMP});
 	if ((ft_strncmp(c, " ", 1) == 0) || (ft_strncmp(c, "\t", 1) == 0))
 		return ((t_content){1, SPACE});
 	return ((t_content){0, 0});
@@ -160,65 +154,66 @@ void	append_list_tokens(t_tokens **tokens, char *data, int type)
 
 int		check_red(int type)
 {
-	if (type == 1 || type == 2 || type == 3 || type == 4 
-			|| type == 5 || type == 6 || type == 7) 
+	if (type == 1 || type == 2 || type == 3 || type == 4
+			|| type == 5 || type == 6 || type == 7)
 		return (1);
 	return (0);
 }
 
 t_tokens	*handling(char *line)
 {
-	int			i;
-	char		*token;
-	char		*pt;
+	t_vari		var;
 	t_tokens	*tokens;
 	t_tokens	*tmp;
-	char		*toto;
 	t_content	content;
 
-	i = 0;
+	var.i = 0;
 	tokens = NULL;
-	pt = NULL;
-	toto = NULL;
-	while (line[i])
+	var.pt = NULL;
+	var.toto = NULL;
+	while (line[var.i])
 	{
-		token = ft_strdup("");
-		content = check_character_for_split(&line[i]);
+		var.token = ft_strdup("");
+		content = check_character_for_split(&line[var.i]);
 		if (content.index)
 		{
-			if (line[i] != ' ' && line[i] != '\t')
+			if (line[var.i] != ' ' && line[var.i] != '\t')
 			{
-				toto = ft_strsub(line, i, content.index);
-				pt = token;
-				token = ft_strjoin(token, toto);
-				ft_strdel(&pt);
-				ft_strdel(&toto);
-				append_list_tokens(&tokens, token, content.type);
-				ft_bzero(token, ft_strlen(token));
+				var.toto = ft_strsub(line, var.i, content.index);
+				var.pt = var.token;
+				var.token = ft_strjoin(var.token, var.toto);
+				ft_strdel(&var.pt);
+				ft_strdel(&var.toto);
+				append_list_tokens(&tokens, var.token, content.type);
+				ft_bzero(var.token, ft_strlen(var.token));
 			}
-			ft_strdel(&token);
-			i = i + content.index;
+			ft_strdel(&var.token);
+			var.i = var.i + content.index;
 		}
 		else
 		{
-			if (!(ft_isprint(line[i]) || (line[i] < 0 && line[i] >= -5) || line[i] == '\n'))
-				i++;
-			while ((ft_isprint(line[i]) || (line[i] < 0 && line[i] >= -5) || line[i] == '\n') && content.index == 0)
+			if (!(ft_isprint(line[var.i])
+			|| (line[var.i] < 0 && line[var.i] >= -5)
+			|| line[var.i] == '\n'))
+				var.i++;
+			while ((ft_isprint(line[var.i])
+			|| (line[var.i] < 0 && line[var.i] >= -5)
+			|| line[var.i] == '\n') && content.index == 0)
 			{
-				pt = token;
-				token = ft_strjoin_one_charatcter(token, line[i]);
-				ft_strdel(&pt);
-				i++;
-				content = check_character_for_split(&line[i]);
+				var.pt = var.token;
+				var.token = ft_strjoin_one_charatcter(var.token, line[var.i]);
+				ft_strdel(&var.pt);
+				var.i++;
+				content = check_character_for_split(&line[var.i]);
 				if (content.index != 0)
 				{
 					content.type = 0;
 					break ;
 				}
 			}
-			append_list_tokens(&tokens, token, content.type);
-			ft_bzero(token, ft_strlen(token));
-			ft_strdel(&token);
+			append_list_tokens(&tokens, var.token, content.type);
+			ft_bzero(var.token, ft_strlen(var.token));
+			ft_strdel(&var.token);
 		}
 	}
 	tmp = tokens;
@@ -246,7 +241,7 @@ void	main_c1(void)
 	{
 		ft_parse(&line);
 		tokens = handling(line);
-		if (!ft_check_multi_semi(tokens) && !ft_error_parse(tokens) && !ft_check_bad_fd(tokens))
+		if (!ft_checksemi(tokens) && !err_pars(tokens) && !ft_check_fd(tokens))
 			handling_semi(tokens);
 		free_list_token(&tokens);
 	}

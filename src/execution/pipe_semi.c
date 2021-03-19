@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:33:00 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/18 17:17:20 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/19 15:55:33 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ void	ft_exec(t_tokens *line)
 	{
 		redirection(line);
 		ft_unset_input_mode();
-        if (ft_check_builtins(line->data) == 1)
-        {
-            ft_verify_builtins(line);
-            exit(0);
-        }
-        else
-            ft_exece(line);
+		if (ft_check_builtins(line->data) == 1)
+		{
+			ft_verify_builtins(line);
+			exit(0);
+		}
+		else
+			ft_exece(line);
 	}
 }
 
@@ -143,18 +143,6 @@ void	handling_semi(t_tokens *node)
 {
 	while (node)
 	{
-		// while (node && node->prev && node->prev->op_main
-		// & O_AND && !node->prev->status)
-		// {
-		// 	node->status = 0;
-		// 	node = node->next;
-		// }
-		// if (node && node->prev && node->prev->op_main
-		// & O_OR && node->prev->status)
-		// 	while (node && node->prev && node->prev->op_main & O_OR)
-		// 		node = node->next;
-		// if (!node)
-		// // 	break ;
 		g_env.fd_pipe = NULL;
 		if (node->next && node->next->type == PIPE)
 			ft_exec_line_pipe(&node, ft_count_pipe(node->next));

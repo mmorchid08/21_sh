@@ -52,6 +52,14 @@ typedef struct  s_tokens
     struct  s_tokens *next;
 }               t_tokens;
 
+typedef	struct			s_vari
+{
+	int			i;
+	char		*token;
+	char		*pt;
+	char		*toto;
+}						t_vari;
+
 typedef	struct			s_list_path
 {
 	char				*name_path;
@@ -162,10 +170,10 @@ void	free_list_path(t_list_path **path);
 
 //error
 void	ft_check_error(char *name);
-int ft_check_multi_semi(t_tokens *tmp);
+int ft_checksemi(t_tokens *tmp);
 int ft_check_multi_pipe(t_tokens *tmp);
-int  ft_check_bad_fd(t_tokens *tmp);
-int  ft_error_parse(t_tokens *tmp);
+int  ft_check_fd(t_tokens *tmp);
+int  err_pars(t_tokens *tmp);
 // int ft_know_type(t_tokens *tmp);
 int ft_know_type(int type);
 

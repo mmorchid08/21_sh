@@ -6,7 +6,7 @@
 /*   By: youarzaz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 14:55:38 by youarzaz          #+#    #+#             */
-/*   Updated: 2020/03/09 14:55:39 by youarzaz         ###   ########.fr       */
+/*   Updated: 2021/03/19 15:48:27 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	ft_operation_non_fork_cd(t_tokens *line)
 		ft_setenv_var(&(g_env.var), "PWD", ft_strdup(g_env.working_dir));
 		ft_setenv_var(&(g_env.var), "OLDPWD",
 		ft_strdup(g_env.old_working_dir));
-		// ft_get_prompt();
 		line->status = 1;
 		return ;
 	}
