@@ -324,5 +324,6 @@ void					ft_enter(void);
 void					ft_controle_d(char **line);
 void					ft_get_git_branch(char *pwd);
 int						ft_isnonprint(char c);
+void					ft_manage_newline(char **line, char **copy);
 
 #endif

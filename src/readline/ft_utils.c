@@ -41,6 +41,7 @@ void	ft_free_table(char ***table)
 
 void	ft_exec_exit(void)
 {
+	ft_unset_input_mode();
 	if (g_env.current_pid > 0)
 		kill(g_env.current_pid, 0);
 	else if (g_env.running_proc && g_env.current_pid == 0)

@@ -47,6 +47,7 @@ typedef struct  s_tokens
     char    *here;
     int      space_b;
     int     status;
+    int     ret;
     struct  s_tokens *args;
     struct  s_tokens *next;
 }               t_tokens;

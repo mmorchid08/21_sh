@@ -124,7 +124,7 @@ t_tokens	*new_node(char *data, int type)
 	node = (t_tokens *)malloc(sizeof(t_tokens));
 	node->data = ft_strdup(data);
 	node->type = type;
-	node->status = 1;
+	node->status = 0;
 	node->here = NULL;
 	node->args = NULL;
 	node->next = NULL;
