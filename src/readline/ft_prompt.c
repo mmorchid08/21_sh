@@ -75,6 +75,6 @@ void	ft_get_prompt(void)
 		ft_strdel(&(g_env.prompt));
 	g_env.prompt = line;
 	g_env.prompt_len = 4;
-	g_env.multi_prompt_len = ((int)g_env.prompt_len > g_env.col) ?
+	g_env.multi_prompt_len = ((int)g_env.prompt_len > g_env.col && g_env.col) ?
 	g_env.prompt_len % g_env.col : g_env.prompt_len;
 }

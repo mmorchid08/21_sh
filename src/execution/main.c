@@ -221,7 +221,11 @@ t_tokens	*handling(char *line)
 		if (check_red(tmp->type) && tmp->next != NULL && tmp->next->type == 0)
 			tmp->next->type = REDIRECTION_WORD;
 		if (tmp->type == 0)
-			tmp->data = ft_strmap(tmp->data, &ft_decode_char);
+		{
+			line = tmp->data;
+			tmp->data = ft_strmap2(tmp->data, &ft_decode_char);
+
+		}
 		tmp = tmp->next;
 	}
 	return (tokens);
@@ -240,8 +244,8 @@ void	main_c1(void)
 	{
 		ft_parse(&line);
 		tokens = handling(line);
-		// if (!ft_checksemi(tokens) && !err_pars(tokens) && !ft_check_fd(tokens))
-		// 	handling_semi(tokens);
+		if (!ft_checksemi(tokens) && !err_pars(tokens) && !ft_check_fd(tokens))
+			handling_semi(tokens);
 		free_list_token(&tokens);
 	}
 	(line) ? free(line) : 1;
