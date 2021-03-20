@@ -185,7 +185,6 @@ t_tokens	*handling(char *line)
 				ft_strdel(&var.pt);
 				ft_strdel(&var.toto);
 				append_list_tokens(&tokens, var.token, content.type);
-				ft_bzero(var.token, ft_strlen(var.token));
 			}
 			ft_strdel(&var.token);
 			var.i = var.i + content.index;
@@ -222,7 +221,11 @@ t_tokens	*handling(char *line)
 		if (check_red(tmp->type) && tmp->next != NULL && tmp->next->type == 0)
 			tmp->next->type = REDIRECTION_WORD;
 		if (tmp->type == 0)
-			tmp->data = ft_strmap(tmp->data, &ft_decode_char);
+		{
+			line = tmp->data;
+			tmp->data = ft_strmap2(tmp->data, &ft_decode_char);
+
+		}
 		tmp = tmp->next;
 	}
 	return (tokens);

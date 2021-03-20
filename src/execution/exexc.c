@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_execution.h"
+#include "../../includes/ft_execution.h"
 
 t_list_path		*get_malloc_value_path(char *value)
 {
@@ -115,6 +115,7 @@ void			ft_exece(t_tokens *begin)
 	char		**arr_env;
 	t_list_path	*path_list;
 
+	bin_path = NULL;
 	if (ft_strchr(begin->data, '/') ||
 		(bin_path = open_paths(begin, &path_list)))
 	{
