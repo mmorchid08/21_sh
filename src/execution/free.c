@@ -18,7 +18,7 @@ void	free_list_token(t_tokens **token)
 	t_tokens	*next;
 
 	current = *token;
-	while (current != NULL)
+	while (current)
 	{
 		next = current->next;
 		free(current->data);

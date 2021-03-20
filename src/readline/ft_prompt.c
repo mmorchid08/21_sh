@@ -43,18 +43,14 @@ char	*ft_get_hostname(void)
 char	*ft_get_wd(void)
 {
 	char	*res;
-	char	*home;
-	char	*working_dir;
 	int		len;
 
-	home = ft_get_var_value(g_env.var, "HOME");
-	working_dir = getcwd(NULL, 1024);
-	if (home && (len = ft_strlen(home))
-	&& ft_strnequ(home, working_dir, len))
+	if (g_env.home && (len = ft_strlen(g_env.home))
+	&& ft_strnequ(g_env.home, g_env.working_dir, len))
 		res = ft_free_strjoin(ft_strdup("~"),
-		ft_strdup(working_dir + len));
+		ft_strdup(g_env.working_dir + len));
 	else
-		res = ft_strdup(working_dir);
+		res = ft_strdup(g_env.working_dir);
 	return (res);
 }
 

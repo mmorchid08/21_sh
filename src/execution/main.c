@@ -185,7 +185,6 @@ t_tokens	*handling(char *line)
 				ft_strdel(&var.pt);
 				ft_strdel(&var.toto);
 				append_list_tokens(&tokens, var.token, content.type);
-				ft_bzero(var.token, ft_strlen(var.token));
 			}
 			ft_strdel(&var.token);
 			var.i = var.i + content.index;
@@ -241,8 +240,8 @@ void	main_c1(void)
 	{
 		ft_parse(&line);
 		tokens = handling(line);
-		if (!ft_checksemi(tokens) && !err_pars(tokens) && !ft_check_fd(tokens))
-			handling_semi(tokens);
+		// if (!ft_checksemi(tokens) && !err_pars(tokens) && !ft_check_fd(tokens))
+		// 	handling_semi(tokens);
 		free_list_token(&tokens);
 	}
 	(line) ? free(line) : 1;
