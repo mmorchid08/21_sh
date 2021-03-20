@@ -6,159 +6,11 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 12:14:26 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/19 16:33:08 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/20 16:19:25 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_execution.h"
-
-char	*ft_strjoin_one_charatcter(char const *s1, char const s2)
-{
-	int		i;
-	char	*str;
-
-	i = 0;
-	if (s1 && s2)
-	{
-		str = (char*)malloc(sizeof(char) * (ft_strlen(s1) + 1 + 1));
-		if (!str)
-			return (NULL);
-		while (s1[i] != '\0')
-		{
-			str[i] = s1[i];
-			i++;
-		}
-		str[i++] = s2;
-		str[i] = '\0';
-		return (str);
-	}
-	return (0);
-}
-
-void	ft_cut_buf(char *buf)
-{
-	buf[ft_strlen(buf) - 1] = '\0';
-}
-
-int		ft_isaggr(char *s1, char *s2, int n)
-{
-	int		offset;
-
-	offset = 0;
-	while (*s1 && *s1 != ' ')
-	{
-		if (ft_strncmp(s1, s2, n) == 0)
-			return (offset);
-		offset++;
-		s1++;
-	}
-	return (0);
-}
-
-int		ft_get_type(char *c, int offset)
-{
-	int i;
-
-	i = 0;
-	while (i < offset)
-	{
-		if (ft_isdigit(c[i]))
-			i++;
-		else
-			return (WORD);
-	}
-	return (PRE_AGGREGATION_NUMBER);
-}
-
-t_content	check_character_for_split(char *c)
-{
-	int	offset;
-
-	if ((offset = ft_isaggr(c, ">>", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, ">>", 2) == 0)
-		return ((t_content){2, REDIRECTION_RIGHT_RIGHT});
-	if ((offset = ft_isaggr(c, "<<<", 3)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, "<<<", 3) == 0)
-		return ((t_content){3, REDIRECTION_LEFT_LEFT_LEFT});
-	if ((offset = ft_isaggr(c, "<<", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, "<<", 2) == 0)
-		return ((t_content){2, REDIRECTION_LEFT_LEFT});
-	if ((offset = ft_isaggr(c, ">&", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, ">&", 2) == 0)
-		return ((t_content){2, REDIRECTION_RIGHT_AGGREGATION});
-	if ((offset = ft_isaggr(c, "<&", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, "<&", 2) == 0)
-		return ((t_content){2, REDIRECTION_LEFT_AGGREGATION});
-	if ((offset = ft_isaggr(c, "<", 1)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, "<", 1) == 0)
-		return ((t_content){1, REDIRECTION_LEFT});
-	if ((offset = ft_isaggr(c, ">", 1)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, ">", 1) == 0)
-		return ((t_content){1, REDIRECTION_RIGHT});
-	if (ft_strncmp(c, "|", 1) == 0)
-		return ((t_content){1, PIPE});
-	if (ft_strncmp(c, ";", 1) == 0)
-		return ((t_content){1, SEMICOLON});
-	if ((ft_strncmp(c, " ", 1) == 0) || (ft_strncmp(c, "\t", 1) == 0))
-		return ((t_content){1, SPACE});
-	return ((t_content){0, 0});
-}
-
-t_tokens	*new_node(char *data, int type)
-{
-	t_tokens	*node;
-
-	node = (t_tokens *)malloc(sizeof(t_tokens));
-	node->data = ft_strdup(data);
-	node->type = type;
-	node->status = 0;
-	node->here = NULL;
-	node->args = NULL;
-	node->next = NULL;
-	return (node);
-}
-
-void	append_list_tokens(t_tokens **tokens, char *data, int type)
-{
-	t_tokens	*tmp;
-
-	tmp = *tokens;
-	if (tmp == NULL)
-	{
-		tmp = new_node(data, type);
-		if (type == WORD)
-			tmp->args = new_node(tmp->data, WORD_ARG);
-		*tokens = tmp;
-	}
-	else
-	{
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		if (type == WORD && tmp->type == WORD)
-			append_list_tokens(&(tmp->args), data, WORD_ARG);
-		else
-		{
-			tmp->next = new_node(data, type);
-			if (type == WORD)
-				tmp->next->args = new_node(tmp->next->data, WORD_ARG);
-		}
-	}
-}
-
-int		check_red(int type)
-{
-	if (type == 1 || type == 2 || type == 3 || type == 4
-			|| type == 5 || type == 6 || type == 7)
-		return (1);
-	return (0);
-}
 
 t_tokens	*handling(char *line)
 {
@@ -224,7 +76,6 @@ t_tokens	*handling(char *line)
 		{
 			line = tmp->data;
 			tmp->data = ft_strmap2(tmp->data, &ft_decode_char);
-
 		}
 		tmp = tmp->next;
 	}
