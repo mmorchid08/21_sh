@@ -6,11 +6,29 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 15:52:46 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/20 16:13:30 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/20 17:34:39 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_execution.h"
+
+void	ft_heredoc_sequel(char *line, int current_pid, int fd[2], char *str)
+{
+	current_pid = fork();
+	if (current_pid > 0)
+	{
+		waitpid(current_pid, 0, 0);
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[1]);
+	}
+	else if (current_pid == 0)
+	{
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		ft_putendl_fd(str, STDOUT_FILENO);
+		exit(0);
+	}
+}
 
 void	ft_heredoc(char *line)
 {
@@ -34,20 +52,36 @@ void	ft_heredoc(char *line)
 			str = ft_free_strjoin(str, tmp);
 		}
 	}
-	current_pid = fork();
-	if (current_pid > 0)
+	ft_heredoc_sequel(line, current_pid, fd, str);
+}
+
+void	redirection2(t_tokens *begin, int def_fd, t_tokens *prev)
+{
+	if (begin->type == REDIRECTION_RIGHT)
 	{
-		waitpid(current_pid, 0, 0);
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[1]);
+		def_fd = 1;
+		if (prev->type == 17)
+			def_fd = atoi(prev->data);
+		redirection_out(begin->next->data, def_fd);
 	}
-	else if (current_pid == 0)
+	else if (begin->type == REDIRECTION_LEFT)
 	{
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[0]);
-		ft_putendl_fd(str, STDOUT_FILENO);
-		exit(0);
+		def_fd = 0;
+		if (prev->type == 17)
+			def_fd = atoi(prev->data);
+		redirection_in(begin->next->data, def_fd);
 	}
+	else if (begin->type == REDIRECTION_RIGHT_RIGHT)
+	{
+		def_fd = 1;
+		if (prev->type == 17)
+			def_fd = atoi(prev->data);
+		redirection_out_out(begin->next->data, def_fd);
+	}
+	else if (begin->type == REDIRECTION_LEFT_LEFT)
+		ft_heredoc(begin->next->data);
+	else if (begin->type == REDIRECTION_LEFT_LEFT_LEFT)
+		ft_herestr(begin->next->data);
 }
 
 void	redirection(t_tokens *begin)
@@ -58,32 +92,8 @@ void	redirection(t_tokens *begin)
 	prev = NULL;
 	while (begin)
 	{
-		if (begin->type == REDIRECTION_RIGHT)
-		{
-			def_fd = 1;
-			if (prev->type == 17)
-				def_fd = atoi(prev->data);
-			redirection_out(begin->next->data, def_fd);
-		}
-		else if (begin->type == REDIRECTION_LEFT)
-		{
-			def_fd = 0;
-			if (prev->type == 17)
-				def_fd = atoi(prev->data);
-			redirection_in(begin->next->data, def_fd);
-		}
-		else if (begin->type == REDIRECTION_RIGHT_RIGHT)
-		{
-			def_fd = 1;
-			if (prev->type == 17)
-				def_fd = atoi(prev->data);
-			redirection_out_out(begin->next->data, def_fd);
-		}
-		else if (begin->type == REDIRECTION_LEFT_LEFT)
-			ft_heredoc(begin->next->data);
-		else if (begin->type == REDIRECTION_LEFT_LEFT_LEFT)
-			ft_herestr(begin->next->data);
-		else if (begin->type == REDIRECTION_RIGHT_AGGREGATION)
+		redirection2(begin, def_fd, prev);
+		if (begin->type == REDIRECTION_RIGHT_AGGREGATION)
 		{
 			def_fd = 1;
 			if (prev->type == 17)
