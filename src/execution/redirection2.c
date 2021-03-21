@@ -6,18 +6,20 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 15:38:18 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/20 15:43:03 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/21 12:54:39 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_execution.h"
 
-void	redirection_out(char *file_name, int fd)
+void	redirection_out(char *file_name, int fd, int fd2)
 {
 	int out;
 
 	out = open(file_name, O_WRONLY | O_TRUNC | O_CREAT, 0600);
 	dup2(out, fd);
+	if (fd2 >= 0)
+		dup2(out, fd2);
 	close(out);
 }
 
@@ -51,9 +53,12 @@ void	redirection_right_agg(char *prev_data, char *file_name, int fd)
 			close(ERROR_END);
 	}
 	else if (ft_get_type(file_name, ft_strlen(file_name)) == WORD)
-		redirection_out(file_name, fd);
+		redirection_out(file_name, fd, fd == 1 ? 2 : -1);
 	else
+	{
 		dup2(ft_atoi(file_name), fd);
+		fd == 1 ? dup2(ft_atoi(file_name), 2) : 0;
+	}
 }
 
 void	ft_herestr(char *line)

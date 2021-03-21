@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 13:11:20 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/20 16:20:41 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/21 12:58:57 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ t_tokens		*new_node(char *data, int type);
 int				ft_check_builtins(char *table);
 void			ft_verify_builtins(t_tokens *token_begin);
 void			ft_operation_echo(t_tokens *token_begin);
-void			redirection_out(char *file_name, int fd);
+void			redirection_out(char *file_name, int fd, int fd2);
 void			redirection_out_out(char *file_name, int fd);
 void			redirection_in(char *file_name, int fd);
 char			**prepere_argv(t_tokens *begin, t_tokens *finish);

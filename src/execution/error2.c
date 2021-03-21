@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 14:58:41 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/20 15:26:42 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/21 13:19:38 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		ft_write_red_err(char *path, int type)
 
 int		ft_check_fd_sequel(int count, int data, t_tokens *tmp)
 {
-	if (tmp->next == NULL && count != 0)
+	if (tmp->next == NULL)
 	{
 		ft_putendl_fd("21sh: Parse error near `\\n'", 2);
 		return (1);

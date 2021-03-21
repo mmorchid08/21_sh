@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 15:52:46 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/20 17:34:39 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/21 12:54:29 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	redirection2(t_tokens *begin, int def_fd, t_tokens *prev)
 		def_fd = 1;
 		if (prev->type == 17)
 			def_fd = atoi(prev->data);
-		redirection_out(begin->next->data, def_fd);
+		redirection_out(begin->next->data, def_fd, -1);
 	}
 	else if (begin->type == REDIRECTION_LEFT)
 	{

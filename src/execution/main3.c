@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 16:18:01 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/20 16:51:35 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/21 13:02:29 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_content	check_character_for_split(char *c)
 	return (check_character_for_split2(c));
 }
 
-void	append_list_tokens(t_tokens **tokens, char *data, int type)
+void		append_list_tokens(t_tokens **tokens, char *data, int type)
 {
 	t_tokens	*tmp;
 
@@ -62,7 +62,7 @@ void	append_list_tokens(t_tokens **tokens, char *data, int type)
 	}
 }
 
-int		check_red(int type)
+int			check_red(int type)
 {
 	if (type == 1 || type == 2 || type == 3 || type == 4
 			|| type == 5 || type == 6 || type == 7)
@@ -70,7 +70,8 @@ int		check_red(int type)
 	return (0);
 }
 
-void	handling2(char *line, t_vari *var, t_content *content, t_tokens **tokens)
+void		handling2(char *line, t_vari *var,
+		t_content *content, t_tokens **tokens)
 {
 	if (!(ft_isprint(line[var->i])
 	|| (line[var->i] < 0 && line[var->i] >= -5)
@@ -96,7 +97,7 @@ void	handling2(char *line, t_vari *var, t_content *content, t_tokens **tokens)
 	ft_strdel(&var->token);
 }
 
-void	handling3(t_tokens	*tokens)
+void		handling3(t_tokens *tokens)
 {
 	t_tokens	*tmp;
 
