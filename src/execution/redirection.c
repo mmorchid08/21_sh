@@ -98,7 +98,7 @@ void	redirection(t_tokens *begin)
 			def_fd = 1;
 			if (prev->type == 17)
 				def_fd = atoi(prev->data);
-			redirection_right_agg(prev->data, begin->next->data, def_fd);
+			redirection_right_agg(prev->data, begin->next, def_fd);
 		}
 		else if (begin->type == REDIRECTION_LEFT_AGGREGATION)
 		{

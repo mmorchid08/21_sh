@@ -41,9 +41,9 @@ void	redirection_out_out(char *file_name, int fd)
 	close(out_out);
 }
 
-void	redirection_right_agg(char *prev_data, char *file_name, int fd)
+void	redirection_right_agg(char *prev_data, t_tokens *file_name, int fd)
 {
-	if (ft_strcmp(file_name, "-") == 0)
+	if (ft_strcmp(file_name->data, "-") == 0)
 	{
 		if (ft_strcmp(prev_data, "0") == 0)
 			close(READ_END);
@@ -52,12 +52,12 @@ void	redirection_right_agg(char *prev_data, char *file_name, int fd)
 		else if (ft_strcmp(prev_data, "2") == 0)
 			close(ERROR_END);
 	}
-	else if (ft_get_type(file_name, ft_strlen(file_name)) == WORD)
-		redirection_out(file_name, fd, fd == 1 ? 2 : -1);
+	else if (ft_get_type(file_name->data, ft_strlen(file_name->data)) == WORD)
+		redirection_out(file_name->data, fd, fd == 1 ? 2 : -1);
 	else
 	{
-		dup2(ft_atoi(file_name), fd);
-		fd == 1 ? dup2(ft_atoi(file_name), 2) : 0;
+		dup2(ft_atoi(file_name->data), fd);
+		fd == 1 ? dup2(ft_atoi(file_name->data), 2) : 0;
 	}
 }
 

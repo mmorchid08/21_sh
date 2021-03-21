@@ -42,7 +42,7 @@ t_var	*ft_load_env(char **envp)
 	t_var	*var;
 	char	*str;
 	int		i;
-	int		shlvl;
+	int		shl;
 
 	var = NULL;
 	i = -1;
@@ -52,9 +52,9 @@ t_var	*ft_load_env(char **envp)
 		{
 			if (!(*str = '\0') && ft_strequ(envp[i], "SHLVL"))
 			{
-				shlvl = ft_atoi(str + 1);
+				shl = ft_atoi(str + 1);
 				ft_add_env_var(&var, ft_new_env_var(ft_strdup(envp[i]),
-				ft_itoa((ABS(shlvl) <= 999 && shlvl > 0) ? (shlvl + 1) : 1)));
+				ft_itoa((ft_abs(shl) <= 999 && shl > 0) ? (shl + 1) : 1)));
 			}
 			else
 			{

@@ -95,5 +95,6 @@ int				ft_ifcount(char *s, int (*f)(int));
 void			ft_del(void *content, size_t size);
 char			*ft_strjoin_free(char const *s1, char const *s2, int i);
 char			*ft_strmap2(char *s, char (*f)(char));
+int				ft_abs(int value);
 
 #endif

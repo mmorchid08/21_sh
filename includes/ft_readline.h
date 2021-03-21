@@ -29,7 +29,6 @@
 # include <dirent.h>
 # include "../libft/includes/libft.h"
 
-# define ABS(value) ((value < 0) ? (value * - 1) : value)
 # define TERM "xterm-256color"
 # define BUFF_SIZE 32
 # define C_RED "\x1B[31m"

@@ -39,6 +39,7 @@
 # define WORD_REDIRECTION 14
 # define WORD_REDIRECTION_ESPACE 16
 # define WORD_ARG 17
+# define WORD_AGG 18
 # define WORD 0
 # define READ_END 0
 # define WRITE_END 1
@@ -151,7 +152,7 @@ int				ft_count_tokens(t_tokens *token_begin);
 void			free_list_token(t_tokens **token);
 void			free_list_path(t_list_path **path);
 void			ft_check_error(char *name);
-int				ft_check_fd_sequel(int count, int data, t_tokens *tmp);
+int				ft_check_fd_sequel(int count, t_tokens *tmp);
 int				ft_checksemi(t_tokens *tmp);
 int				ft_check_multi_pipe(t_tokens *tmp);
 int				ft_check_fd(t_tokens *tmp);
@@ -171,14 +172,16 @@ int				ft_read_red_err(char *path, int type);
 void			ft_exec(t_tokens *line);
 void			ft_close_pipe(int pipecount);
 int				ft_isaggr(char *s1, char *s2, int n);
-void			redirection_right_agg(char *prev_data, char *file_name, int fd);
+void			redirection_right_agg(char *prev_data,
+t_tokens *file_name, int fd);
 char			*ft_strjoin_one_charatcter(char const *s1, char const s2);
 t_content		check_character_for_split(char *c);
 void			append_list_tokens(t_tokens **tokens, char *data, int type);
 void			ft_operation_non_fork_unalias(t_tokens *line);
 void			ft_operation_non_fork_alias(t_tokens *line);
 void			ft_list_alias(t_alias *al);
-void			handling2(char *line, t_vari *var, t_content *content, t_tokens **tokens);
+void			handling2(char *line, t_vari *var,
+t_content *content, t_tokens **tokens);
 void			handling3(t_tokens	*tokens);
 t_content		check_character_for_split2(char *c);
 

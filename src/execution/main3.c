@@ -104,10 +104,16 @@ void		handling3(t_tokens *tokens)
 	tmp = tokens;
 	while (tmp)
 	{
-		if (check_red(tmp->type) && tmp->next != NULL && tmp->next->type == 0)
-			tmp->next->type = REDIRECTION_WORD;
-		if (tmp->type == 0)
+		if (tmp->type == WORD || tmp->type == WORD_ARG)
 			tmp->data = ft_strmap2(tmp->data, &ft_decode_char);
+		if (check_red(tmp->type))
+		{
+			if (tmp->next != NULL && (tmp->next->type == WORD ||
+			tmp->next->type == WORD_ARG))
+				tmp->next->type = REDIRECTION_WORD;
+			else
+				tmp->status = -1;
+		}
 		tmp = tmp->next;
 	}
 }
