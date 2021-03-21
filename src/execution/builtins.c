@@ -28,6 +28,8 @@ int		ft_check_builtins(char *table)
 			return (1);
 		if (ft_strcmp(table, "exit") == 0)
 			return (1);
+		if (ft_strcmp(table, "alias") == 0)
+			return (1);
 	}
 	return (0);
 }
@@ -42,6 +44,12 @@ void	ft_verify_non_fork_builtins(t_tokens *token_begin)
 	else if (ft_strcmp(token_begin->data, "unsetenv") == 0
 			&& token_begin->args->next != NULL)
 		ft_delete_one_env(token_begin->args);
+	else if (ft_strcmp(token_begin->data, "alias") == 0
+			&& token_begin->args->next != NULL)
+		ft_operation_non_fork_alias(token_begin->args);
+	else if (ft_strcmp(token_begin->data, "unalias") == 0
+			&& token_begin->args->next != NULL)
+		ft_operation_non_fork_unalias(token_begin->args);
 	else if (ft_strcmp(token_begin->data, "exit") == 0)
 		ft_exec_exit();
 }
@@ -58,6 +66,12 @@ void	ft_verify_builtins(t_tokens *token_begin)
 	else if (ft_strcmp(token_begin->data, "unsetenv") == 0
 			&& token_begin->args->next == NULL)
 		ft_putendl("unsetenv: not enough arguments");
+	else if (ft_strcmp(token_begin->data, "alias") == 0
+			&& token_begin->args->next == NULL)
+		ft_list_alias(g_env.al);
+	else if (ft_strcmp(token_begin->data, "unalias") == 0
+			&& token_begin->args->next == NULL)
+		ft_putendl("unalias: not enough arguments");
 	else if (ft_strcmp(token_begin->data, "env") == 0)
 		ft_env_function();
 }

@@ -175,4 +175,8 @@ void			redirection_right_agg(char *prev_data, char *file_name, int fd);
 char			*ft_strjoin_one_charatcter(char const *s1, char const s2);
 t_content		check_character_for_split(char *c);
 void			append_list_tokens(t_tokens **tokens, char *data, int type);
+void			ft_operation_non_fork_unalias(t_tokens *line);
+void			ft_operation_non_fork_alias(t_tokens *line);
+void			ft_list_alias(t_alias *al);
+
 #endif

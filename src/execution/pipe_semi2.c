@@ -14,6 +14,7 @@
 
 void	ft_exec_pipe(t_tokens *line, t_tokens *prev, int pipecount)
 {
+	ft_check_alias(&(line->data));
 	ft_verify_non_fork_builtins(line);
 	g_env.current_pid = fork();
 	if (g_env.current_pid == 0)
