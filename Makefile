@@ -17,7 +17,7 @@ HEADERS = $(INC_DIR)ft_readline.h $(INC_DIR)ft_execution.h
 
 READLINE_FILES = ft_auto.c ft_calc.c ft_dir.c ft_handlers.c ft_history.c ft_history_2.c ft_init.c ft_mode.c ft_move.c ft_move_2.c ft_move_3.c ft_op.c ft_op_2.c ft_parse.c ft_prompt.c ft_prompt_2.c ft_quots.c ft_readline.c ft_select.c ft_signal.c ft_symbole.c ft_var.c ft_utils.c
 
-EXECUTION_FILES = ft_alias.c builtins.c  data_from_env.c echo_command.c env.c error.c exexc.c free.c main.c pipe_semi.c prepar_to_exe.c redirection.c setenv_command.c ft_builtin_cd.c ft_builtin_alias.c ft_builtin_unalias.c ft_builtin_cd_2.c ft_path.c ft_path2.c error2.c exexc2.c pipe_semi2.c main2.c redirection2.c main3.c
+EXECUTION_FILES = main4.c ft_alias.c builtins.c  data_from_env.c echo_command.c env.c error.c exexc.c free.c main.c pipe_semi.c prepar_to_exe.c redirection.c setenv_command.c ft_builtin_cd.c ft_builtin_alias.c ft_builtin_unalias.c ft_builtin_cd_2.c ft_path.c ft_path2.c error2.c exexc2.c pipe_semi2.c main2.c redirection2.c main3.c
 
 
 LIBFT_SRC = $(addprefix $(LIBFT_DIR)/, $(LIBFT_FILES))

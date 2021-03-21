@@ -30,6 +30,8 @@ int		ft_check_builtins(char *table)
 			return (1);
 		if (ft_strcmp(table, "alias") == 0)
 			return (1);
+		if (ft_strcmp(table, "unalias") == 0)
+			return (1);
 	}
 	return (0);
 }

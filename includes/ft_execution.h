@@ -178,5 +178,8 @@ void			append_list_tokens(t_tokens **tokens, char *data, int type);
 void			ft_operation_non_fork_unalias(t_tokens *line);
 void			ft_operation_non_fork_alias(t_tokens *line);
 void			ft_list_alias(t_alias *al);
+void			handling2(char *line, t_vari *var, t_content *content, t_tokens **tokens);
+void			handling3(t_tokens	*tokens);
+t_content		check_character_for_split2(char *c);
 
 #endif

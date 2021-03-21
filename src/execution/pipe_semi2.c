@@ -69,16 +69,14 @@ void	ft_exec_line_pipe(t_tokens **node, int pipecount)
 	while ((*node))
 	{
 		ft_exec_pipe(*node, prev, pipecount * 2);
-		if ((*node)->next && (*node)->next->type == PIPE)
+		if ((*node)->next && (*node)->next->type == PIPE && (g_env.com_pipe++))
 		{
 			prev = (*node);
-			g_env.com_pipe++;
 			(*node) = (*node)->next;
 		}
 		else
 			break ;
-		if ((*node))
-			(*node) = (*node)->next;
+		((*node)) && ((*node) = (*node)->next);
 	}
 	ft_exec_line_pipe_c1(pipecount * 2);
 }

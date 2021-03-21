@@ -48,7 +48,7 @@ void	ft_operation_non_fork_unalias(t_tokens *line)
 		line = line->next;
 		while (line)
 		{
-			if (!(line->ret = ft_remove_unalias(&(g_env.al), line)))
+			if (!(line->ret = ft_remove_unalias(&(g_env.al), line->data)))
 			{
 				line->status = 0;
 				break ;

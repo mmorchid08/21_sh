@@ -32,25 +32,7 @@ t_content	check_character_for_split(char *c)
 		return ((t_content){offset, ft_get_type(c, offset)});
 	if (ft_strncmp(c, ">&", 2) == 0)
 		return ((t_content){2, REDIRECTION_RIGHT_AGGREGATION});
-	if ((offset = ft_isaggr(c, "<&", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, "<&", 2) == 0)
-		return ((t_content){2, REDIRECTION_LEFT_AGGREGATION});
-	if ((offset = ft_isaggr(c, "<", 1)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, "<", 1) == 0)
-		return ((t_content){1, REDIRECTION_LEFT});
-	if ((offset = ft_isaggr(c, ">", 1)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, ">", 1) == 0)
-		return ((t_content){1, REDIRECTION_RIGHT});
-	if (ft_strncmp(c, "|", 1) == 0)
-		return ((t_content){1, PIPE});
-	if (ft_strncmp(c, ";", 1) == 0)
-		return ((t_content){1, SEMICOLON});
-	if ((ft_strncmp(c, " ", 1) == 0) || (ft_strncmp(c, "\t", 1) == 0))
-		return ((t_content){1, SPACE});
-	return ((t_content){0, 0});
+	return (check_character_for_split2(c));
 }
 
 void	append_list_tokens(t_tokens **tokens, char *data, int type)
@@ -86,4 +68,45 @@ int		check_red(int type)
 			|| type == 5 || type == 6 || type == 7)
 		return (1);
 	return (0);
+}
+
+void	handling2(char *line, t_vari *var, t_content *content, t_tokens **tokens)
+{
+	if (!(ft_isprint(line[var->i])
+	|| (line[var->i] < 0 && line[var->i] >= -5)
+	|| line[var->i] == '\n'))
+		var->i++;
+	while ((ft_isprint(line[var->i])
+	|| (line[var->i] < 0 && line[var->i] >= -5)
+	|| line[var->i] == '\n') && content->index == 0)
+	{
+		var->pt = var->token;
+		var->token = ft_strjoin_one_charatcter(var->token, line[var->i]);
+		ft_strdel(&var->pt);
+		var->i++;
+		*content = check_character_for_split(&line[var->i]);
+		if (content->index != 0)
+		{
+			content->type = 0;
+			break ;
+		}
+	}
+	append_list_tokens(tokens, var->token, content->type);
+	ft_bzero(var->token, ft_strlen(var->token));
+	ft_strdel(&var->token);
+}
+
+void	handling3(t_tokens	*tokens)
+{
+	t_tokens	*tmp;
+
+	tmp = tokens;
+	while (tmp)
+	{
+		if (check_red(tmp->type) && tmp->next != NULL && tmp->next->type == 0)
+			tmp->next->type = REDIRECTION_WORD;
+		if (tmp->type == 0)
+			tmp->data = ft_strmap2(tmp->data, &ft_decode_char);
+		tmp = tmp->next;
+	}
 }
