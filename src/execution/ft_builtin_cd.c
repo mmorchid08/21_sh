@@ -52,7 +52,7 @@ void	ft_operation_non_fork_cd(t_tokens *line)
 	{
 		path = ft_get_var_value(g_env.var, "OLDPWD");
 		path = (path) ? path : g_env.working_dir;
-		free(line->data);
+		free(line->next->data);
 		line->next->data = ft_strdup(path);
 	}
 	if (!(line->ret = ft_getcwd((path) ? path : g_env.home)))

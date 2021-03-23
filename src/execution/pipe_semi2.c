@@ -61,17 +61,17 @@ void	ft_exec_line_pipe(t_tokens **node, int pipecount)
 	mult = -2;
 	g_env.fd_pipe = (int *)pipefd_static;
 	while ((mult += 2) < pipecount * 2)
-		if (pipe(g_env.fd_pipe + mult) < 0)
-			exit(1);
+		(pipe(g_env.fd_pipe + mult) < 0) ? exit(1) : 1;
 	g_env.com_pipe = 0;
 	ft_save_fds();
 	prev = NULL;
 	while ((*node))
 	{
 		ft_exec_pipe(*node, prev, pipecount * 2);
-		if ((*node)->next && (*node)->next->type == PIPE && (g_env.com_pipe++))
+		if ((*node)->next && (*node)->next->type == PIPE)
 		{
 			prev = (*node);
+			g_env.com_pipe++;
 			(*node) = (*node)->next;
 		}
 		else
