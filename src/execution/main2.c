@@ -81,5 +81,6 @@ t_tokens	*new_node(char *data, int type)
 	node->here = NULL;
 	node->args = NULL;
 	node->next = NULL;
+	node->prev = NULL;
 	return (node);
 }

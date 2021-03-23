@@ -39,6 +39,7 @@ void		append_list_tokens(t_tokens **tokens, char *data, int type)
 {
 	t_tokens	*tmp;
 
+	printf("%s %d\n", data, type);
 	tmp = *tokens;
 	if (tmp == NULL)
 	{
@@ -56,6 +57,7 @@ void		append_list_tokens(t_tokens **tokens, char *data, int type)
 		else
 		{
 			tmp->next = new_node(data, type);
+			tmp->next->prev = tmp;
 			if (type == WORD)
 				tmp->next->args = new_node(tmp->next->data, WORD_ARG);
 		}

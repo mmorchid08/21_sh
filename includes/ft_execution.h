@@ -29,7 +29,7 @@
 # define REDIRECTION_RIGHT_AGGREGATION 5
 # define ESPACE_REDIRECTION_RIGHT_AGGREGATION 55
 # define REDIRECTION_LEFT_AGGREGATION	6
-# define PRE_AGGREGATION_NUMBER  17
+# define PRE_AGGREGATION_NUMBER  19
 # define AND 8
 # define OR 9
 # define PIPE 10
@@ -58,6 +58,7 @@ typedef struct	s_tokens
 	int				ret;
 	struct s_tokens	*args;
 	struct s_tokens	*next;
+	struct s_tokens	*prev;
 }				t_tokens;
 
 typedef struct	s_vari
