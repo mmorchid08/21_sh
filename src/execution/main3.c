@@ -35,32 +35,50 @@ t_content	check_character_for_split(char *c)
 	return (check_character_for_split2(c));
 }
 
+// void		append_list_tokens(t_tokens **tokens, char *data, int type)
+// {
+// 	t_tokens	*tmp;
+
+// 	tmp = *tokens;
+// 	if (tmp == NULL)
+// 	{
+// 		tmp = new_node(data, type);
+// 		if (type == WORD)
+// 			tmp->args = new_node(tmp->data, WORD_ARG);
+// 		*tokens = tmp;
+// 	}
+// 	else
+// 	{
+// 		while (tmp->next != NULL)
+// 			tmp = tmp->next;
+// 		if (type == WORD && tmp->type == WORD)
+// 			append_list_tokens(&(tmp->args), data, WORD_ARG);
+// 		else
+// 		{
+// 			tmp->next = new_node(data, type);
+// 			tmp->next->prev = tmp;
+// 			if (type == WORD)
+// 				tmp->next->args = new_node(tmp->next->data, WORD_ARG);
+// 		}
+// 	}
+// }
+
 void		append_list_tokens(t_tokens **tokens, char *data, int type)
 {
 	t_tokens	*tmp;
 
-	printf("%s %d\n", data, type);
 	tmp = *tokens;
 	if (tmp == NULL)
 	{
 		tmp = new_node(data, type);
-		if (type == WORD)
-			tmp->args = new_node(tmp->data, WORD_ARG);
 		*tokens = tmp;
 	}
 	else
 	{
 		while (tmp->next != NULL)
 			tmp = tmp->next;
-		if (type == WORD && tmp->type == WORD)
-			append_list_tokens(&(tmp->args), data, WORD_ARG);
-		else
-		{
-			tmp->next = new_node(data, type);
-			tmp->next->prev = tmp;
-			if (type == WORD)
-				tmp->next->args = new_node(tmp->next->data, WORD_ARG);
-		}
+		tmp->next = new_node(data, type);
+		tmp->next->prev = tmp;
 	}
 }
 
@@ -106,16 +124,28 @@ void		handling3(t_tokens *tokens)
 	tmp = tokens;
 	while (tmp)
 	{
-		if (tmp->type == WORD || tmp->type == WORD_ARG)
-			tmp->data = ft_strmap2(tmp->data, &ft_decode_char);
-		if (check_red(tmp->type))
-		{
-			if (tmp->next != NULL && (tmp->next->type == WORD ||
-			tmp->next->type == WORD_ARG))
-				tmp->next->type = REDIRECTION_WORD;
-			else
-				tmp->status = -1;
-		}
+		// if (tmp->type == WORD || tmp->type == WORD_ARG)
+		tmp->data = ft_strmap2(tmp->data, &ft_decode_char);
+		// if (check_red(tmp->type))
+		// {
+		// 	if (tmp->next != NULL && (tmp->next->type == WORD ||
+		// 	tmp->next->type == WORD_ARG))
+		// 		tmp->next->type = REDIRECTION_WORD;
+		// 	else
+		// 		tmp->status = -1;
+		// }
+		tmp = tmp->next;
+	}
+}
+
+void		handling4(t_tokens **tokens)
+{
+	t_tokens	*tmp;
+
+	tmp = *tokens;
+	while (tmp)
+	{
+		
 		tmp = tmp->next;
 	}
 }

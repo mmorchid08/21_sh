@@ -25,7 +25,7 @@ void	ft_exec_pipe(t_tokens *line, t_tokens *prev, int pipecount)
 			dup2(g_env.fd_pipe[(g_env.com_pipe - 1) * 2], STDIN_FILENO);
 		if (!line->next || (line->next->type != PIPE
 		&& line->next->type != WORD))
-			redirection(line);
+			redirection(line->next);
 		ft_unset_input_mode();
 		ft_close_pipe(pipecount);
 		if (ft_check_builtins(line->data) == 1)

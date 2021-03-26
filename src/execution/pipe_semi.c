@@ -60,7 +60,7 @@ void	ft_exec(t_tokens *line)
 	}
 	else if (g_env.current_pid == 0)
 	{
-		redirection(line);
+		redirection(line->next);
 		ft_unset_input_mode();
 		if (ft_check_builtins(line->data) == 1)
 		{
