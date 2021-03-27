@@ -41,24 +41,33 @@ void	redirection_out_out(char *file_name, int fd)
 	close(out_out);
 }
 
-void	redirection_right_agg(char *prev_data, t_tokens *file_name, int fd)
+void	redirection_right_agg(t_tokens *token)
 {
-	if (ft_strcmp(file_name->data, "-") == 0)
+	if (token->sub_fd < 0 && !token->filename)
 	{
-		if (ft_strcmp(prev_data, "0") == 0)
-			close(READ_END);
-		else if (ft_strcmp(prev_data, "1") == 0)
-			close(WRITE_END);
-		else if (ft_strcmp(prev_data, "2") == 0)
-			close(ERROR_END);
+		dup2(token->sub_fd, token->pre_fd);
 	}
-	else if (ft_get_type(file_name->data, ft_strlen(file_name->data)) == WORD)
-		redirection_out(file_name->data, fd, fd == 1 ? 2 : -1);
 	else
-	{
-		dup2(ft_atoi(file_name->data), fd);
-		fd == 1 ? dup2(ft_atoi(file_name->data), 2) : 0;
-	}
+		redirection_out(token->filename, token->pre_fd, 2);
+	if (token->close)
+		close(token->pre_fd);
+	// if (ft_strcmp(file_name->data, "-") == 0)
+	// {
+	// 	if (ft_strcmp(prev_data, "0") == 0)
+	// 		close(READ_END);
+	// 	else if (ft_strcmp(prev_data, "1") == 0)
+	// 		close(WRITE_END);
+	// 	else if (ft_strcmp(prev_data, "2") == 0)
+	// 		close(ERROR_END);
+	// }
+	// else if (ft_get_type(file_name->data, ft_strlen(file_name->data)) == WORD)
+	// 	redirection_out(file_name->data, fd, fd == 1 ? 2 : -1);
+	// else
+	// {
+	// 	dup2(ft_atoi(file_name->data), fd);
+	// 	fd == 1 ? dup2(ft_atoi(file_name->data), 2) : 0;
+	// }
+
 }
 
 void	ft_herestr(char *line)

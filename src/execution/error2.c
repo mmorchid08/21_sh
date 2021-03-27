@@ -35,53 +35,43 @@ int		ft_write_red_err(char *path, int type)
 	return (0);
 }
 
-int		ft_check_fd_sequel(int count, t_tokens *tmp)
+int		ft_check_fd_sequel(t_tokens *tmp)
 {
-	int data;
+	char str[10];
 
-	if (tmp->next == NULL)
+	if (tmp->pre_fd > -1 && read(tmp->pre_fd, (void *)str, 0) < 0)
 	{
-		ft_putendl_fd("21sh: Parse error near `\\n'", 2);
+		ft_putstr_fd("21sh: ", 2);
+		ft_putnbr_fd(tmp->pre_fd, 2);
+		ft_putendl_fd(": Bad file descriptor", 2);
 		return (1);
 	}
-	if (tmp->next == NULL && count == 0)
+	if (tmp->sub_fd > -1 && read(tmp->sub_fd, (void *)str, 0) < 0)
 	{
-		data = ft_atoi(tmp->next->data);
-		if (data > 2)
-		{
-			ft_putstr_fd("21sh: ", 2);
-			ft_putnbr_fd(data, 2);
-			ft_putendl_fd(": Bad file descriptor", 2);
-			return (1);
-		}
+		ft_putstr_fd("21sh: ", 2);
+		ft_putnbr_fd(tmp->sub_fd, 2);
+		ft_putendl_fd(": Bad file descriptor", 2);
+		return (1);
 	}
 	return (0);
 }
 
 int		ft_check_fd(t_tokens *tmp)
 {
-	int	count;
-
-	count = 0;
 	while (tmp)
 	{
-		if (tmp->status == -1)
+		if (check_red(tmp->type) && !(tmp->type == REDIRECTION_RIGHT_AGGREGATION) && !(tmp->type == REDIRECTION_LEFT_AGGREGATION) && !tmp->filename)
 		{
 			ft_putendl_fd("21sh: parse error", 2);
 			return (1);
 		}
-		if (tmp->type == REDIRECTION_LEFT && (!tmp->next ||
-!tmp->next->data || ft_read_red_err(tmp->next->data, tmp->type)))
+		if (tmp->type == REDIRECTION_LEFT && ft_read_red_err(tmp->filename, tmp->type))
 			return (1);
 		if ((tmp->type == REDIRECTION_RIGHT ||
-tmp->type == REDIRECTION_RIGHT_RIGHT) && (!tmp->next ||
-!tmp->next->data || ft_write_red_err(tmp->next->data, tmp->type)))
+tmp->type == REDIRECTION_RIGHT_RIGHT) && ft_write_red_err(tmp->filename, tmp->type))
 			return (1);
-		if ((tmp->type == REDIRECTION_RIGHT_AGGREGATION ||
-tmp->type == REDIRECTION_LEFT_AGGREGATION) &&
-ft_check_fd_sequel(count, tmp) == 1)
+		if (check_red(tmp->type) && ft_check_fd_sequel(tmp))
 			return (1);
-		count++;
 		tmp = tmp->next;
 	}
 	return (0);

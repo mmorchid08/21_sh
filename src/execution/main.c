@@ -46,6 +46,7 @@ t_tokens	*handling(char *line)
 			handling1(line, &var, &content, &tokens);
 		else
 			handling2(line, &var, &content, &tokens);
+
 	}
 	handling3(tokens);
 	handling4(&tokens);

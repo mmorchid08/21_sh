@@ -35,6 +35,19 @@ t_content	check_character_for_split(char *c)
 	return (check_character_for_split2(c));
 }
 
+int			ft_str_isdigit(char *str)
+{
+	int i;
+
+	i = -1;
+	while(str[++i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+	}
+	return (1);
+}
+
 // void		append_list_tokens(t_tokens **tokens, char *data, int type)
 // {
 // 	t_tokens	*tmp;
@@ -66,21 +79,78 @@ t_content	check_character_for_split(char *c)
 void		append_list_tokens(t_tokens **tokens, char *data, int type)
 {
 	t_tokens	*tmp;
+	t_tokens	*arg;
 
 	tmp = *tokens;
 	if (tmp == NULL)
 	{
 		tmp = new_node(data, type);
+		if (type == WORD)
+			tmp->args = new_node(tmp->data, WORD_ARG);
 		*tokens = tmp;
 	}
 	else
 	{
 		while (tmp->next != NULL)
 			tmp = tmp->next;
-		tmp->next = new_node(data, type);
-		tmp->next->prev = tmp;
+		if (check_red(type))
+		{
+			tmp->next = new_node(data, type);
+			tmp->next->prev = tmp;
+			if (tmp->type == PRE_AGGREGATION_NUMBER)
+			{
+				tmp->next->pre_fd = ft_atoi(tmp->data);
+				if (tmp->prev)
+				{
+					arg = tmp->next;
+					tmp = tmp->prev;
+					free_token(&(tmp->next));
+					tmp->next = arg;
+				}
+			}
+		}
+		else if ((tmp->type == REDIRECTION_LEFT_AGGREGATION || tmp->type == REDIRECTION_RIGHT_AGGREGATION) && ft_str_isdigit(data) && tmp->sub_fd == -1)
+			tmp->sub_fd = ft_atoi(data);
+		else if ((tmp->type == REDIRECTION_LEFT_AGGREGATION || tmp->type == REDIRECTION_RIGHT_AGGREGATION) && ft_strequ(data, "-") && tmp->close == 0)
+			tmp->close = 1;
+		else if (check_red(tmp->type) && !tmp->filename)
+		{
+			tmp->filename = ft_strdup(data);
+		}
+		else
+		{
+			if (type == WORD && tmp->type == WORD)
+				append_list_tokens(&(tmp->args), data, WORD_ARG);
+			else
+			{
+				tmp->next = new_node(data, type);
+				tmp->next->prev = tmp;
+				if (type == WORD)
+					tmp->next->args = new_node(tmp->next->data, WORD_ARG);
+			}
+		}
 	}
 }
+
+
+// void		append_list_tokens(t_tokens **tokens, char *data, int type)
+// {
+// 	t_tokens	*tmp;
+
+// 	tmp = *tokens;
+// 	if (tmp == NULL)
+// 	{
+// 		tmp = new_node(data, type);
+// 		*tokens = tmp;
+// 	}
+// 	else
+// 	{
+// 		while (tmp->next != NULL)
+// 			tmp = tmp->next;
+// 		tmp->next = new_node(data, type);
+// 		tmp->next->prev = tmp;
+// 	}
+// }
 
 int			check_red(int type)
 {
@@ -138,63 +208,22 @@ void		handling3(t_tokens *tokens)
 	}
 }
 
-int			ft_str_isdigit(char *str)
-{
-	int i;
-
-	i = -1;
-	while(str[++i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-	}
-	return (1);
-}
-
 void		handling4(t_tokens **tokens)
 {
 	t_tokens	*tmp;
-	t_tokens	*next;
-	t_tokens	*head;
+	t_tokens	*arg;
 
 	tmp = *tokens;
 	while (tmp)
 	{
-		// printf("%s\t%d\n", tmp->data, tmp->type);
-		if (tmp->type == WORD)
-		{
-			head = tmp;
-			while (tmp && tmp->type == WORD && (!(tmp->next && tmp->next->next && check_red(tmp->next->next->type) && ft_str_isdigit(tmp->next->data)) || head == tmp))
-			{
-				append_list_tokens(&head->args, tmp->data, WORD_ARG);
-				if (head != tmp)
-				{
-					tmp->prev->next = tmp->next;
-					next = tmp->next;
-					free_token(&tmp);
-					tmp = next;
-				}
-				else
-					tmp = tmp->next;
-			}
-			if (!tmp)
-				break;
-		}
-		tmp = tmp->next;
-	}
-
-	tmp = *tokens;
-	while (tmp)
-	{	
-		// printf("%s\t%d\n", tmp->data, tmp->type);
-		printf("[%s]\t", tmp->data);
-		next = tmp->args;
-		while(next)
-		{
-			printf("%s -> ", next->data);
-			next = next->next;
-		}
-		printf("\n");
+		// arg = tmp->args;
+		// printf("[%s]\t", tmp->data);
+		// while(arg)
+		// {
+		// 	printf("{%s}->", arg->data);
+		// 	arg = arg->next;
+		// }
+		// printf("\n");
 		tmp = tmp->next;
 	}
 }

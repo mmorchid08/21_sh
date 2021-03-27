@@ -59,6 +59,7 @@ typedef struct	s_tokens
 	int				ret;
 	int				pre_fd;
 	int				sub_fd;
+	int				close;
 	struct s_tokens	*args;
 	struct s_tokens	*next;
 	struct s_tokens	*prev;
@@ -156,7 +157,7 @@ int				ft_count_tokens(t_tokens *token_begin);
 void			free_list_token(t_tokens **token);
 void			free_list_path(t_list_path **path);
 void			ft_check_error(char *name);
-int				ft_check_fd_sequel(int count, t_tokens *tmp);
+int				ft_check_fd_sequel(t_tokens *tmp);
 int				ft_checksemi(t_tokens *tmp);
 int				ft_check_multi_pipe(t_tokens *tmp);
 int				ft_check_fd(t_tokens *tmp);
@@ -167,7 +168,6 @@ void			ft_restore_fds(void);
 t_var			*get_malloc_key_value(char *key, char *value);
 void			ft_heredoc(char *line);
 void			ft_herestr(char *line);
-int				ft_get_type(char *c, int offset);
 int				check_red(int type);
 void			ft_operation_non_fork_cd(t_tokens *token_begin);
 void			ft_verify_non_fork_builtins(t_tokens *token_begin);
@@ -176,8 +176,7 @@ int				ft_read_red_err(char *path, int type);
 void			ft_exec(t_tokens *line);
 void			ft_close_pipe(int pipecount);
 int				ft_isaggr(char *s1, char *s2, int n);
-void			redirection_right_agg(char *prev_data,
-t_tokens *file_name, int fd);
+void			redirection_right_agg(t_tokens *token);
 char			*ft_strjoin_one_charatcter(char const *s1, char const s2);
 t_content		check_character_for_split(char *c);
 void			append_list_tokens(t_tokens **tokens, char *data, int type);
@@ -190,5 +189,6 @@ void			handling3(t_tokens	*tokens);
 t_content		check_character_for_split2(char *c);
 void			handling4(t_tokens **tokens);
 void			free_token(t_tokens **token);
+int				ft_get_type(char *c, int offset);
 
 #endif

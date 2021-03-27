@@ -55,59 +55,44 @@ void	ft_heredoc(char *line)
 	ft_heredoc_sequel(line, current_pid, fd, str);
 }
 
-void	redirection2(t_tokens *begin, int def_fd, t_tokens *prev)
+void	redirection2(t_tokens *begin)
 {
 	if (begin->type == REDIRECTION_RIGHT)
 	{
-		def_fd = 1;
-		if (prev->type == 17)
-			def_fd = atoi(prev->data);
-		redirection_out(begin->next->data, def_fd, -1);
+		(begin->pre_fd < 0) && (begin->pre_fd = 1);
+		redirection_out(begin->filename, begin->pre_fd, -1);
 	}
 	else if (begin->type == REDIRECTION_LEFT)
 	{
-		def_fd = 0;
-		if (prev->type == 17)
-			def_fd = atoi(prev->data);
-		redirection_in(begin->next->data, def_fd);
+		(begin->pre_fd < 0) && (begin->pre_fd = 0);
+		redirection_in(begin->filename, begin->pre_fd);
 	}
 	else if (begin->type == REDIRECTION_RIGHT_RIGHT)
 	{
-		def_fd = 1;
-		if (prev->type == 17)
-			def_fd = atoi(prev->data);
-		redirection_out_out(begin->next->data, def_fd);
+		(begin->pre_fd < 0) && (begin->pre_fd = 1);
+		redirection_out_out(begin->filename, begin->pre_fd);
 	}
 	else if (begin->type == REDIRECTION_LEFT_LEFT)
-		ft_heredoc(begin->next->data);
+		ft_heredoc(begin->filename);
 	else if (begin->type == REDIRECTION_LEFT_LEFT_LEFT)
-		ft_herestr(begin->next->data);
+		ft_herestr(begin->filename);
 }
 
 void	redirection(t_tokens *begin)
 {
-	t_tokens	*prev;
-	int			def_fd;
-
-	prev = NULL;
-	while (begin)
+	while (begin && check_red(begin->type))
 	{
-		redirection2(begin, def_fd, prev);
+		redirection2(begin);
 		if (begin->type == REDIRECTION_RIGHT_AGGREGATION)
 		{
-			def_fd = 1;
-			if (prev->type == 17)
-				def_fd = atoi(prev->data);
-			redirection_right_agg(prev->data, begin->next, def_fd);
+			(begin->pre_fd < 0) && (begin->pre_fd = 1);
+			redirection_right_agg(begin);
 		}
 		else if (begin->type == REDIRECTION_LEFT_AGGREGATION)
 		{
-			def_fd = 0;
-			if (prev->type == 17)
-				def_fd = atoi(prev->data);
-			dup(def_fd);
+			(begin->pre_fd < 0) && (begin->pre_fd = 0);
+			redirection_right_agg(begin);
 		}
-		prev = begin;
 		begin = begin->next;
 	}
 }
