@@ -53,9 +53,12 @@ typedef struct	s_tokens
 	char			*data;
 	int				type;
 	char			*here;
+	char			*filename;
 	int				space_b;
 	int				status;
 	int				ret;
+	int				pre_fd;
+	int				sub_fd;
 	struct s_tokens	*args;
 	struct s_tokens	*next;
 	struct s_tokens	*prev;
@@ -186,5 +189,6 @@ t_content *content, t_tokens **tokens);
 void			handling3(t_tokens	*tokens);
 t_content		check_character_for_split2(char *c);
 void			handling4(t_tokens **tokens);
+void			free_token(t_tokens **token);
 
 #endif

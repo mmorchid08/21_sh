@@ -138,14 +138,63 @@ void		handling3(t_tokens *tokens)
 	}
 }
 
+int			ft_str_isdigit(char *str)
+{
+	int i;
+
+	i = -1;
+	while(str[++i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+	}
+	return (1);
+}
+
 void		handling4(t_tokens **tokens)
 {
 	t_tokens	*tmp;
+	t_tokens	*next;
+	t_tokens	*head;
 
 	tmp = *tokens;
 	while (tmp)
 	{
-		
+		// printf("%s\t%d\n", tmp->data, tmp->type);
+		if (tmp->type == WORD)
+		{
+			head = tmp;
+			while (tmp && tmp->type == WORD && (!(tmp->next && tmp->next->next && check_red(tmp->next->next->type) && ft_str_isdigit(tmp->next->data)) || head == tmp))
+			{
+				append_list_tokens(&head->args, tmp->data, WORD_ARG);
+				if (head != tmp)
+				{
+					tmp->prev->next = tmp->next;
+					next = tmp->next;
+					free_token(&tmp);
+					tmp = next;
+				}
+				else
+					tmp = tmp->next;
+			}
+			if (!tmp)
+				break;
+		}
+		tmp = tmp->next;
+	}
+
+	tmp = *tokens;
+	while (tmp)
+	{	
+		// printf("%s\t%d\n", tmp->data, tmp->type);
+		printf("[%s]\t", tmp->data);
+		next = tmp->args;
+		while(next)
+		{
+			printf("%s -> ", next->data);
+			next = next->next;
+		}
+		printf("\n");
 		tmp = tmp->next;
 	}
 }

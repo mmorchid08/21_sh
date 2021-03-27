@@ -78,6 +78,9 @@ t_tokens	*new_node(char *data, int type)
 	node->data = ft_strdup(data);
 	node->type = type;
 	node->status = 0;
+	node->pre_fd = -1;
+	node->sub_fd = -1;
+	node->filename = NULL;
 	node->here = NULL;
 	node->args = NULL;
 	node->next = NULL;

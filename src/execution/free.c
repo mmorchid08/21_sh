@@ -29,6 +29,14 @@ void	free_list_token(t_tokens **token)
 	*token = NULL;
 }
 
+void	free_token(t_tokens **token)
+{
+	free((*token)->data);
+	free_list_token(&((*token)->args));
+	free((*token));
+	*token = NULL;
+}
+
 void	free_list_path(t_list_path **path)
 {
 	t_list_path	*current;
