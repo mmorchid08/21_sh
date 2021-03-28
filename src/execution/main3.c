@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 16:18:01 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/21 13:02:29 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/28 16:20:23 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_content	check_character_for_split(char *c)
 		return ((t_content){offset, ft_get_type(c, offset)});
 	if (ft_strncmp(c, ">>", 2) == 0)
 		return ((t_content){2, REDIRECTION_RIGHT_RIGHT});
+	if (ft_strncmp(c, "||", 2) == 0)
+		return ((t_content){2, OR});
 	if ((offset = ft_isaggr(c, "<<<", 3)) != 0)
 		return ((t_content){offset, ft_get_type(c, offset)});
 	if (ft_strncmp(c, "<<<", 3) == 0)
@@ -40,7 +42,7 @@ int			ft_str_isdigit(char *str)
 	int i;
 
 	i = -1;
-	while(str[++i])
+	while (str[++i])
 	{
 		if (!ft_isdigit(str[i]))
 			return (0);

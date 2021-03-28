@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/18 12:14:26 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/20 16:19:25 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/28 13:26:56 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_tokens	*handling(char *line)
 			handling1(line, &var, &content, &tokens);
 		else
 			handling2(line, &var, &content, &tokens);
-
 	}
 	handling3(tokens);
 	return (tokens);
