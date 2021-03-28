@@ -22,6 +22,7 @@ void	free_list_token(t_tokens **token)
 	{
 		next = current->next;
 		free(current->data);
+		ft_strdel(&(current->filename));
 		free_list_token(&(current->args));
 		free(current);
 		current = next;
@@ -32,6 +33,7 @@ void	free_list_token(t_tokens **token)
 void	free_token(t_tokens **token)
 {
 	free((*token)->data);
+	ft_strdel(&((*token)->filename));
 	free_list_token(&((*token)->args));
 	free((*token));
 	*token = NULL;
