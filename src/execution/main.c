@@ -49,7 +49,6 @@ t_tokens	*handling(char *line)
 
 	}
 	handling3(tokens);
-	handling4(&tokens);
 	return (tokens);
 }
 

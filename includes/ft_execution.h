@@ -187,8 +187,8 @@ void			handling2(char *line, t_vari *var,
 t_content *content, t_tokens **tokens);
 void			handling3(t_tokens	*tokens);
 t_content		check_character_for_split2(char *c);
-void			handling4(t_tokens **tokens);
 void			free_token(t_tokens **token);
 int				ft_get_type(char *c, int offset);
+int				ft_str_isdigit(char *str);
 
 #endif

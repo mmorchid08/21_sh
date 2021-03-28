@@ -51,23 +51,6 @@ void	redirection_right_agg(t_tokens *token)
 		redirection_out(token->filename, token->pre_fd, 2);
 	if (token->close)
 		close(token->pre_fd);
-	// if (ft_strcmp(file_name->data, "-") == 0)
-	// {
-	// 	if (ft_strcmp(prev_data, "0") == 0)
-	// 		close(READ_END);
-	// 	else if (ft_strcmp(prev_data, "1") == 0)
-	// 		close(WRITE_END);
-	// 	else if (ft_strcmp(prev_data, "2") == 0)
-	// 		close(ERROR_END);
-	// }
-	// else if (ft_get_type(file_name->data, ft_strlen(file_name->data)) == WORD)
-	// 	redirection_out(file_name->data, fd, fd == 1 ? 2 : -1);
-	// else
-	// {
-	// 	dup2(ft_atoi(file_name->data), fd);
-	// 	fd == 1 ? dup2(ft_atoi(file_name->data), 2) : 0;
-	// }
-
 }
 
 void	ft_herestr(char *line)
