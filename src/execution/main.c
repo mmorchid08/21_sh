@@ -64,7 +64,7 @@ void		main_c1(void)
 	{
 		ft_parse(&line);
 		tokens = handling(line);
-		if (!ft_checksemi(tokens) && !err_pars(tokens) && !ft_check_fd(tokens))
+		// if (!ft_checksemi(tokens) && !err_pars(tokens) && !ft_check_fd(tokens))
 			handling_semi(tokens);
 		free_list_token(&tokens);
 	}

@@ -59,44 +59,44 @@ void	ft_heredoc(char *line)
 	ft_heredoc_sequel(line, current_pid, fd, str);
 }
 
-void	redirection2(t_tokens *begin)
+void	redirection2(t_tokens **begin)
 {
-	if (begin->type == REDIRECTION_RIGHT)
+	if ((*begin)->type == REDIRECTION_RIGHT)
 	{
-		(begin->pre_fd < 0) && (begin->pre_fd = 1);
-		redirection_out(begin->filename, begin->pre_fd, -1);
+		((*begin)->pre_fd < 0) && ((*begin)->pre_fd = 1);
+		redirection_out((*begin)->filename, (*begin)->pre_fd, -1);
 	}
-	else if (begin->type == REDIRECTION_LEFT)
+	else if ((*begin)->type == REDIRECTION_LEFT)
 	{
-		(begin->pre_fd < 0) && (begin->pre_fd = 0);
-		redirection_in(begin->filename, begin->pre_fd);
+		((*begin)->pre_fd < 0) && ((*begin)->pre_fd = 0);
+		redirection_in((*begin)->filename, (*begin)->pre_fd);
 	}
-	else if (begin->type == REDIRECTION_RIGHT_RIGHT)
+	else if ((*begin)->type == REDIRECTION_RIGHT_RIGHT)
 	{
-		(begin->pre_fd < 0) && (begin->pre_fd = 1);
-		redirection_out_out(begin->filename, begin->pre_fd);
+		((*begin)->pre_fd < 0) && ((*begin)->pre_fd = 1);
+		redirection_out_out((*begin)->filename, (*begin)->pre_fd);
 	}
-	else if (begin->type == REDIRECTION_LEFT_LEFT)
-		ft_heredoc(begin->filename);
-	else if (begin->type == REDIRECTION_LEFT_LEFT_LEFT)
-		ft_herestr(begin->filename);
+	else if ((*begin)->type == REDIRECTION_LEFT_LEFT)
+		ft_heredoc((*begin)->filename);
+	else if ((*begin)->type == REDIRECTION_LEFT_LEFT_LEFT)
+		ft_herestr((*begin)->filename);
 }
 
-void	redirection(t_tokens *begin)
+void	redirection(t_tokens **begin)
 {
-	while (begin && check_red(begin->type))
+	while (begin && check_red((*begin)->type))
 	{
 		redirection2(begin);
-		if (begin->type == REDIRECTION_RIGHT_AGGREGATION)
+		if ((*begin)->type == REDIRECTION_RIGHT_AGGREGATION)
 		{
-			(begin->pre_fd < 0) && (begin->pre_fd = 1);
-			redirection_right_agg(begin);
+			((*begin)->pre_fd < 0) && ((*begin)->pre_fd = 1);
+			redirection_right_agg((*begin));
 		}
-		else if (begin->type == REDIRECTION_LEFT_AGGREGATION)
+		else if ((*begin)->type == REDIRECTION_LEFT_AGGREGATION)
 		{
-			(begin->pre_fd < 0) && (begin->pre_fd = 0);
-			redirection_right_agg(begin);
+			((*begin)->pre_fd < 0) && ((*begin)->pre_fd = 0);
+			redirection_right_agg((*begin));
 		}
-		begin = begin->next;
+		(*begin) = (*begin)->next;
 	}
 }

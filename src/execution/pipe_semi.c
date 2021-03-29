@@ -31,7 +31,7 @@ int		ft_count_pipe(t_tokens *node)
 	int i;
 
 	i = 0;
-	while (node && (node->type == PIPE || node->type == WORD))
+	while (node && node->type != SEMICOLON)
 	{
 		if (node->type == PIPE)
 			i++;
@@ -46,10 +46,13 @@ void	ft_close_pipe(int pipecount)
 		close(g_env.fd_pipe[pipecount]);
 }
 
-void	ft_exec(t_tokens *line)
+void	ft_exec(t_tokens **line)
 {
-	ft_check_alias(&(line->data));
-	ft_verify_non_fork_builtins(line);
+	t_tokens *tmp;
+
+	tmp = *line;
+	ft_check_alias(&(tmp->data));
+	ft_verify_non_fork_builtins(tmp);
 	g_env.current_pid = fork();
 	if (g_env.current_pid > 0)
 	{
@@ -60,14 +63,14 @@ void	ft_exec(t_tokens *line)
 	}
 	else if (g_env.current_pid == 0)
 	{
-		redirection(line->next);
+		redirection(&((*line)->next));
 		ft_unset_input_mode();
-		if (ft_check_builtins(line->data) == 1)
+		if (ft_check_builtins(tmp->data) == 1)
 		{
-			ft_verify_builtins(line);
+			ft_verify_builtins(tmp);
 			exit(0);
 		}
 		else
-			ft_exece(line);
+			ft_exece(tmp);
 	}
 }
