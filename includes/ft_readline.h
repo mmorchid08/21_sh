@@ -41,7 +41,7 @@
 # define C_RESET "\x1B[0m"
 # define C_SELECT "\x1B[1;37;41m"
 # define C_AUTOSELECT "\x1B[0;4;30;43m"
-# define MAX_BUFF 1024
+# define MAX_BUFF 4096
 # define K_LEFT 4479771
 # define K_RIGHT 4414235
 # define K_BACKSPACE 127
@@ -161,6 +161,7 @@ typedef struct			s_env
 	struct termios	org_tattr;
 	int				running_proc;
 	int				inside_prompt;
+	int				inside_heredoc;
 }						t_env;
 
 typedef struct			s_com

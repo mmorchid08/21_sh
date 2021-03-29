@@ -38,14 +38,18 @@ void	ft_heredoc(char *line)
 	int		fd[2];
 
 	pipe(fd);
+	g_env.inside_heredoc = 1;
 	g_env.prompt_len = ft_strlen("heredoc> ");
 	str = NULL;
 	while (1)
 	{
 		ft_putstr("heredoc> ");
 		tmp = ft_readline();
-		if (ft_strequ(tmp, line))
+		if (ft_strequ(tmp, line) || g_env.inside_heredoc == -1)
+		{
+			g_env.inside_heredoc = 0;
 			break ;
+		}
 		if (tmp)
 		{
 			str = (str) ? ft_free_strjoin(str, ft_strdup("\n")) : ft_strnew(0);

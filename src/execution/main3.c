@@ -85,6 +85,10 @@ void		handling3(t_tokens *tokens)
 	while (tmp)
 	{
 		tmp->data = ft_strmap2(tmp->data, &ft_decode_char);
+		if (tmp->filename)
+			tmp->filename = ft_strmap2(tmp->filename, &ft_decode_char);
+		if (tmp->args)
+			handling3(tmp->args);
 		tmp = tmp->next;
 	}
 }

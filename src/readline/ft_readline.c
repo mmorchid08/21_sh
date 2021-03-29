@@ -106,6 +106,8 @@ char	*ft_readline(void)
 			}
 			else
 				ft_readline_c2((char *)buff);
+			if (g_env.inside_heredoc == -1)
+				break ;
 			g_env.num = 0;
 			ft_bzero(buff, MAX_BUFF);
 		}

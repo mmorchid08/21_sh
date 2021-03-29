@@ -41,7 +41,7 @@ int		err_pars(t_tokens *tmp)
 		return (0);
 	while (tmp->next)
 		tmp = tmp->next;
-	if (tmp->type != WORD && tmp->type != REDIRECTION_RIGHT_AGGREGATION)
+	if (tmp->type != WORD && !check_red(tmp->type))
 	{
 		ft_putstr_fd("21sh: parse error near `", 2);
 		ft_putstr_fd(tmp->data, 2);
@@ -79,7 +79,7 @@ int		ft_read_red_err(char *path, int type)
 		ft_putendl_fd(": File not found", 2);
 		return (1);
 	}
-	if (access(path, R_OK) || access(path, X_OK))
+	if (access(path, R_OK))
 	{
 		ft_putstr_fd("21sh: ", 2);
 		ft_putstr_fd(path, 2);
