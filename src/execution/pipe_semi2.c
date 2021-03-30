@@ -22,13 +22,13 @@ void	ft_exec_pipe(t_tokens **line, t_tokens *prev, int pipecount)
 	g_env.current_pid = fork();
 	if (g_env.current_pid == 0)
 	{
+		if (!tmp->next || (tmp->next->type != PIPE
+		&& tmp->next->type != WORD))
+			redirection(&((*line)->next));
 		if (g_env.fd_pipe && tmp->next && tmp->next->type == PIPE)
 			dup2(g_env.fd_pipe[g_env.com_pipe * 2 + 1], STDOUT_FILENO);
 		if (g_env.fd_pipe && prev && prev->next && prev->next->type == PIPE)
 			dup2(g_env.fd_pipe[(g_env.com_pipe - 1) * 2], STDIN_FILENO);
-		if (!tmp->next || (tmp->next->type != PIPE
-		&& tmp->next->type != WORD))
-			redirection(&((*line)->next));
 		ft_unset_input_mode();
 		ft_close_pipe(pipecount);
 		if (ft_check_builtins(tmp->data) == 1)

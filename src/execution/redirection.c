@@ -84,7 +84,7 @@ void	redirection2(t_tokens **begin)
 
 void	redirection(t_tokens **begin)
 {
-	while (begin && check_red((*begin)->type))
+	while (*begin && check_red((*begin)->type))
 	{
 		redirection2(begin);
 		if ((*begin)->type == REDIRECTION_RIGHT_AGGREGATION)
