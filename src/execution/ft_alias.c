@@ -42,7 +42,7 @@ void		ft_store_alias(void)
 	t_alias	*alias;
 	char	*path;
 
-	path = ft_free_strjoin(ft_strjoin(g_env.home, "/"), ft_strdup(F_AL));
+	path = F_AL;
 	if ((fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666)) >= 0)
 	{
 		alias = g_env.al;
@@ -59,7 +59,6 @@ void		ft_store_alias(void)
 		}
 		close(fd);
 	}
-	free(path);
 }
 
 void		ft_load_alias(void)
@@ -70,7 +69,7 @@ void		ft_load_alias(void)
 	char	**al;
 	char	*path;
 
-	path = ft_free_strjoin(ft_strjoin(g_env.home, "/"), ft_strdup(F_AL));
+	path = F_AL;
 	if ((fd = open(path, O_RDONLY)) >= 0)
 	{
 		line = NULL;
@@ -88,7 +87,6 @@ void		ft_load_alias(void)
 			ft_strdel(&(g_env.gnl));
 		close(fd);
 	}
-	free(path);
 }
 
 void		ft_check_alias(char **line)

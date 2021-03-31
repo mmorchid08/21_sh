@@ -80,8 +80,8 @@
 # define O_BG 64
 # define M_INSERT 1
 # define M_OTHER 0
-# define F_AL ".minishell_alias"
-# define F_H ".minishell_history"
+# define F_AL ".21sh_alias"
+# define F_H ".21sh_history"
 
 typedef struct			s_var
 {

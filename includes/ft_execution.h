@@ -26,15 +26,8 @@
 # define REDIRECTION_LEFT_LEFT	3
 # define REDIRECTION_LEFT_LEFT_LEFT	7
 # define REDIRECTION_RIGHT_RIGHT	4
-# define REDIRECTION_RIGHT_AGGREGATION 5
-# define ESPACE_REDIRECTION_RIGHT_AGGREGATION 55
-# define REDIRECTION_LEFT_AGGREGATION	6
-# define PRE_AGGREGATION_NUMBER  19
-# define AND 8
-# define OR 9
 # define PIPE 10
 # define SEMICOLON 11
-# define AMP 12
 # define REDIRECTION_WORD 13
 # define WORD_REDIRECTION 14
 # define WORD_REDIRECTION_ESPACE 16
@@ -57,9 +50,6 @@ typedef struct	s_tokens
 	int				space_b;
 	int				status;
 	int				ret;
-	int				pre_fd;
-	int				sub_fd;
-	int				close;
 	struct s_tokens	*args;
 	struct s_tokens	*next;
 	struct s_tokens	*prev;
@@ -121,9 +111,9 @@ t_tokens		*new_node(char *data, int type);
 int				ft_check_builtins(char *table);
 void			ft_verify_builtins(t_tokens *token_begin);
 void			ft_operation_echo(t_tokens *token_begin);
-void			redirection_out(char *file_name, int fd, int fd2);
-void			redirection_out_out(char *file_name, int fd);
-void			redirection_in(char *file_name, int fd);
+void			redirection_out(char *file_name);
+void			redirection_out_out(char *file_name);
+void			redirection_in(char *file_name);
 char			**prepere_argv(t_tokens *begin, t_tokens *finish);
 void			redirection(t_tokens **begin);
 int				ft_chek_espace(char *buf);
@@ -175,7 +165,6 @@ int				ft_count_pipe(t_tokens *node);
 int				ft_read_red_err(char *path, int type);
 void			ft_exec(t_tokens **line);
 void			ft_close_pipe(int pipecount);
-int				ft_isaggr(char *s1, char *s2, int n);
 void			redirection_right_agg(t_tokens *token);
 char			*ft_strjoin_one_charatcter(char const *s1, char const s2);
 t_content		check_character_for_split(char *c);
@@ -188,7 +177,5 @@ t_content *content, t_tokens **tokens);
 void			handling3(t_tokens	*tokens);
 t_content		check_character_for_split2(char *c);
 void			free_token(t_tokens **token);
-int				ft_get_type(char *c, int offset);
-int				ft_str_isdigit(char *str);
 
 #endif

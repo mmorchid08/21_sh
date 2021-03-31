@@ -19,7 +19,7 @@ void	ft_store_his(void)
 	t_his	*his;
 	char	*path;
 
-	path = ft_free_strjoin(ft_strjoin(g_env.home, "/"), ft_strdup(F_H));
+	path = F_H;
 	if ((fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666)) >= 0)
 	{
 		his = g_env.his;
@@ -32,7 +32,6 @@ void	ft_store_his(void)
 		}
 		close(fd);
 	}
-	free(path);
 }
 
 void	ft_load_his(void)
@@ -42,7 +41,7 @@ void	ft_load_his(void)
 	char	*path;
 	int		ret;
 
-	path = ft_free_strjoin(ft_strjoin(g_env.home, "/"), ft_strdup(F_H));
+	path = F_H;
 	if ((fd = open(path, O_RDONLY)) >= 0)
 	{
 		tmp = NULL;
@@ -59,5 +58,4 @@ void	ft_load_his(void)
 			ft_strdel(&(g_env.gnl));
 		close(fd);
 	}
-	free(path);
 }

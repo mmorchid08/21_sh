@@ -16,38 +16,13 @@ t_content	check_character_for_split(char *c)
 {
 	int	offset;
 
-	if ((offset = ft_isaggr(c, ">>", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
 	if (ft_strncmp(c, ">>", 2) == 0)
 		return ((t_content){2, REDIRECTION_RIGHT_RIGHT});
-	if (ft_strncmp(c, "||", 2) == 0)
-		return ((t_content){2, OR});
-	if ((offset = ft_isaggr(c, "<<<", 3)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
 	if (ft_strncmp(c, "<<<", 3) == 0)
 		return ((t_content){3, REDIRECTION_LEFT_LEFT_LEFT});
-	if ((offset = ft_isaggr(c, "<<", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
 	if (ft_strncmp(c, "<<", 2) == 0)
 		return ((t_content){2, REDIRECTION_LEFT_LEFT});
-	if ((offset = ft_isaggr(c, ">&", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, ">&", 2) == 0)
-		return ((t_content){2, REDIRECTION_RIGHT_AGGREGATION});
 	return (check_character_for_split2(c));
-}
-
-int			ft_str_isdigit(char *str)
-{
-	int i;
-
-	i = -1;
-	while (str[++i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-	}
-	return (1);
 }
 
 void		handling2(char *line, t_vari *var,

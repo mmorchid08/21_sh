@@ -12,45 +12,31 @@
 
 #include "ft_execution.h"
 
-void	redirection_out(char *file_name, int fd, int fd2)
+void	redirection_out(char *file_name)
 {
 	int out;
 
 	out = open(file_name, O_WRONLY | O_TRUNC | O_CREAT, 0600);
-	dup2(out, fd);
-	if (fd2 >= 0)
-		dup2(out, fd2);
+	dup2(out, STDOUT_FILENO);
 	close(out);
 }
 
-void	redirection_in(char *file_name, int fd)
+void	redirection_in(char *file_name)
 {
 	int in;
 
 	in = open(file_name, O_RDONLY);
-	dup2(in, fd);
+	dup2(in, STDIN_FILENO);
 	close(in);
 }
 
-void	redirection_out_out(char *file_name, int fd)
+void	redirection_out_out(char *file_name)
 {
 	int out_out;
 
 	out_out = open(file_name, O_APPEND | O_WRONLY | O_CREAT, 0600);
-	dup2(out_out, fd);
+	dup2(out_out, STDOUT_FILENO);
 	close(out_out);
-}
-
-void	redirection_right_agg(t_tokens *token)
-{
-	if (token->sub_fd >= 0 && !token->filename)
-	{
-		dup2(token->pre_fd, token->sub_fd);
-	}
-	else
-		redirection_out(token->filename, token->pre_fd, 2);
-	if (token->close)
-		close(token->pre_fd);
 }
 
 void	ft_herestr(char *line)

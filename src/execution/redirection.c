@@ -59,44 +59,20 @@ void	ft_heredoc(char *line)
 	ft_heredoc_sequel(line, current_pid, fd, str);
 }
 
-void	redirection2(t_tokens **begin)
-{
-	if ((*begin)->type == REDIRECTION_RIGHT)
-	{
-		((*begin)->pre_fd < 0) && ((*begin)->pre_fd = 1);
-		redirection_out((*begin)->filename, (*begin)->pre_fd, -1);
-	}
-	else if ((*begin)->type == REDIRECTION_LEFT)
-	{
-		((*begin)->pre_fd < 0) && ((*begin)->pre_fd = 0);
-		redirection_in((*begin)->filename, (*begin)->pre_fd);
-	}
-	else if ((*begin)->type == REDIRECTION_RIGHT_RIGHT)
-	{
-		((*begin)->pre_fd < 0) && ((*begin)->pre_fd = 1);
-		redirection_out_out((*begin)->filename, (*begin)->pre_fd);
-	}
-	else if ((*begin)->type == REDIRECTION_LEFT_LEFT)
-		ft_heredoc((*begin)->filename);
-	else if ((*begin)->type == REDIRECTION_LEFT_LEFT_LEFT)
-		ft_herestr((*begin)->filename);
-}
-
 void	redirection(t_tokens **begin)
 {
 	while (*begin && check_red((*begin)->type))
 	{
-		redirection2(begin);
-		if ((*begin)->type == REDIRECTION_RIGHT_AGGREGATION)
-		{
-			((*begin)->pre_fd < 0) && ((*begin)->pre_fd = 1);
-			redirection_right_agg((*begin));
-		}
-		else if ((*begin)->type == REDIRECTION_LEFT_AGGREGATION)
-		{
-			((*begin)->pre_fd < 0) && ((*begin)->pre_fd = 0);
-			redirection_right_agg((*begin));
-		}
+		if ((*begin)->type == REDIRECTION_RIGHT)
+			redirection_out((*begin)->filename);
+		else if ((*begin)->type == REDIRECTION_LEFT)
+			redirection_in((*begin)->filename);
+		else if ((*begin)->type == REDIRECTION_RIGHT_RIGHT)
+			redirection_out_out((*begin)->filename);
+		else if ((*begin)->type == REDIRECTION_LEFT_LEFT)
+			ft_heredoc((*begin)->filename);
+		else if ((*begin)->type == REDIRECTION_LEFT_LEFT_LEFT)
+			ft_herestr((*begin)->filename);
 		(*begin) = (*begin)->next;
 	}
 }

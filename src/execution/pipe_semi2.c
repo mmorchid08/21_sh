@@ -91,7 +91,7 @@ int		ft_next_pipe(t_tokens *node)
 	while (node)
 	{
 		if (node->type == SEMICOLON)
-			break;
+			break ;
 		if (node->type == PIPE)
 			flag = 1;
 		node = node->next;
