@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 15:28:34 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/20 16:16:36 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/31 17:19:45 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	ft_exec_pipe(t_tokens **line, t_tokens *prev, int pipecount)
 	g_env.current_pid = fork();
 	if (g_env.current_pid == 0)
 	{
-		if (!tmp->next || (tmp->next->type != PIPE
-		&& tmp->next->type != WORD))
-			redirection(&((*line)->next));
+		if ((!tmp->next || (tmp->next->type != PIPE &&
+tmp->next->type != WORD)) && !redirection(&((*line)->next)))
+			exit(1);
 		if (g_env.fd_pipe && tmp->next && tmp->next->type == PIPE)
 			dup2(g_env.fd_pipe[g_env.com_pipe * 2 + 1], STDOUT_FILENO);
 		if (g_env.fd_pipe && prev && prev->next && prev->next->type == PIPE)

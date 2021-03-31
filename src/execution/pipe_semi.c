@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:33:00 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/20 15:29:19 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/31 17:18:53 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,16 @@ void	ft_exec(t_tokens **line)
 	ft_check_alias(&(tmp->data));
 	ft_verify_non_fork_builtins(tmp);
 	g_env.current_pid = fork();
-	if (g_env.current_pid > 0)
+	if (g_env.current_pid > 0 && (g_env.running_proc = 1))
 	{
-		g_env.running_proc = 1;
 		waitpid(g_env.current_pid, 0, 0);
 		ft_reset_input_mode();
 		g_env.running_proc = 0;
 	}
 	else if (g_env.current_pid == 0)
 	{
-		redirection(&((*line)->next));
+		if (!redirection(&((*line)->next)))
+			exit(1);
 		ft_unset_input_mode();
 		if (ft_check_builtins(tmp->data) == 1)
 		{

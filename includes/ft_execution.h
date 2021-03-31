@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 13:11:20 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/21 12:58:57 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/31 17:15:57 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct	s_tokens
 	char			*filename;
 	int				space_b;
 	int				status;
+	int				old;
 	int				ret;
 	struct s_tokens	*args;
 	struct s_tokens	*next;
@@ -115,7 +116,7 @@ void			redirection_out(char *file_name);
 void			redirection_out_out(char *file_name);
 void			redirection_in(char *file_name);
 char			**prepere_argv(t_tokens *begin, t_tokens *finish);
-void			redirection(t_tokens **begin);
+int				redirection(t_tokens **begin);
 int				ft_chek_espace(char *buf);
 void			ft_env_list(char **env);
 void			ft_env_function(void);

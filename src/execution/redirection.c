@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 15:52:46 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/21 12:54:29 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/31 17:15:44 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,12 @@ void	ft_heredoc(char *line)
 	ft_heredoc_sequel(line, current_pid, fd, str);
 }
 
-void	redirection(t_tokens **begin)
+int		redirection(t_tokens **begin)
 {
 	while (*begin && check_red((*begin)->type))
 	{
+		if (ft_check_fd((*begin)))
+			return (0);
 		if ((*begin)->type == REDIRECTION_RIGHT)
 			redirection_out((*begin)->filename);
 		else if ((*begin)->type == REDIRECTION_LEFT)
@@ -75,4 +77,5 @@ void	redirection(t_tokens **begin)
 			ft_herestr((*begin)->filename);
 		(*begin) = (*begin)->next;
 	}
+	return (1);
 }
