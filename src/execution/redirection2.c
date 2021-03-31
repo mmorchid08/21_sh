@@ -43,9 +43,9 @@ void	redirection_out_out(char *file_name, int fd)
 
 void	redirection_right_agg(t_tokens *token)
 {
-	if (token->sub_fd < 0 && !token->filename)
+	if (token->sub_fd >= 0 && !token->filename)
 	{
-		dup2(token->sub_fd, token->pre_fd);
+		dup2(token->pre_fd, token->sub_fd);
 	}
 	else
 		redirection_out(token->filename, token->pre_fd, 2);

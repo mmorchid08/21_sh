@@ -66,7 +66,7 @@ ft_str_isdigit(data) && (*tmp)->sub_fd == -1)
 (*tmp)->type == REDIRECTION_RIGHT_AGGREGATION) &&
 ft_strequ(data, "-") && (*tmp)->close == 0)
 		(*tmp)->close = 1;
-	else if (check_red((*tmp)->type) && !(*tmp)->filename)
+	else if (check_red((*tmp)->type) && !((*tmp)->type == REDIRECTION_RIGHT_AGGREGATION && (*tmp)->pre_fd != -1 && (*tmp)->sub_fd != -1) && !(*tmp)->filename)
 		(*tmp)->filename = ft_strdup(data);
 	else
 	{
