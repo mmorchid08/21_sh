@@ -55,6 +55,7 @@ void	ft_init(char **envp)
 	g_env.select_line = NULL;
 	g_env.running_proc = 0;
 	g_env.inside_prompt = 0;
+	g_env.inside_heredoc = 0;
 	ft_init_c1();
 }
 

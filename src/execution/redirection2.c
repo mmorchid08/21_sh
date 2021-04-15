@@ -12,53 +12,31 @@
 
 #include "ft_execution.h"
 
-void	redirection_out(char *file_name, int fd, int fd2)
+void	redirection_out(char *file_name)
 {
 	int out;
 
 	out = open(file_name, O_WRONLY | O_TRUNC | O_CREAT, 0600);
-	dup2(out, fd);
-	if (fd2 >= 0)
-		dup2(out, fd2);
+	dup2(out, STDOUT_FILENO);
 	close(out);
 }
 
-void	redirection_in(char *file_name, int fd)
+void	redirection_in(char *file_name)
 {
 	int in;
 
 	in = open(file_name, O_RDONLY);
-	dup2(in, fd);
+	dup2(in, STDIN_FILENO);
 	close(in);
 }
 
-void	redirection_out_out(char *file_name, int fd)
+void	redirection_out_out(char *file_name)
 {
 	int out_out;
 
 	out_out = open(file_name, O_APPEND | O_WRONLY | O_CREAT, 0600);
-	dup2(out_out, fd);
+	dup2(out_out, STDOUT_FILENO);
 	close(out_out);
-}
-
-void	redirection_right_agg(char *prev_data, t_tokens *file_name, int fd)
-{
-	if (ft_strcmp(file_name->data, "-") == 0)
-	{
-		if (ft_strcmp(prev_data, "0") == 0)
-			close(READ_END);
-		else if (ft_strcmp(prev_data, "1") == 0)
-			close(WRITE_END);
-		else if (ft_strcmp(prev_data, "2") == 0)
-			close(ERROR_END);
-	}
-	else if (ft_get_type(file_name->data, ft_strlen(file_name->data)) == WORD)
-		redirection_out(file_name->data, fd, fd == 1 ? 2 : -1);
-	else
-	{
-		dup2(ft_atoi(file_name->data), fd);
-		fd == 1 ? dup2(ft_atoi(file_name->data), 2) : 0;
-	}
 }
 
 void	ft_herestr(char *line)

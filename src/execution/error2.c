@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 14:58:41 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/21 13:19:38 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/31 17:20:00 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,54 +35,19 @@ int		ft_write_red_err(char *path, int type)
 	return (0);
 }
 
-int		ft_check_fd_sequel(int count, t_tokens *tmp)
-{
-	int data;
-
-	if (tmp->next == NULL)
-	{
-		ft_putendl_fd("21sh: Parse error near `\\n'", 2);
-		return (1);
-	}
-	if (tmp->next == NULL && count == 0)
-	{
-		data = ft_atoi(tmp->next->data);
-		if (data > 2)
-		{
-			ft_putstr_fd("21sh: ", 2);
-			ft_putnbr_fd(data, 2);
-			ft_putendl_fd(": Bad file descriptor", 2);
-			return (1);
-		}
-	}
-	return (0);
-}
-
 int		ft_check_fd(t_tokens *tmp)
 {
-	int	count;
-
-	count = 0;
-	while (tmp)
+	if (check_red(tmp->type) && !tmp->filename)
 	{
-		if (tmp->status == -1)
-		{
-			ft_putendl_fd("21sh: parse error", 2);
-			return (1);
-		}
-		if (tmp->type == REDIRECTION_LEFT && (!tmp->next ||
-!tmp->next->data || ft_read_red_err(tmp->next->data, tmp->type)))
-			return (1);
-		if ((tmp->type == REDIRECTION_RIGHT ||
-tmp->type == REDIRECTION_RIGHT_RIGHT) && (!tmp->next ||
-!tmp->next->data || ft_write_red_err(tmp->next->data, tmp->type)))
-			return (1);
-		if ((tmp->type == REDIRECTION_RIGHT_AGGREGATION ||
-tmp->type == REDIRECTION_LEFT_AGGREGATION) &&
-ft_check_fd_sequel(count, tmp) == 1)
-			return (1);
-		count++;
-		tmp = tmp->next;
+		ft_putendl_fd("21sh: Parse error", 2);
+		return (1);
 	}
+	if (tmp->type == REDIRECTION_LEFT &&
+			ft_read_red_err(tmp->filename, tmp->type))
+		return (1);
+	if ((tmp->type == REDIRECTION_RIGHT ||
+				tmp->type == REDIRECTION_RIGHT_RIGHT)
+			&& ft_write_red_err(tmp->filename, tmp->type))
+		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:33:00 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/21 13:19:32 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/28 16:27:54 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,23 @@ int		ft_know_type(int type)
 
 int		err_pars(t_tokens *tmp)
 {
-	while (tmp)
+	if (tmp->type != WORD)
 	{
-		if (ft_know_type(tmp->type) == 1)
-		{
-			if (tmp->next != NULL && ft_know_type(tmp->next->type) == 1)
-			{
-				ft_putstr_fd("21sh: parse error near `", 2);
-				ft_putstr_fd(tmp->next->data, 2);
-				ft_putendl_fd("'", 2);
-				return (1);
-			}
-		}
+		ft_putstr_fd("21sh: parse error near `", 2);
+		ft_putstr_fd(tmp->data, 2);
+		ft_putendl_fd("'", 2);
+		return (1);
+	}
+	if (!tmp->next)
+		return (0);
+	while (tmp->next)
 		tmp = tmp->next;
+	if (tmp->type != WORD && !check_red(tmp->type))
+	{
+		ft_putstr_fd("21sh: parse error near `", 2);
+		ft_putstr_fd(tmp->data, 2);
+		ft_putendl_fd("'", 2);
+		return (1);
 	}
 	return (0);
 }
@@ -75,7 +79,7 @@ int		ft_read_red_err(char *path, int type)
 		ft_putendl_fd(": File not found", 2);
 		return (1);
 	}
-	if (access(path, R_OK) || access(path, X_OK))
+	if (access(path, R_OK))
 	{
 		ft_putstr_fd("21sh: ", 2);
 		ft_putstr_fd(path, 2);

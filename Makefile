@@ -61,6 +61,8 @@ clean:
 
 fclean: clean
 	@rm -rf $(NAME)
+	@rm -rf .21sh_history
+	@rm -rf .21sh_alias
 	@make -C $(LIBFT_DIR) fclean
 	@printf "21SH:  %-25s$(C_RED)[done]$(C_NONE)\n" $@
 

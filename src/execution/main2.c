@@ -40,36 +40,6 @@ void		ft_cut_buf(char *buf)
 	buf[ft_strlen(buf) - 1] = '\0';
 }
 
-int			ft_isaggr(char *s1, char *s2, int n)
-{
-	int		offset;
-
-	offset = 0;
-	while (*s1 && *s1 != ' ')
-	{
-		if (ft_strncmp(s1, s2, n) == 0)
-			return (offset);
-		offset++;
-		s1++;
-	}
-	return (0);
-}
-
-int			ft_get_type(char *c, int offset)
-{
-	int	i;
-
-	i = 0;
-	while (i < offset)
-	{
-		if (ft_isdigit(c[i]))
-			i++;
-		else
-			return (WORD);
-	}
-	return (PRE_AGGREGATION_NUMBER);
-}
-
 t_tokens	*new_node(char *data, int type)
 {
 	t_tokens	*node;
@@ -78,6 +48,7 @@ t_tokens	*new_node(char *data, int type)
 	node->data = ft_strdup(data);
 	node->type = type;
 	node->status = 0;
+	node->filename = NULL;
 	node->here = NULL;
 	node->args = NULL;
 	node->next = NULL;

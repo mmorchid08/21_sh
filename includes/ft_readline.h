@@ -41,7 +41,7 @@
 # define C_RESET "\x1B[0m"
 # define C_SELECT "\x1B[1;37;41m"
 # define C_AUTOSELECT "\x1B[0;4;30;43m"
-# define MAX_BUFF 1024
+# define MAX_BUFF 4096
 # define K_LEFT 4479771
 # define K_RIGHT 4414235
 # define K_BACKSPACE 127
@@ -80,8 +80,8 @@
 # define O_BG 64
 # define M_INSERT 1
 # define M_OTHER 0
-# define F_AL ".minishell_alias"
-# define F_H ".minishell_history"
+# define F_AL ".21sh_alias"
+# define F_H ".21sh_history"
 
 typedef struct			s_var
 {
@@ -162,6 +162,7 @@ typedef struct			s_env
 	struct termios	org_tattr;
 	int				running_proc;
 	int				inside_prompt;
+	int				inside_heredoc;
 }						t_env;
 
 typedef struct			s_com

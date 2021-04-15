@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 11:33:00 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/25 14:49:53 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/04/15 13:46:52 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		ft_count_pipe(t_tokens *node)
 	int i;
 
 	i = 0;
-	while (node && (node->type == PIPE || node->type == WORD))
+	while (node && node->type != SEMICOLON)
 	{
 		if (node->type == PIPE)
 			i++;
@@ -46,28 +46,31 @@ void	ft_close_pipe(int pipecount)
 		close(g_env.fd_pipe[pipecount]);
 }
 
-void	ft_exec(t_tokens *line)
+void	ft_exec(t_tokens **line)
 {
-	ft_check_alias(&(line->data));
-	ft_verify_non_fork_builtins(line);
+	t_tokens *tmp;
+
+	tmp = *line;
+	ft_check_alias(&(tmp->data));
+	ft_verify_non_fork_builtins(tmp);
 	g_env.current_pid = fork();
-	if (g_env.current_pid > 0)
+	if (g_env.current_pid > 0 && (g_env.running_proc = 1))
 	{
-		g_env.running_proc = 1;
 		waitpid(g_env.current_pid, 0, 0);
 		ft_reset_input_mode();
 		g_env.running_proc = 0;
 	}
 	else if (g_env.current_pid == 0)
 	{
-		redirection(line);
+		if (!redirection(&((*line)->next)))
+			exit(1);
 		ft_unset_input_mode();
-		if (ft_check_builtins(line->data) == 1)
+		if (ft_check_builtins(tmp->data) == 1)
 		{
-			ft_verify_builtins(line);
+			ft_verify_builtins(tmp);
 			exit(0);
 		}
 		else
-			ft_exece(line);
+			ft_exece(tmp);
 	}
 }

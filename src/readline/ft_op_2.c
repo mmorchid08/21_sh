@@ -41,7 +41,12 @@ void	ft_tononprint(char **str)
 
 void	ft_controle_d(char **line)
 {
-	if ((!*line || !**(line)))
+	if (g_env.inside_heredoc == 1)
+	{
+		g_env.inside_heredoc = -1;
+		ft_putendl_fd("^D", 2);
+	}
+	else if ((!*line || !**(line)))
 	{
 		ft_putendl_fd("^D", 2);
 		ft_exec_exit();

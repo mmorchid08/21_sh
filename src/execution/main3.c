@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 16:18:01 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/25 16:32:32 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/04/15 13:47:07 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,60 +16,13 @@ t_content	check_character_for_split(char *c)
 {
 	int	offset;
 
-	if ((offset = ft_isaggr(c, ">>", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
 	if (ft_strncmp(c, ">>", 2) == 0)
 		return ((t_content){2, REDIRECTION_RIGHT_RIGHT});
-	if ((offset = ft_isaggr(c, "<<<", 3)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
 	if (ft_strncmp(c, "<<<", 3) == 0)
 		return ((t_content){3, REDIRECTION_LEFT_LEFT_LEFT});
-	if ((offset = ft_isaggr(c, "<<", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
 	if (ft_strncmp(c, "<<", 2) == 0)
 		return ((t_content){2, REDIRECTION_LEFT_LEFT});
-	if ((offset = ft_isaggr(c, ">&", 2)) != 0)
-		return ((t_content){offset, ft_get_type(c, offset)});
-	if (ft_strncmp(c, ">&", 2) == 0)
-		return ((t_content){2, REDIRECTION_RIGHT_AGGREGATION});
 	return (check_character_for_split2(c));
-}
-
-void		append_list_tokens(t_tokens **tokens, char *data, int type)
-{
-	t_tokens	*tmp;
-
-	// printf("%s %d\n", data, type);
-	tmp = *tokens;
-	if (tmp == NULL)
-	{
-		tmp = new_node(data, type);
-		if (type == WORD)
-			tmp->args = new_node(tmp->data, WORD_ARG);
-		*tokens = tmp;
-	}
-	else
-	{
-		while (tmp->next != NULL)
-			tmp = tmp->next;
-		if (type == WORD && tmp->type == WORD)
-			append_list_tokens(&(tmp->args), data, WORD_ARG);
-		else
-		{
-			tmp->next = new_node(data, type);
-			tmp->next->prev = tmp;
-			if (type == WORD)
-				tmp->next->args = new_node(tmp->next->data, WORD_ARG);
-		}
-	}
-}
-
-int			check_red(int type)
-{
-	if (type == 1 || type == 2 || type == 3 || type == 4
-			|| type == 5 || type == 6 || type == 7)
-		return (1);
-	return (0);
 }
 
 void		handling2(char *line, t_vari *var,
@@ -106,16 +59,11 @@ void		handling3(t_tokens *tokens)
 	tmp = tokens;
 	while (tmp)
 	{
-		if (tmp->type == WORD || tmp->type == WORD_ARG)
-			tmp->data = ft_strmap2(tmp->data, &ft_decode_char);
-		if (check_red(tmp->type))
-		{
-			if (tmp->next != NULL && (tmp->next->type == WORD ||
-			tmp->next->type == WORD_ARG))
-				tmp->next->type = REDIRECTION_WORD;
-			else
-				tmp->status = -1;
-		}
+		tmp->data = ft_strmap2(tmp->data, &ft_decode_char);
+		if (tmp->filename)
+			tmp->filename = ft_strmap2(tmp->filename, &ft_decode_char);
+		if (tmp->args)
+			handling3(tmp->args);
 		tmp = tmp->next;
 	}
 }

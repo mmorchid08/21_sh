@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin_cd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: youarzaz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 14:55:38 by youarzaz          #+#    #+#             */
-/*   Updated: 2021/03/19 15:48:27 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/31 17:05:13 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	ft_operation_non_fork_cd(t_tokens *line)
 {
 	char *path;
 
+	line->old = 0;
 	path = (line->next) ? line->next->data : NULL;
 	if (path && ft_strequ(path, "-"))
 	{
@@ -54,6 +55,7 @@ void	ft_operation_non_fork_cd(t_tokens *line)
 		path = (path) ? path : g_env.working_dir;
 		free(line->next->data);
 		line->next->data = ft_strdup(path);
+		line->old = 1;
 	}
 	if (!(line->ret = ft_getcwd((path) ? path : g_env.home)))
 	{
@@ -70,19 +72,22 @@ void	ft_operation_cd(t_tokens *line)
 {
 	t_tokens *path;
 
+	path = line->next;
 	if (!line->status)
 	{
-		path = line->next;
 		if (line->ret == 2)
 			ft_putstr_fd("cd: Permission denied: ", 2);
 		else if (line->ret == 1)
 			ft_putstr_fd("cd: No such file or directory: ", 2);
 		else
 			ft_putstr_fd("cd: Not a directory: ", 2);
-		if (path && ft_strequ(path->data, "-") && g_env.old_working_dir)
-			ft_putstr_fd(g_env.old_working_dir, 2);
-		else if (path)
+		if (path)
 			ft_putstr_fd(path->data, 2);
 		ft_putendl_fd("", 2);
+	}
+	else
+	{
+		if (line->old && g_env.working_dir)
+			ft_putendl_fd(g_env.working_dir, 2);
 	}
 }

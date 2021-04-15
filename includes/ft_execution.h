@@ -6,7 +6,11 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 13:11:20 by mmorchid          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/04/15 13:28:14 by mmorchid         ###   ########.fr       */
+=======
+/*   Updated: 2021/03/31 17:15:57 by mmorchid         ###   ########.fr       */
+>>>>>>> 7d5f2d7592effe6068c415808f42c6f94e94d9da
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +30,8 @@
 # define REDIRECTION_LEFT_LEFT	3
 # define REDIRECTION_LEFT_LEFT_LEFT	7
 # define REDIRECTION_RIGHT_RIGHT	4
-# define REDIRECTION_RIGHT_AGGREGATION 5
-# define ESPACE_REDIRECTION_RIGHT_AGGREGATION 55
-# define REDIRECTION_LEFT_AGGREGATION	6
-# define PRE_AGGREGATION_NUMBER  19
-# define AND 8
-# define OR 9
 # define PIPE 10
 # define SEMICOLON 11
-# define AMP 12
 # define REDIRECTION_WORD 13
 # define WORD_REDIRECTION 14
 # define WORD_REDIRECTION_ESPACE 16
@@ -53,8 +50,10 @@ typedef struct	s_tokens
 	char			*data;
 	int				type;
 	char			*here;
+	char			*filename;
 	int				space_b;
 	int				status;
+	int				old;
 	int				ret;
 	struct s_tokens	*args;
 	struct s_tokens	*next;
@@ -162,11 +161,11 @@ t_tokens		*new_node(char *data, int type);
 int				ft_check_builtins(char *table);
 void			ft_verify_builtins(t_tokens *token_begin);
 void			ft_operation_echo(t_tokens *token_begin);
-void			redirection_out(char *file_name, int fd, int fd2);
-void			redirection_out_out(char *file_name, int fd);
-void			redirection_in(char *file_name, int fd);
+void			redirection_out(char *file_name);
+void			redirection_out_out(char *file_name);
+void			redirection_in(char *file_name);
 char			**prepere_argv(t_tokens *begin, t_tokens *finish);
-void			redirection(t_tokens *begin);
+int				redirection(t_tokens **begin);
 int				ft_chek_espace(char *buf);
 void			ft_env_list(char **env);
 void			ft_env_function(void);
@@ -198,7 +197,7 @@ int				ft_count_tokens(t_tokens *token_begin);
 void			free_list_token(t_tokens **token);
 void			free_list_path(t_list_path **path);
 void			ft_check_error(char *name);
-int				ft_check_fd_sequel(int count, t_tokens *tmp);
+int				ft_check_fd_sequel(t_tokens *tmp);
 int				ft_checksemi(t_tokens *tmp);
 int				ft_check_multi_pipe(t_tokens *tmp);
 int				ft_check_fd(t_tokens *tmp);
@@ -209,17 +208,14 @@ void			ft_restore_fds(void);
 t_var			*get_malloc_key_value(char *key, char *value);
 void			ft_heredoc(char *line);
 void			ft_herestr(char *line);
-int				ft_get_type(char *c, int offset);
 int				check_red(int type);
 void			ft_operation_non_fork_cd(t_tokens *token_begin);
 void			ft_verify_non_fork_builtins(t_tokens *token_begin);
 int				ft_count_pipe(t_tokens *node);
 int				ft_read_red_err(char *path, int type);
-void			ft_exec(t_tokens *line);
+void			ft_exec(t_tokens **line);
 void			ft_close_pipe(int pipecount);
-int				ft_isaggr(char *s1, char *s2, int n);
-void			redirection_right_agg(char *prev_data,
-t_tokens *file_name, int fd);
+void			redirection_right_agg(t_tokens *token);
 char			*ft_strjoin_one_charatcter(char const *s1, char const s2);
 t_content		check_character_for_split(char *c);
 void			append_list_tokens(t_tokens **tokens, char *data, int type);
@@ -245,6 +241,7 @@ int				ft_binary(char *arg1, char *arg2, test_operation ope);
 void			ft_error_binary(char *error);
 int				check_binary_op(t_tokens *tokens);
 int				test_commade(t_tokens *tokens);
+void			free_token(t_tokens **token);
 
 #endif
 // void  test_commade(t_tokens *tokens, ds)
