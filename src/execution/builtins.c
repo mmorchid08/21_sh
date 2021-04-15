@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 16:24:55 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/18 15:06:00 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/04/11 17:35:09 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@ int		ft_check_builtins(char *table)
 			return (1);
 		if (ft_strcmp(table, "unalias") == 0)
 			return (1);
+		if (ft_strcmp(table, "hash") == 0)
+			return (1);
+		if (ft_strcmp(table, "test") == 0)
+			return (1);
 	}
 	return (0);
 }
@@ -46,8 +50,7 @@ void	ft_verify_non_fork_builtins(t_tokens *token_begin)
 	else if (ft_strcmp(token_begin->data, "unsetenv") == 0
 			&& token_begin->args->next != NULL)
 		ft_delete_one_env(token_begin->args);
-	else if (ft_strcmp(token_begin->data, "alias") == 0
-			&& token_begin->args->next != NULL)
+	else if (ft_strcmp(token_begin->data, "alias") == 0 && token_begin->args->next != NULL)
 		ft_operation_non_fork_alias(token_begin->args);
 	else if (ft_strcmp(token_begin->data, "unalias") == 0
 			&& token_begin->args->next != NULL)
@@ -58,6 +61,8 @@ void	ft_verify_non_fork_builtins(t_tokens *token_begin)
 
 void	ft_verify_builtins(t_tokens *token_begin)
 {
+	int test_ret = 0;
+	
 	if (ft_strcmp(token_begin->data, "echo") == 0)
 		ft_operation_echo(token_begin->args);
 	else if (ft_strcmp(token_begin->data, "cd") == 0)
@@ -68,12 +73,14 @@ void	ft_verify_builtins(t_tokens *token_begin)
 	else if (ft_strcmp(token_begin->data, "unsetenv") == 0
 			&& token_begin->args->next == NULL)
 		ft_putendl("unsetenv: not enough arguments");
-	else if (ft_strcmp(token_begin->data, "alias") == 0
-			&& token_begin->args->next == NULL)
+	else if (ft_strcmp(token_begin->data, "alias") == 0 && token_begin->args->next == NULL)
 		ft_list_alias(g_env.al);
 	else if (ft_strcmp(token_begin->data, "unalias") == 0
 			&& token_begin->args->next == NULL)
 		ft_putendl("unalias: not enough arguments");
 	else if (ft_strcmp(token_begin->data, "env") == 0)
 		ft_env_function();
+	else if (ft_strcmp(token_begin->data, "test") == 0)
+		test_ret = test_commade(token_begin);
+
 }

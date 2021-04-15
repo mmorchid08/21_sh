@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/11 16:47:03 by youarzaz          #+#    #+#             */
-/*   Updated: 2021/03/20 14:48:06 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/31 15:37:18 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef struct			s_his
 	char			*dis_line;
 	int				type;
 	int				cur;
+	int				id;
 	struct s_his	*next;
 	struct s_his	*prev;
 }						t_his;
@@ -313,6 +314,7 @@ void					ft_cd_help(void);
 int						ft_getcwd(char *path);
 int						ft_echo_char(int c);
 void					ft_exec_env_arg(t_line *line);
+//----------------------
 t_his					*ft_new_his(char *line, int type);
 int						ft_exe_ret_err(char *path);
 void					ft_encode_char(char *pos, int type);

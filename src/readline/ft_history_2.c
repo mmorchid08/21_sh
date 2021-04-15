@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_history_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: youarzaz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 18:39:41 by youarzaz          #+#    #+#             */
-/*   Updated: 2020/03/09 18:41:37 by youarzaz         ###   ########.fr       */
+/*   Updated: 2021/03/31 15:38:03 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ void	ft_load_his(void)
 		tmp = NULL;
 		while ((ret = get_next_line(fd, &tmp)) > 0)
 		{
-			ft_push_his(&(g_env.his), ft_new_his(
-			ft_strdup(ft_decode_line(tmp)), 0));
+			ft_push_his(&(g_env.his), ft_new_his(ft_strdup(ft_decode_line(tmp)), 0));
 			ft_strdel(&tmp);
 		}
 		if (ret == -1)

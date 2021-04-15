@@ -6,7 +6,7 @@
 /*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/20 16:18:01 by mmorchid          #+#    #+#             */
-/*   Updated: 2021/03/21 13:02:29 by mmorchid         ###   ########.fr       */
+/*   Updated: 2021/03/25 16:32:32 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void		append_list_tokens(t_tokens **tokens, char *data, int type)
 {
 	t_tokens	*tmp;
 
-	printf("%s %d\n", data, type);
+	// printf("%s %d\n", data, type);
 	tmp = *tokens;
 	if (tmp == NULL)
 	{

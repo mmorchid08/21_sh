@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_history.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: youarzaz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 14:58:48 by youarzaz          #+#    #+#             */
-/*   Updated: 2020/03/09 14:58:52 by youarzaz         ###   ########.fr       */
+/*   Updated: 2021/03/31 15:38:50 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_his	*ft_new_his(char *line, int type)
 
 void	ft_add_his(t_his **head, t_his *new)
 {
+	
+	
 	if (!*head)
 		*head = new;
 	else
@@ -45,11 +47,13 @@ void	ft_push_his(t_his **head, t_his *new)
 	if (!*head)
 	{
 		*head = new;
+		new->id = 1;
 		return ;
 	}
 	else if (!(*head)->next)
 	{
 		(*head)->next = new;
+		new->id = (*head)->id + 1;
 		new->prev = *head;
 		return ;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_alias.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: youarzaz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mmorchid <mmorchid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 14:54:33 by youarzaz          #+#    #+#             */
-/*   Updated: 2020/03/09 14:54:39 by youarzaz         ###   ########.fr       */
+/*   Updated: 2021/04/11 17:34:50 by mmorchid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_alias		*ft_new_alias(char *alias, char *str)
 
 void		ft_add_alias(t_alias **head, t_alias *new)
 {
+	// printf("******************\n");
+	// printf("new alias =%s str for alias = %s\n", new->alias, new->str);
 	if (!*head)
 		*head = new;
 	else
